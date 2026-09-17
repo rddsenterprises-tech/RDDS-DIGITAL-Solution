@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A D Digital Agency | Web Design, Development & Digital Marketing</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f5ff',
+                            100: '#e0ebff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            accent: '#a855f7',
+                            cyan: '#06b6d4',
+                            dark: '#0b0f19',
+                            card: '#131927',
+                            border: '#1f293d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            border: 1px solid transparent;
+            background-image: linear-gradient(#131927, #131927), linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-gray-100 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-brand-dark/80 border-b border-brand-border/60 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex items-center gap-3 group">
+                    <img src="logo.jpg" alt="RDDS Digital Solution" class="w-10 h-10 rounded-xl object-cover border border-brand-border shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform duration-300">
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-tight text-white leading-none">A D <span class="text-brand-500">DIGITAL</span></span>
+                        <span class="text-[10px] text-gray-400 font-medium tracking-widest uppercase">Digital Solution</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center gap-7">
+                    <a href="#home" class="text-sm font-medium text-gray-300 hover:text-brand-500 transition-colors">Home</a>
+                    <a href="#services" class="text-sm font-medium text-gray-300 hover:text-brand-500 transition-colors">Services</a>
+                    <a href="#founders" class="text-sm font-medium text-gray-300 hover:text-brand-500 transition-colors">Leadership</a>
+                    <a href="#about" class="text-sm font-medium text-gray-300 hover:text-brand-500 transition-colors">About Us</a>
+                    <a href="#portfolio" class="text-sm font-medium text-gray-300 hover:text-brand-500 transition-colors">Portfolio</a>
+                    <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-brand-500 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="https://wa.me/923042178799" target="_blank" class="p-2.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all text-sm" title="WhatsApp Us">
+                        <i class="fa-brands fa-whatsapp text-base"></i>
+                    </a>
+                    <a href="#contact" class="px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-brand-accent hover:from-brand-500 hover:to-brand-500 transition-all duration-300 shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5">
+                        Get In Touch <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-lg bg-brand-card text-gray-300 hover:text-white border border-brand-border focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-4 pt-4 pb-6 space-y-3">
+            <a href="#home" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Home</a>
+            <a href="#services" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Services</a>
+            <a href="#founders" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Leadership & Founders</a>
+            <a href="#about" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">About Us</a>
+            <a href="#portfolio" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Portfolio</a>
+            <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Contact Us</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="https://wa.me/923042178799" target="_blank" class="mobile-link text-center w-full px-6 py-2.5 rounded-xl text-sm font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+                    <i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp: 03042178799
+                </a>
+                <a href="#contact" class="mobile-link text-center w-full px-6 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-brand-accent">
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-card border border-brand-border text-xs sm:text-sm text-brand-500 font-semibold shadow-inner">
+                        <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        A D Digital Agency
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+                        Innovative <span class="gradient-text">Web Design, Development</span> & Digital Marketing.
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Led by <strong class="text-white">M Danish Khan</strong> & <strong class="text-white">M Azhar Ali</strong>. We build high-converting websites, dynamic web applications, and data-driven marketing campaigns that scale your business.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-white bg-gradient-to-r from-brand-600 via-brand-accent to-brand-cyan hover:opacity-95 transition-all duration-300 shadow-xl shadow-brand-500/25 text-center">
+                            Start Your Project <i class="fa-solid fa-arrow-right-long ml-2"></i>
+                        </a>
+                        <a href="https://wa.me/923042178799" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-emerald-400 hover:text-white bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Quick WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="pt-6 border-t border-brand-border/60 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-400">
+                        <a href="mailto:rdds.enterprises@gmail.com" class="flex items-center gap-2 hover:text-white transition-colors">
+                            <i class="fa-solid fa-envelope text-brand-500"></i> rdds.enterprises@gmail.com
+                        </a>
+                        <a href="tel:03042178799" class="flex items-center gap-2 hover:text-white transition-colors">
+                            <i class="fa-solid fa-phone text-brand-accent"></i> 03042178799
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right Widget Graphics -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="rounded-2xl gradient-border bg-brand-card p-6 shadow-2xl relative z-10">
+                            <div class="flex items-center justify-between border-b border-brand-border/80 pb-4 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <span class="text-xs text-gray-400 font-mono">ad-digital.com</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs text-gray-400">Marketing Campaign ROI</p>
+                                        <p class="text-2xl font-bold text-white">+340%</p>
+                                    </div>
+                                    <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full font-semibold">Verified Growth</span>
+                                </div>
+                                
+                                <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs text-gray-400">Web Speed & Performance</p>
+                                        <p class="text-xl font-bold text-white">99.8% Speed Score</p>
+                                    </div>
+                                    <span class="text-xs text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded-full font-semibold">SEO Optimized</span>
+                                </div>
+
+                                <div class="h-28 w-full bg-gradient-to-t from-brand-500/20 via-brand-accent/10 to-transparent rounded-xl border border-brand-border/40 flex items-end justify-between p-3 gap-2">
+                                    <div class="w-full bg-brand-500/40 rounded-t h-[45%]"></div>
+                                    <div class="w-full bg-brand-500/60 rounded-t h-[60%]"></div>
+                                    <div class="w-full bg-brand-accent rounded-t h-[85%]"></div>
+                                    <div class="w-full bg-brand-cyan/80 rounded-t h-[70%]"></div>
+                                    <div class="w-full bg-emerald-400 rounded-t h-[100%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter Bar -->
+    <section class="py-12 bg-brand-card/50 border-y border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="space-y-1">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-white counter" data-target="150">0</p>
+                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Web Projects Built</p>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-cyan counter" data-target="200">0</p>
+                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Marketing Campaigns</p>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-accent counter" data-target="98">0</p>
+                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Client Retention %</p>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-3xl sm:text-4xl font-extrabold text-emerald-400 counter" data-target="100">0</p>
+                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Satisfaction Score %</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Updated Services Section -->
+    <section id="services" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Our Services</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Full-Stack Web & Digital Marketing Solutions</h2>
+                <p class="text-gray-400 text-base sm:text-lg">We provide end-to-end digital services to help your business establish a strong online presence and achieve scalable growth.</p>
+            </div>
+
+            <!-- Services Grid (Updated 6 Cards) -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Service 1 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-500 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Custom Web Development</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">High-performance websites and web apps built with modern technologies like React, Next.js, and Node.js.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-500"></i> Fast & Responsive Layouts</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-500"></i> Custom Web Applications</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-accent transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Digital Marketing & Ads</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Targeted ad campaigns on Meta, Google, and LinkedIn designed to generate high-quality leads and sales.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Meta & Google Search Ads</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> High-ROI Lead Funnels</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-cyan transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-brand-cyan text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Search Engine Optimization (SEO)</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Rank higher on Google search results with technical SEO, keyword optimization, and strategic content.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-cyan"></i> On-Page & Technical SEO</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-cyan"></i> Organic Keyword Growth</li>
+                    </ul>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-emerald-400 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">E-Commerce Solutions</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Full e-commerce store development complete with payment gateway integration and inventory management.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Shopify & Custom Stores</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Secure Payment Gateways</li>
+                    </ul>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-500 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">UI/UX & Brand Design</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Modern UI/UX design, logos, visual brand identities, and graphic assets tailored for digital platforms.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-500"></i> Figma Prototypes & UI Design</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-500"></i> Monograms & Visual Identity</li>
+                    </ul>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-accent transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Social Media Management</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Complete management of your social channels, content creation, branding posts, and audience engagement.</p>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Content Strategy & Design</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-accent"></i> Page Growth & Engagement</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section id="founders" class="py-24 bg-brand-card/30 border-t border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Leadership Team</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Meet Our Founders</h2>
+                <p class="text-gray-400 text-base">Driven by innovation and commitment to client success at A D Digital Agency.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+                <!-- Founder: M Danish Khan -->
+                <div class="bg-brand-card rounded-3xl border border-brand-border p-8 relative overflow-hidden group hover:border-brand-500/60 transition-all duration-300">
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <div class="w-28 h-28 rounded-2xl bg-gradient-to-tr from-brand-500 to-brand-cyan flex items-center justify-center text-white text-4xl font-bold shadow-lg shadow-brand-500/30 flex-shrink-0">
+                            DK
+                        </div>
+                        <div class="text-center sm:text-left space-y-2">
+                            <span class="text-xs font-mono font-semibold text-brand-500 uppercase tracking-widest bg-brand-500/10 px-3 py-1 rounded-full">Founder</span>
+                            <h3 class="text-2xl font-bold text-white">M Danish Khan</h3>
+                            <p class="text-sm font-medium text-brand-cyan">Digital Strategist & Tech Lead</p>
+                            <p class="text-xs text-gray-400 leading-relaxed pt-1">
+                                Spearheading agency vision, web architecture, and strategic digital expansion for clients globally.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Co-Founder: M Azhar Ali -->
+                <div class="bg-brand-card rounded-3xl border border-brand-border p-8 relative overflow-hidden group hover:border-brand-accent/60 transition-all duration-300">
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <div class="w-28 h-28 rounded-2xl bg-gradient-to-tr from-brand-accent to-emerald-400 flex items-center justify-center text-white text-4xl font-bold shadow-lg shadow-brand-accent/30 flex-shrink-0">
+                            AA
+                        </div>
+                        <div class="text-center sm:text-left space-y-2">
+                            <span class="text-xs font-mono font-semibold text-brand-accent uppercase tracking-widest bg-brand-accent/10 px-3 py-1 rounded-full">Co-Founder</span>
+                            <h3 class="text-2xl font-bold text-white">M Azhar Ali</h3>
+                            <p class="text-sm font-medium text-brand-accent">Marketing Lead & Operations Director</p>
+                            <p class="text-xs text-gray-400 leading-relaxed pt-1">
+                                Driving growth campaigns, client relationships, brand positioning, and operational excellence.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-24 border-t border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="relative">
+                    <div class="relative rounded-2xl overflow-hidden border border-brand-border">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="A D Digital Agency Team" class="w-full h-auto object-cover rounded-2xl filter brightness-90">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">About A D Digital Agency</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">We Engineer Digital Growth With Passion & Precision</h2>
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        Founded by <strong>M Danish Khan</strong> and <strong>M Azhar Ali</strong>, A D Digital Agency was built to bridge the gap between technical web engineering and creative marketing performance.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4">
+                            <div class="p-2.5 rounded-lg bg-brand-500/10 text-brand-500 mt-1">
+                                <i class="fa-solid fa-code text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-semibold text-white">Tailored Web Engineering</h4>
+                                <p class="text-sm text-gray-400">Pixel-perfect designs engineered with modern, clean code standards.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="p-2.5 rounded-lg bg-brand-accent/10 text-brand-accent mt-1">
+                                <i class="fa-solid fa-bullseye text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-semibold text-white">Targeted Digital Marketing</h4>
+                                <p class="text-sm text-gray-400">Data-driven marketing funnels designed to deliver maximum return on ad spend.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-brand-card/20 border-t border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Our Work</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Recent Client Showcase</h2>
+                </div>
+
+                <div class="flex flex-wrap gap-2" id="portfolio-filters">
+                    <button class="filter-btn active px-4 py-2 rounded-full text-xs font-semibold bg-brand-500 text-white transition-all duration-300" data-filter="all">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-brand-card text-gray-400 hover:text-white border border-brand-border transition-all duration-300" data-filter="web">Web Design & Dev</button>
+                    <button class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-brand-card text-gray-400 hover:text-white border border-brand-border transition-all duration-300" data-filter="marketing">Digital Marketing</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border" data-category="web">
+                    <div class="aspect-video w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Fintech Web App" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-brand-cyan font-mono uppercase tracking-wider">Web Development</span>
+                        <h3 class="text-xl font-bold text-white mt-1 group-hover:text-brand-500 transition-colors">Enterprise Web Dashboard</h3>
+                        <p class="text-sm text-gray-400 mt-2">Custom analytical application built for corporate management.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border" data-category="marketing">
+                    <div class="aspect-video w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="SEO Campaign" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-brand-accent font-mono uppercase tracking-wider">Digital Marketing</span>
+                        <h3 class="text-xl font-bold text-white mt-1 group-hover:text-brand-500 transition-colors">E-Commerce SEO Campaign</h3>
+                        <p class="text-sm text-gray-400 mt-2">Achieved 250% growth in organic search traffic within 4 months.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border" data-category="web">
+                    <div class="aspect-video w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80" alt="Luxe E-Commerce Store" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-brand-cyan font-mono uppercase tracking-wider">Web Design</span>
+                        <h3 class="text-xl font-bold text-white mt-1 group-hover:text-brand-500 transition-colors">Retail E-Commerce Portal</h3>
+                        <p class="text-sm text-gray-400 mt-2">Modern e-commerce UI with streamlined payment checkout.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 border-t border-brand-border relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12">
+                
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Contact Us</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Let's Build Something Great Together</h2>
+                        <p class="text-gray-400 mt-4 leading-relaxed">Reach out directly to M Danish Khan or M Azhar Ali for custom inquiries, project quotes, or marketing strategies.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <a href="mailto:rdds.enterprises@gmail.com" class="flex items-center gap-4 p-4 rounded-2xl bg-brand-card border border-brand-border hover:border-brand-500 transition-all group">
+                            <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase font-medium">Official Email</p>
+                                <p class="text-base font-semibold text-white group-hover:text-brand-500 transition-colors">rdds.enterprises@gmail.com</p>
+                            </div>
+                        </a>
+
+                        <a href="tel:03042178799" class="flex items-center gap-4 p-4 rounded-2xl bg-brand-card border border-brand-border hover:border-brand-accent transition-all group">
+                            <div class="w-12 h-12 rounded-xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase font-medium">Phone Number</p>
+                                <p class="text-base font-semibold text-white group-hover:text-brand-accent transition-colors">03042178799</p>
+                            </div>
+                        </a>
+
+                        <a href="https://wa.me/923042178799" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-brand-card border border-brand-border hover:border-emerald-500 transition-all group">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase font-medium">WhatsApp Contact</p>
+                                <p class="text-base font-semibold text-white group-hover:text-emerald-400 transition-colors">+92 304 2178799</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="lg:col-span-7 bg-brand-card p-8 sm:p-10 rounded-3xl border border-brand-border shadow-2xl">
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Your Name *</label>
+                                <input type="text" id="name" required placeholder="Full Name" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Your Email *</label>
+                                <input type="email" id="email" required placeholder="name@example.com" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Phone / WhatsApp</label>
+                                <input type="text" id="phone" placeholder="0300 0000000" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Required Service</label>
+                                <select id="service" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-brand-500 transition-colors">
+                                    <option value="webdev">Web Design & Development</option>
+                                    <option value="marketing">Digital Marketing & SEO</option>
+                                    <option value="branding">Brand Identity & UI/UX</option>
+                                    <option value="both">Web Dev + Digital Marketing Package</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Message *</label>
+                            <textarea id="message" rows="4" required placeholder="Briefly describe your project details..." class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors"></textarea>
+                        </div>
+
+                        <div id="form-alert" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-brand-600 via-brand-accent to-brand-cyan hover:opacity-95 transition-all duration-300 shadow-lg shadow-brand-500/25">
+                            Send Inquiry <i class="fa-solid fa-paper-plane ml-2 text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Updated without RDDS mentions) -->
+    <footer class="bg-brand-card/80 border-t border-brand-border pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-brand-border/60">
+                
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-3">
+                        <img src="logo.jpg" alt="A D Digital" class="w-8 h-8 rounded-lg object-cover">
+                        <span class="text-lg font-bold text-white">A D DIGITAL</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        A D Digital Agency.<br>
+                        Founders: M Danish Khan & M Azhar Ali.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#founders" class="hover:text-white transition-colors">Leadership</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Core Offerings</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#services" class="hover:text-white transition-colors">Web Design & Development</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Digital Marketing</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">SEO Optimization</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">E-Commerce Solutions</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Direct Contact</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><i class="fa-solid fa-envelope text-brand-500 mr-1.5"></i> rdds.enterprises@gmail.com</li>
+                        <li><i class="fa-solid fa-phone text-brand-accent mr-1.5"></i> 03042178799</li>
+                        <li><i class="fa-brands fa-whatsapp text-emerald-400 mr-1.5"></i> +92 304 2178799</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+                <p>&copy; 2026 A D Digital Agency. All rights reserved.</p>
+                <p class="text-gray-400">Founded by M Danish Khan & M Azhar Ali</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if(mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.replace('fa-xmark', 'fa-bars');
+            } else {
+                menuIcon.classList.replace('fa-bars', 'fa-xmark');
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.replace('fa-xmark', 'fa-bars');
+            });
+        });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-brand-500', 'text-white');
+                    b.classList.add('bg-brand-card', 'text-gray-400');
+                });
+                btn.classList.remove('bg-brand-card', 'text-gray-400');
+                btn.classList.add('bg-brand-500', 'text-white');
+
+                const filter = btn.getAttribute('data-filter');
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        const counters = document.querySelectorAll('.counter');
+        let animated = false;
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let count = 0;
+                const speed = target / 50;
+
+                const updateCount = () => {
+                    count += speed;
+                    if(count < target) {
+                        counter.innerText = Math.ceil(count);
+                        setTimeout(updateCount, 30);
+                    } else {
+                        counter.innerText = target + '+';
+                    }
+                }
+                updateCount();
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY + window.innerHeight;
+            const counterSection = document.querySelector('.counter')?.offsetTop;
+
+            if(counterSection && scrollPos > counterSection && !animated) {
+                animated = true;
+                animateCounters();
+            }
+        });
+
+        const form = document.getElementById('contact-form');
+        const alertBox = document.getElementById('form-alert');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            alertBox.classList.remove('hidden', 'bg-red-500/20', 'text-red-400', 'border-red-500/30');
+            alertBox.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border', 'border-emerald-500/30');
+            alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> Thank you ${name}! Your message has been received. Founder M Danish Khan or Co-Founder M Azhar Ali will respond back to you shortly.`;
+            form.reset();
+        });
+    </script>
+</body>
+</html>
