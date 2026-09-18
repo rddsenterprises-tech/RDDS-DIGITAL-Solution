@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M.O Traders | Luxury Decor & Custom Neon Studio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Neon Preview & Luxury Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Dancing+Script:wght@700&family=Monoton&family=Montserrat:wght@300;400;600;700;800;900&family=Outfit:wght@300;400;600;700;800&family=Pacifico&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        iceBlue: {
+                            300: '#a5f3fc',
+                            400: '#38bdf8',
+                            500: '#00f3ff',
+                            600: '#0284c7',
+                            glow: '#00f3ff'
+                        },
+                        hotPink: {
+                            400: '#f472b6',
+                            500: '#ff007f',
+                            600: '#db2777',
+                            glow: '#ff007f'
+                        },
+                        lipstickRed: {
+                            500: '#ff0844',
+                            600: '#d90429',
+                            700: '#9b001c',
+                            glow: '#ff0844'
+                        },
+                        darkBg: '#080a10',
+                        cardBg: '#101420',
+                        cardBorder: '#1e2638',
+                        adminBg: '#0b0f19'
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'Outfit', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                        cursive: ['Dancing Script', 'cursive'],
+                        pacifico: ['Pacifico', 'cursive'],
+                        monoton: ['Monoton', 'cursive'],
+                        retro: ['"Press Start 2P"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .neon-glow-ice { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00f3ff, 0 0 35px #00f3ff, 0 0 50px #00f3ff; }
+        .neon-glow-pink { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff007f, 0 0 35px #ff007f, 0 0 50px #ff007f; }
+        .neon-glow-lipstick { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff0844, 0 0 35px #ff0844, 0 0 50px #ff0844; }
+
+        .box-glow-ice { box-shadow: 0 0 20px rgba(0, 243, 255, 0.35); }
+        .box-glow-pink { box-shadow: 0 0 20px rgba(255, 0, 127, 0.35); }
+
+        .acrylic-board {
+            background: rgba(16, 20, 32, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 0, 127, 0.15);
+        }
+
+        .bg-brick-wall {
+            background-color: #07090e;
+            background-image: radial-gradient(rgba(0, 243, 255, 0.08) 1px, transparent 0);
+            background-size: 28px 28px;
+        }
+        .bg-velvet-wall { background: linear-gradient(135deg, #0d0614 0%, #170412 100%); }
+        .bg-wood-wall {
+            background-color: #120d0a;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.03) 20px);
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #080a10; }
+        ::-webkit-scrollbar-thumb { background: #1e2638; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 font-sans antialiased selection:bg-hotPink-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Announcement Bar -->
+    <div class="bg-gradient-to-r from-lipstickRed-600 via-hotPink-500 to-iceBlue-500 text-white text-xs font-extrabold py-1.5 px-4 text-center tracking-wider uppercase shadow-md flex items-center justify-between">
+        <span class="hidden sm:inline">⚡ M.O Traders Luxury Decor & Custom Neon Sign Studio</span>
+        <span class="mx-auto sm:mx-0">Direct WhatsApp Orders: +92 300 1234567</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-darkBg/90 backdrop-blur-lg border-b border-cardBorder transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#" onclick="switchTab('store')" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-lipstickRed-600 via-hotPink-500 to-iceBlue-500 flex items-center justify-center font-serif text-white font-black text-xl shadow-lg box-glow-pink group-hover:scale-105 transition-transform">
+                    MO
+                </div>
+                <div>
+                    <span class="text-xl sm:text-2xl font-black font-serif tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-iceBlue-500 via-hotPink-400 to-lipstickRed-500">
+                        M.O TRADERS
+                    </span>
+                    <span class="block text-[10px] tracking-widest text-iceBlue-400 font-bold uppercase -mt-1">
+                        Luxury Decor & Neon Signs
+                    </span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
+                <button onclick="switchTab('store')" id="nav-store" class="hover:text-iceBlue-500 transition-colors text-iceBlue-400 font-bold">Store Catalog</button>
+                <a href="#neon-designer" onclick="switchTab('store')" class="flex items-center gap-2 text-hotPink-400 hover:text-hotPink-300 transition-colors bg-hotPink-500/10 px-3.5 py-1.5 rounded-full border border-hotPink-500/40 box-glow-pink">
+                    <i class="fa-solid font-bold fa-bolt text-iceBlue-500"></i>
+                    Custom Neon Studio
+                </a>
+                <a href="#featured" onclick="switchTab('store')" class="hover:text-lipstickRed-500 transition-colors">Gift Shop</a>
+                <a href="#home-decor-sec" onclick="switchTab('store')" class="hover:text-iceBlue-500 transition-colors">Home Decor</a>
+            </nav>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-3">
+                <div class="relative hidden lg:block">
+                    <input type="text" id="store-search" oninput="handleSearch(this.value)" placeholder="Search products..." class="w-40 xl:w-52 bg-slate-950 border border-slate-700 rounded-full px-3.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-iceBlue-500 pl-8">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
+                </div>
+
+                <!-- Shopping Cart Toggle -->
+                <button onclick="toggleCart(true)" class="relative p-2.5 text-slate-300 hover:text-iceBlue-500 rounded-full hover:bg-cardBg transition-colors" title="View Cart">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cart-badge" class="absolute top-1 right-1 bg-gradient-to-r from-hotPink-500 to-lipstickRed-500 text-white text-xs font-black w-5 h-5 rounded-full flex items-center justify-center opacity-0 scale-0 transition-all duration-300 border border-white/20">
+                        0
+                    </span>
+                </button>
+
+                <!-- Customer Account Header Button / Profile -->
+                <div id="auth-header-btn">
+                    <button onclick="openAuthModal('login')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white font-bold text-xs shadow hover:scale-105 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-user"></i> Login / Sign Up
+                    </button>
+                </div>
+
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-300 hover:text-iceBlue-500">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-cardBg border-b border-cardBorder px-4 py-6 space-y-4">
+            <button onclick="switchTab('store'); toggleMobileMenu()" class="block w-full text-left py-2 text-base font-semibold hover:text-iceBlue-500">Store Catalog</button>
+            <a href="#neon-designer" onclick="switchTab('store'); toggleMobileMenu()" class="block py-2 text-base font-bold text-hotPink-400">⚡ Custom Neon Sign Studio</a>
+        </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <div id="main-view-container">
+
+        <!-- PUBLIC STOREFRONT VIEW -->
+        <main id="public-storefront-view" class="block">
+            
+            <!-- Hero Banner -->
+            <section class="relative overflow-hidden pt-10 pb-16 lg:py-20 bg-gradient-to-b from-darkBg via-[#0e111a] to-darkBg">
+                <div class="absolute inset-0 bg-brick-wall opacity-60 pointer-events-none"></div>
+                <div class="absolute -top-20 left-1/4 w-96 h-96 bg-iceBlue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute bottom-0 right-10 w-96 h-96 bg-hotPink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="grid lg:grid-cols-12 gap-12 items-center">
+                        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-iceBlue-500/40 text-iceBlue-400 text-xs font-bold tracking-wide uppercase box-glow-ice">
+                                <i class="fa-solid fa-gem text-hotPink-400"></i> Artisans of Custom Neon & Luxury Gifts
+                            </div>
+                            
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-black tracking-tight leading-tight text-white">
+                                Illuminate Your Space With <span class="text-transparent bg-clip-text bg-gradient-to-r from-iceBlue-500 via-hotPink-400 to-lipstickRed-500">M.O Traders</span>
+                            </h1>
+                            
+                            <p class="text-slate-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
+                                Bespoke handcrafted LED neon signs, luxury gift sets, and modern home decor centerpieces tailored for homes, weddings, gaming setups, and commercial spaces.
+                            </p>
+
+                            <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                                <a href="#neon-designer" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-hotPink-500 to-lipstickRed-500 text-white font-extrabold text-center shadow-lg box-glow-pink hover:scale-105 transition-all">
+                                    <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Custom Neon Designer
+                                </a>
+                                <a href="#featured" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-cardBg border border-iceBlue-500/40 hover:border-iceBlue-400 text-iceBlue-300 font-bold text-center hover:bg-slate-800/80 transition-all box-glow-ice">
+                                    Browse Store Catalog
+                                </a>
+                            </div>
+
+                            <div class="pt-8 grid grid-cols-3 gap-4 border-t border-slate-800/80 text-center lg:text-left">
+                                <div>
+                                    <p class="text-2xl font-black text-iceBlue-400 font-serif">3,500+</p>
+                                    <p class="text-xs text-slate-400 mt-1">Neon Signs Crafted</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-black text-hotPink-400 font-serif">100%</p>
+                                    <p class="text-xs text-slate-400 mt-1">High-Grade Acrylic</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-black text-lipstickRed-500 font-serif">4.9 ★</p>
+                                    <p class="text-xs text-slate-400 mt-1">Direct WhatsApp Rating</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-5 flex justify-center">
+                            <div class="relative w-full max-w-md p-6 rounded-3xl bg-gradient-to-b from-cardBg to-darkBg border border-cardBorder shadow-2xl overflow-hidden group border-hotPink-500/30">
+                                <div class="absolute -right-10 -top-10 w-40 h-40 bg-iceBlue-500/20 rounded-full blur-2xl"></div>
+                                
+                                <div class="h-64 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden bg-brick-wall">
+                                    <div class="absolute inset-0 bg-hotPink-500/10 group-hover:bg-hotPink-500/20 transition-colors"></div>
+                                    <span class="font-cursive text-4xl sm:text-5xl text-hotPink-400 neon-glow-pink animate-pulse">
+                                        Ice & Fire Glow
+                                    </span>
+                                    <span class="mt-4 text-xs font-mono uppercase tracking-widest text-iceBlue-300 bg-slate-900/90 px-3.5 py-1 rounded-full border border-iceBlue-500/30">
+                                        Live LED Acrylic Preview
+                                    </span>
+                                </div>
+
+                                <div class="mt-6 flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-white text-lg">Bespoke LED Neon Board</h3>
+                                        <p class="text-xs text-slate-400">Customized text, fonts & dynamic glow</p>
+                                    </div>
+                                    <span class="text-iceBlue-400 font-bold text-lg font-serif">PKR 8,500+</span>
+                                </div>
+
+                                <a href="#neon-designer" class="mt-4 block w-full text-center py-3 rounded-xl bg-gradient-to-r from-iceBlue-500/20 to-hotPink-500/20 border border-iceBlue-500/40 text-iceBlue-300 font-bold text-sm hover:from-iceBlue-500 hover:to-hotPink-500 hover:text-white transition-all">
+                                    Start Live Customizer <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NEON DESIGNER SECTION -->
+            <section id="neon-designer" class="py-16 bg-slate-950 relative border-y border-cardBorder">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-12">
+                        <span class="text-iceBlue-400 font-bold text-xs uppercase tracking-widest bg-iceBlue-500/10 px-3.5 py-1.5 rounded-full border border-iceBlue-500/30">
+                            Interactive Studio Customizer
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-black text-white mt-3">
+                            Design Your Custom Neon Sign
+                        </h2>
+                    </div>
+
+                    <div class="grid lg:grid-cols-12 gap-8 items-start">
+                        <div class="lg:col-span-7 space-y-4">
+                            <div id="neon-canvas-container" class="relative min-h-[340px] sm:min-h-[440px] rounded-3xl bg-brick-wall border-2 border-slate-800 p-6 sm:p-10 flex flex-col items-center justify-center overflow-hidden transition-all duration-300 shadow-2xl">
+                                <div id="acrylic-frame" class="acrylic-board rounded-2xl p-8 sm:p-12 min-w-[80%] max-w-[95%] text-center relative transition-all duration-300">
+                                    <div class="absolute top-2.5 left-2.5 w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-500 shadow-inner"></div>
+                                    <div class="absolute top-2.5 right-2.5 w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-500 shadow-inner"></div>
+                                    <div class="absolute bottom-2.5 left-2.5 w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-500 shadow-inner"></div>
+                                    <div class="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 rounded-full bg-slate-300 border border-slate-500 shadow-inner"></div>
+
+                                    <div id="neon-preview-text" class="text-4xl sm:text-6xl font-cursive text-iceBlue-500 neon-glow-ice break-words transition-all duration-200 select-none">
+                                        M.O Traders
+                                    </div>
+                                </div>
+
+                                <div class="absolute bottom-4 right-4 flex items-center gap-2 bg-slate-900/90 p-1.5 rounded-xl border border-slate-700 text-xs text-slate-300">
+                                    <span class="px-2 text-[10px] uppercase font-bold text-slate-400">Wall:</span>
+                                    <button onclick="setWallBackground('dark')" class="w-6 h-6 rounded-lg bg-slate-900 border border-slate-600 hover:border-iceBlue-400" title="Dark Brick"></button>
+                                    <button onclick="setWallBackground('wood')" class="w-6 h-6 rounded-lg bg-amber-950 border border-amber-700 hover:border-amber-400" title="Wood Texture"></button>
+                                    <button onclick="setWallBackground('velvet')" class="w-6 h-6 rounded-lg bg-purple-950 border border-pink-600 hover:border-hotPink-400" title="Deep Velvet"></button>
+                                </div>
+                            </div>
+
+                            <div class="bg-cardBg p-4 rounded-2xl border border-cardBorder flex items-center justify-between gap-4">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-lightbulb text-iceBlue-400"></i> Neon Brightness
+                                </span>
+                                <input id="neon-brightness" type="range" min="0.2" max="1" step="0.1" value="1" class="w-1/2 accent-hotPink-500 cursor-pointer" oninput="updateNeonBrightness(this.value)">
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-5 bg-cardBg p-6 sm:p-8 rounded-3xl border border-cardBorder space-y-6 shadow-xl">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-iceBlue-400 mb-2">
+                                    1. Custom Text / Line
+                                </label>
+                                <textarea id="neon-text-input" rows="2" maxlength="40" placeholder="Type your text..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-hotPink-500 text-base resize-none">M.O Traders</textarea>
+                                <p class="text-[11px] text-slate-500 mt-1 text-right"><span id="char-count">11</span>/40 characters</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-hotPink-400 mb-2">
+                                    2. Font Style
+                                </label>
+                                <div class="grid grid-cols-2 gap-2" id="font-options-container"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-lipstickRed-500 mb-2">
+                                    3. Neon Glow Color
+                                </label>
+                                <div class="flex flex-wrap gap-3" id="color-options-container"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-iceBlue-400 mb-2">
+                                    4. Acrylic Board Size
+                                </label>
+                                <div class="grid grid-cols-3 gap-2" id="size-options-container"></div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-xs text-slate-400">Estimated Price:</span>
+                                    <span id="neon-price" class="text-2xl font-black font-serif text-iceBlue-400">PKR 12,500</span>
+                                </div>
+                                <button onclick="addCustomNeonToCart()" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-hotPink-500 to-lipstickRed-500 text-white font-extrabold text-sm shadow-lg box-glow-pink hover:scale-105 transition-all flex items-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Add to Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATALOG SECTION -->
+            <section id="featured" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="home-decor-sec" class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                    <div>
+                        <span class="text-hotPink-400 font-bold text-xs uppercase tracking-widest">Handcrafted Collections</span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Featured Store Catalog</h2>
+                    </div>
+
+                    <div id="filter-buttons" class="flex flex-wrap gap-2 text-xs font-bold">
+                        <button onclick="filterProducts('all')" id="filter-btn-all" class="filter-btn px-4 py-2 rounded-full bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white shadow transition-all">
+                            All Items
+                        </button>
+                        <button onclick="filterProducts('gift-shop')" id="filter-btn-gift-shop" class="filter-btn px-4 py-2 rounded-full bg-cardBg border border-cardBorder text-slate-300 hover:text-white hover:border-iceBlue-500 transition-all">
+                            Gift Shop
+                        </button>
+                        <button onclick="filterProducts('home-decor')" id="filter-btn-home-decor" class="filter-btn px-4 py-2 rounded-full bg-cardBg border border-cardBorder text-slate-300 hover:text-white hover:border-hotPink-500 transition-all">
+                            Home Decor
+                        </button>
+                        <button onclick="filterProducts('ready-neon')" id="filter-btn-ready-neon" class="filter-btn px-4 py-2 rounded-full bg-cardBg border border-cardBorder text-slate-300 hover:text-white hover:border-lipstickRed-500 transition-all">
+                            Ready Neon Signs
+                        </button>
+                    </div>
+                </div>
+
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </section>
+
+        </main>
+
+        <!-- ADMIN CONTROL PANEL VIEW -->
+        <main id="admin-panel-view" class="hidden bg-adminBg min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <div class="bg-cardBg p-6 rounded-3xl border border-cardBorder flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xl">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <h2 class="text-2xl font-serif font-bold text-white">M.O Traders Admin Portal</h2>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Manage live incoming orders, registered customers, and store catalog.</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="openProductModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white font-bold text-xs shadow hover:scale-105 transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> Add New Product
+                        </button>
+                        <button onclick="toggleAdminView()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs border border-slate-700 transition-colors flex items-center gap-1.5">
+                            <i class="fa-solid fa-store"></i> Return to Storefront
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="p-6 rounded-2xl bg-cardBg border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center text-slate-400 text-xs font-bold uppercase">
+                            <span>Total Revenue</span>
+                            <i class="fa-solid fa-money-bill-wave text-emerald-400"></i>
+                        </div>
+                        <p id="stat-revenue" class="text-2xl font-black font-serif text-white">PKR 0</p>
+                        <span class="text-[11px] text-emerald-400"><i class="fa-solid fa-arrow-up"></i> Live orders value</span>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-cardBg border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center text-slate-400 text-xs font-bold uppercase">
+                            <span>Total Orders</span>
+                            <i class="fa-solid fa-box-archive text-iceBlue-400"></i>
+                        </div>
+                        <p id="stat-orders" class="text-2xl font-black font-serif text-iceBlue-400">0</p>
+                        <span id="stat-pending-orders" class="text-[11px] text-amber-400">0 Pending Requests</span>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-cardBg border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center text-slate-400 text-xs font-bold uppercase">
+                            <span>Registered Customers</span>
+                            <i class="fa-solid fa-users text-hotPink-400"></i>
+                        </div>
+                        <p id="stat-customers" class="text-2xl font-black font-serif text-hotPink-400">0</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-cardBg border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center text-slate-400 text-xs font-bold uppercase">
+                            <span>Active Products</span>
+                            <i class="fa-solid fa-tags text-lipstickRed-500"></i>
+                        </div>
+                        <p id="stat-products" class="text-2xl font-black font-serif text-lipstickRed-500">0</p>
+                    </div>
+                </div>
+
+                <div class="flex border-b border-cardBorder text-sm font-bold gap-6">
+                    <button onclick="switchAdminSubTab('orders')" id="admin-tab-orders" class="pb-3 border-b-2 border-iceBlue-500 text-iceBlue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Orders Management
+                    </button>
+                    <button onclick="switchAdminSubTab('customers')" id="admin-tab-customers" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-users text-hotPink-400"></i> Customer Accounts
+                    </button>
+                    <button onclick="switchAdminSubTab('products')" id="admin-tab-products" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-boxes-stacked"></i> Products Inventory
+                    </button>
+                </div>
+
+                <!-- ORDERS MANAGEMENT TABLE -->
+                <div id="admin-sec-orders" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <h3 class="text-lg font-bold text-white font-serif">Customer Direct Orders List</h3>
+                        <select id="order-status-filter" onchange="renderAdminOrders()" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-200">
+                            <option value="all">All Order Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-cardBg border border-cardBorder rounded-2xl overflow-x-auto shadow-xl">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-cardBorder">
+                                <tr>
+                                    <th class="p-4">Order ID</th>
+                                    <th class="p-4">Customer Details & Payment</th>
+                                    <th class="p-4">Ordered Items</th>
+                                    <th class="p-4">Total Price</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-orders-table-body" class="divide-y divide-cardBorder"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CUSTOMER ACCOUNTS TABLE -->
+                <div id="admin-sec-customers" class="hidden space-y-6">
+                    <h3 class="text-lg font-bold text-white font-serif">Registered Customers</h3>
+                    <div class="bg-cardBg border border-cardBorder rounded-2xl overflow-x-auto shadow-xl">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-cardBorder">
+                                <tr>
+                                    <th class="p-4">Name</th>
+                                    <th class="p-4">Email Address</th>
+                                    <th class="p-4">Phone Number</th>
+                                    <th class="p-4">Joined Date</th>
+                                    <th class="p-4 text-right">Direct WhatsApp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-customers-table-body" class="divide-y divide-cardBorder"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PRODUCTS INVENTORY -->
+                <div id="admin-sec-products" class="hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white font-serif">Catalog Product Inventory</h3>
+                        <button onclick="openProductModal()" class="px-4 py-2 rounded-xl bg-hotPink-500 hover:bg-hotPink-600 text-white text-xs font-bold">
+                            + Add Product
+                        </button>
+                    </div>
+
+                    <div class="bg-cardBg border border-cardBorder rounded-2xl overflow-x-auto shadow-xl">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-950 text-slate-400 uppercase font-bold border-b border-cardBorder">
+                                <tr>
+                                    <th class="p-4">Image</th>
+                                    <th class="p-4">Product Name</th>
+                                    <th class="p-4">Category</th>
+                                    <th class="p-4">Price</th>
+                                    <th class="p-4">Badge Tag</th>
+                                    <th class="p-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-table-body" class="divide-y divide-cardBorder"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <!-- CUSTOMER AUTHENTICATION MODAL (LOGIN / SIGN UP) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAuthModal()"></div>
+        <div class="relative bg-cardBg border border-cardBorder rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl z-10 space-y-6">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Auth Navigation Tabs -->
+            <div class="flex border-b border-slate-800 text-sm font-bold">
+                <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-center border-b-2 border-iceBlue-500 text-iceBlue-400">
+                    Sign In
+                </button>
+                <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-center border-b-2 border-transparent text-slate-400 hover:text-white">
+                    Create Account
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address / Phone</label>
+                    <input type="text" id="login-id" required placeholder="e.g. user@gmail.com or 03001234567" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                    <input type="password" id="login-pass" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white font-bold text-sm shadow-lg hover:scale-[1.02] transition-all">
+                    Sign In To Account
+                </button>
+            </form>
+
+            <!-- SIGN UP / REGISTER FORM -->
+            <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="reg-name" required placeholder="e.g. Ali Ahmed" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-hotPink-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                    <input type="email" id="reg-email" required placeholder="ali@gmail.com" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-hotPink-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp Phone Number</label>
+                    <input type="tel" id="reg-phone" required placeholder="0300 1234567" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-hotPink-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                    <input type="password" id="reg-pass" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-hotPink-500">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-hotPink-500 to-lipstickRed-500 text-white font-bold text-sm shadow-lg hover:scale-[1.02] transition-all">
+                    Register Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SHOPPING CART SLIDE-OUT DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-all duration-300">
+        <div id="cart-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300 pointer-events-auto hidden" onclick="toggleCart(false)"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div id="cart-content" class="w-screen max-w-md bg-cardBg border-l border-cardBorder shadow-2xl pointer-events-auto transform translate-x-full transition-transform duration-300 flex flex-col">
+                <div class="p-6 border-b border-cardBorder flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-iceBlue-400 text-lg"></i>
+                        <h3 class="font-serif font-bold text-lg text-white">Shopping Cart</h3>
+                    </div>
+                    <button onclick="toggleCart(false)" class="p-2 text-slate-400 hover:text-white text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-list" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+
+                <div class="p-6 border-t border-cardBorder bg-darkBg/90 space-y-4">
+                    <div class="flex justify-between text-sm text-slate-300">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="font-bold text-iceBlue-400 text-base font-serif">PKR 0</span>
+                    </div>
+
+                    <button onclick="openCheckoutModal()" class="w-full py-4 rounded-xl bg-gradient-to-r from-hotPink-500 to-lipstickRed-500 text-white font-bold text-sm shadow-lg hover:scale-[1.02] transition-all">
+                        Proceed to Checkout <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL WITH PAYMENT METHOD SELECTION -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+        <div class="relative bg-cardBg border border-cardBorder rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl z-10 space-y-4">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-xl font-serif font-bold text-white">Complete Your Order</h3>
+            <p class="text-xs text-slate-400">Order will be stored in Admin Table & sent via WhatsApp.</p>
+
+            <form onsubmit="handleCheckoutSubmit(event)" class="space-y-4 pt-2">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="chk-name" required placeholder="e.g. Ali Ahmed" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp / Phone Number</label>
+                    <input type="tel" id="chk-phone" required placeholder="0300 1234567" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Delivery Address</label>
+                    <textarea id="chk-address" required rows="2" placeholder="House #, Street, City" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-iceBlue-500 resize-none"></textarea>
+                </div>
+
+                <!-- ADDED PAYMENT METHOD FIELD -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Select Payment Method</label>
+                    <select id="chk-payment" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-iceBlue-500 cursor-pointer">
+                        <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                        <option value="JazzCash / EasyPaisa">JazzCash / EasyPaisa</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Send Order Directly
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRODUCT INVENTORY MODAL -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProductModal()"></div>
+        <div class="relative bg-cardBg border border-cardBorder rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl z-10 space-y-4">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 id="product-modal-title" class="text-xl font-serif font-bold text-white">Add New Product</h3>
+
+            <form onsubmit="handleProductFormSubmit(event)" class="space-y-4 pt-2">
+                <input type="hidden" id="pm-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Product Title</label>
+                    <input type="text" id="pm-title" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                        <select id="pm-category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
+                            <option value="gift-shop">Gift Shop</option>
+                            <option value="home-decor">Home Decor</option>
+                            <option value="ready-neon">Ready Neon Signs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Price (PKR)</label>
+                        <input type="number" id="pm-price" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Image URL</label>
+                    <input type="url" id="pm-image" required placeholder="https://..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Badge Tag</label>
+                    <input type="text" id="pm-badge" placeholder="e.g. Bestseller, New Arrival" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-iceBlue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+                    <textarea id="pm-desc" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-iceBlue-500 resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white font-bold text-sm shadow transition-all">
+                    Save Product to Inventory
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-cardBorder py-8 text-center text-xs text-slate-500">
+        <p>
+            © 2026 M.O Traders. All rights reserved. Custom Neon & Luxury Decor Store. 
+            <!-- Secret Owner Lock -->
+            <button onclick="toggleAdminView()" class="ml-2 text-slate-600 hover:text-slate-400 transition-colors inline-flex items-center gap-1" title="Owner Admin Access">
+                <i class="fa-solid fa-lock text-[10px]"></i> Admin Portal
+            </button>
+        </p>
+    </footer>
+
+    <!-- JS APPLICATION LOGIC -->
+    <script>
+        const DEFAULT_PRODUCTS = [
+            {
+                id: "p1",
+                name: "Good Vibes Ice Blue Neon Board",
+                category: "ready-neon",
+                price: 8500,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80",
+                badge: "Bestseller",
+                desc: "Glowing ice blue LED neon sign for gaming setups and lounges."
+            },
+            {
+                id: "p2",
+                name: "3D Silent Metal Wall Clock",
+                category: "home-decor",
+                price: 6200,
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=600&q=80",
+                badge: "Luxury Decor",
+                desc: "Modern luxury sweep clock with lipstick red and metallic finish."
+            },
+            {
+                id: "p3",
+                name: "Executive Velvet Gift Box Set",
+                category: "gift-shop",
+                price: 4900,
+                rating: 5.0,
+                image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80",
+                badge: "Custom Engraved",
+                desc: "Custom engraved pen, thermal flask, keychain, and velvet notebook."
+            }
+        ];
+
+        /* Helper for Unique Cart IDs */
+        function generateUniqueId() {
+            return Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+        }
+
+        /* State Variables */
+        let products = JSON.parse(localStorage.getItem('mo_products')) || DEFAULT_PRODUCTS;
+        let orders = JSON.parse(localStorage.getItem('mo_orders')) || [];
+        let customers = JSON.parse(localStorage.getItem('mo_customers')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('mo_current_user')) || null;
+        let cart = [];
+
+        let customNeon = {
+            text: "M.O Traders",
+            font: "font-cursive",
+            colorName: "ice",
+            size: "medium",
+            basePrice: 12500
+        };
+
+        const NEON_FONTS = [
+            { id: "font-cursive", name: "Script Magic", class: "font-cursive" },
+            { id: "font-pacifico", name: "Pacific Glow", class: "font-pacifico" },
+            { id: "font-monoton", name: "MONOTON", class: "font-monoton" },
+            { id: "font-retro", name: "RETRO 80S", class: "font-retro" }
+        ];
+
+        const NEON_COLORS = [
+            { name: "ice", hex: "#00f3ff", title: "Ice Blue", glowClass: "neon-glow-ice text-iceBlue-500" },
+            { name: "pink", hex: "#ff007f", title: "Electric Pink", glowClass: "neon-glow-pink text-hotPink-400" },
+            { name: "lipstick", hex: "#ff0844", title: "Lipstick Red", glowClass: "neon-glow-lipstick text-lipstickRed-500" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts('all');
+            renderNeonCustomizerUI();
+            setupNeonInputListener();
+            updateAuthHeaderUI();
+            renderAdminDashboard();
+            saveData();
+
+            if (window.location.hash === '#admin') {
+                toggleAdminView();
+            }
+        });
+
+        function saveData() {
+            localStorage.setItem('mo_products', JSON.stringify(products));
+            localStorage.setItem('mo_orders', JSON.stringify(orders));
+            localStorage.setItem('mo_customers', JSON.stringify(customers));
+            localStorage.setItem('mo_current_user', JSON.stringify(currentUser));
+        }
+
+        /* CUSTOMER AUTHENTICATION SYSTEM */
+        function openAuthModal(tab = 'login') {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            switchAuthTab(tab);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const tabLogin = document.getElementById('auth-tab-login');
+            const tabReg = document.getElementById('auth-tab-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLogin.className = "flex-1 pb-3 text-center border-b-2 border-iceBlue-500 text-iceBlue-400 font-bold";
+                tabReg.className = "flex-1 pb-3 text-center border-b-2 border-transparent text-slate-400 hover:text-white font-bold";
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                tabReg.className = "flex-1 pb-3 text-center border-b-2 border-hotPink-500 text-hotPink-400 font-bold";
+                tabLogin.className = "flex-1 pb-3 text-center border-b-2 border-transparent text-slate-400 hover:text-white font-bold";
+            }
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+
+            if (customers.some(c => c.email.toLowerCase() === email.toLowerCase())) {
+                showToast("Account with this email already exists!");
+                return;
+            }
+
+            const newCustomer = {
+                id: `cust-${Date.now()}`,
+                name, email, phone, pass,
+                joinedDate: new Date().toISOString().split('T')[0]
+            };
+
+            customers.push(newCustomer);
+            currentUser = newCustomer;
+            saveData();
+
+            updateAuthHeaderUI();
+            closeAuthModal();
+            renderAdminDashboard();
+            showToast(`Welcome ${name}! Account created.`);
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const idInput = document.getElementById('login-id').value.trim();
+            const passInput = document.getElementById('login-pass').value;
+
+            const user = customers.find(c => (c.email.toLowerCase() === idInput.toLowerCase() || c.phone === idInput) && c.pass === passInput);
+
+            if (user) {
+                currentUser = user;
+                saveData();
+                updateAuthHeaderUI();
+                closeAuthModal();
+                showToast(`Welcome back, ${user.name}!`);
+            } else {
+                showToast("Invalid credentials. Please try again.");
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            saveData();
+            updateAuthHeaderUI();
+            showToast("Logged out successfully.");
+        }
+
+        function updateAuthHeaderUI() {
+            const container = document.getElementById('auth-header-btn');
+            if (currentUser) {
+                container.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-iceBlue-400 hidden sm:inline">Hi, ${currentUser.name.split(' ')[0]}</span>
+                        <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs border border-slate-700 transition-all flex items-center gap-1">
+                            <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">Logout</span>
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white font-bold text-xs shadow hover:scale-105 transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-user"></i> Login / Sign Up
+                    </button>
+                `;
+            }
+        }
+
+        /* Admin Switcher */
+        function toggleAdminView() {
+            const storeView = document.getElementById('public-storefront-view');
+            const adminView = document.getElementById('admin-panel-view');
+
+            if (storeView.classList.contains('hidden')) {
+                storeView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+                showToast("Switched to Public Storefront");
+            } else {
+                storeView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                renderAdminDashboard();
+                showToast("Admin Portal Opened");
+            }
+        }
+
+        function switchTab(tab) {
+            if (tab === 'store') {
+                document.getElementById('public-storefront-view').classList.remove('hidden');
+                document.getElementById('admin-panel-view').classList.add('hidden');
+            }
+        }
+
+        /* Product Catalog Functions */
+        function renderProducts(category = 'all', searchQuery = '') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            let filtered = category === 'all' 
+                ? products 
+                : products.filter(p => p.category === category);
+
+            if (searchQuery) {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500">No products found.</div>`;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-cardBg rounded-2xl border border-cardBorder overflow-hidden hover:border-hotPink-500/50 transition-all duration-300 flex flex-col group shadow-lg";
+                
+                card.innerHTML = `
+                    <div class="relative h-56 overflow-hidden bg-slate-950">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-gradient-to-r from-hotPink-500 to-lipstickRed-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
+                            ${product.badge || 'Available'}
+                        </span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                                <span class="capitalize">${product.category.replace('-', ' ')}</span>
+                                <span class="text-iceBlue-400"><i class="fa-solid fa-star text-xs"></i> ${product.rating || '4.9'}</span>
+                            </div>
+                            <h3 class="font-bold text-white text-base group-hover:text-iceBlue-400 transition-colors">${product.name}</h3>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${product.desc}</p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+                            <span class="font-serif font-black text-iceBlue-400 text-lg">PKR ${product.price.toLocaleString()}</span>
+                            <button onclick="addToCart('${product.id}')" class="px-3.5 py-2 rounded-xl bg-iceBlue-500/10 hover:bg-iceBlue-500 hover:text-black text-iceBlue-400 border border-iceBlue-500/30 text-xs font-bold transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-4 py-2 rounded-full bg-cardBg border border-cardBorder text-slate-300 hover:text-white hover:border-iceBlue-500 transition-all";
+            });
+            const activeBtn = document.getElementById(`filter-btn-${category}`);
+            if (activeBtn) {
+                activeBtn.className = "filter-btn active px-4 py-2 rounded-full bg-gradient-to-r from-iceBlue-500 to-hotPink-500 text-white font-bold shadow transition-all";
+            }
+            renderProducts(category);
+        }
+
+        function handleSearch(val) { renderProducts('all', val); }
+
+        /* Neon Customizer Functions */
+        function renderNeonCustomizerUI() {
+            const fontContainer = document.getElementById('font-options-container');
+            fontContainer.innerHTML = NEON_FONTS.map(f => `
+                <button onclick="setFont('${f.class}')" class="font-btn p-3 rounded-xl bg-slate-950 border ${f.class === customNeon.font ? 'border-iceBlue-500' : 'border-slate-800'} text-white ${f.class} text-center transition-all">
+                    ${f.name}
+                </button>
+            `).join('');
+
+            const colorContainer = document.getElementById('color-options-container');
+            colorContainer.innerHTML = NEON_COLORS.map(c => `
+                <button onclick="setColor('${c.name}')" class="w-9 h-9 rounded-full border-2 transition-transform hover:scale-110" style="background-color: ${c.hex}; border-color: ${c.name === customNeon.colorName ? '#ffffff' : 'transparent'};" title="${c.title}"></button>
+            `).join('');
+
+            const sizeContainer = document.getElementById('size-options-container');
+            const sizes = [
+                { id: 'small', title: 'Small', label: '18" In', basePrice: 7500 },
+                { id: 'medium', title: 'Medium', label: '24" In', basePrice: 12500 },
+                { id: 'large', title: 'Large', label: '36" In', basePrice: 18500 }
+            ];
+            sizeContainer.innerHTML = sizes.map(s => `
+                <button onclick="setSize('${s.id}', ${s.basePrice})" class="size-btn p-2.5 rounded-xl bg-slate-950 border ${s.id === customNeon.size ? 'border-iceBlue-500' : 'border-slate-800'} text-xs text-center transition-all">
+                    <span class="block font-bold text-white">${s.title}</span>
+                    <span class="text-[10px] text-slate-400">${s.label}</span>
+                </button>
+            `).join('');
+
+            updateNeonPreview();
+            calculateNeonPrice();
+        }
+
+        function setupNeonInputListener() {
+            const input = document.getElementById('neon-text-input');
+            if (input) {
+                input.addEventListener('input', (e) => {
+                    const txt = e.target.value.trim() || "M.O Traders";
+                    customNeon.text = txt;
+                    document.getElementById('char-count').innerText = e.target.value.length;
+                    updateNeonPreview();
+                    calculateNeonPrice();
+                });
+            }
+        }
+
+        function setFont(fontClass) { customNeon.font = fontClass; renderNeonCustomizerUI(); }
+        function setColor(colorName) { customNeon.colorName = colorName; renderNeonCustomizerUI(); }
+        function setSize(sizeId, price) { customNeon.size = sizeId; customNeon.basePrice = price; renderNeonCustomizerUI(); }
+
+        function calculateNeonPrice() {
+            const extraChars = customNeon.text.length > 8 ? customNeon.text.length - 8 : 0;
+            const total = customNeon.basePrice + (extraChars * 450);
+            customNeon.calculatedPrice = total;
+            document.getElementById('neon-price').innerText = `PKR ${total.toLocaleString()}`;
+        }
+
+        function updateNeonPreview() {
+            const preview = document.getElementById('neon-preview-text');
+            const colObj = NEON_COLORS.find(c => c.name === customNeon.colorName) || NEON_COLORS[0];
+            
+            let sizeClass = "text-4xl sm:text-6xl";
+            if (customNeon.size === 'small') sizeClass = "text-3xl sm:text-4xl";
+            if (customNeon.size === 'large') sizeClass = "text-5xl sm:text-7xl";
+
+            const brightnessVal = document.getElementById('neon-brightness') ? document.getElementById('neon-brightness').value : 1;
+
+            preview.innerText = customNeon.text;
+            preview.className = `${sizeClass} break-words transition-all duration-200 select-none ${customNeon.font} ${colObj.glowClass}`;
+            preview.style.opacity = brightnessVal;
+        }
+
+        function setWallBackground(type) {
+            const container = document.getElementById('neon-canvas-container');
+            if(type === 'dark') container.className = "relative min-h-[340px] sm:min-h-[440px] rounded-3xl bg-brick-wall border-2 border-slate-800 p-6 sm:p-10 flex flex-col items-center justify-center overflow-hidden shadow-2xl";
+            if(type === 'wood') container.className = "relative min-h-[340px] sm:min-h-[440px] rounded-3xl bg-wood-wall border-2 border-amber-900/40 p-6 sm:p-10 flex flex-col items-center justify-center overflow-hidden shadow-2xl";
+            if(type === 'velvet') container.className = "relative min-h-[340px] sm:min-h-[440px] rounded-3xl bg-velvet-wall border-2 border-pink-900/50 p-6 sm:p-10 flex flex-col items-center justify-center overflow-hidden shadow-2xl";
+        }
+
+        function updateNeonBrightness(val) { document.getElementById('neon-preview-text').style.opacity = val; }
+
+        function addCustomNeonToCart() {
+            const item = {
+                id: `custom-neon-${Date.now()}`,
+                cartId: generateUniqueId(),
+                name: `Custom Neon: "${customNeon.text}"`,
+                price: customNeon.calculatedPrice || customNeon.basePrice,
+                image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=300&q=80",
+                details: `Font: ${customNeon.font}, Glow: ${customNeon.colorName.toUpperCase()}, Size: ${customNeon.size.toUpperCase()}`
+            };
+            cart.push(item);
+            updateCartUI();
+            toggleCart(true);
+            showToast("Custom Neon added to cart!");
+        }
+
+        /* Cart Functions */
+        function addToCart(productId) {
+            const prod = products.find(p => p.id === productId);
+            if (prod) {
+                cart.push({...prod, cartId: generateUniqueId()});
+                updateCartUI();
+                toggleCart(true);
+                showToast(`${prod.name} added to cart!`);
+            }
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const list = document.getElementById('cart-items-list');
+            const subtotal = document.getElementById('cart-subtotal');
+
+            badge.innerText = cart.length;
+            if (cart.length > 0) badge.classList.remove('opacity-0', 'scale-0');
+            else badge.classList.add('opacity-0', 'scale-0');
+
+            list.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                list.innerHTML = `<div class="text-center py-12 text-slate-500">Your cart is empty.</div>`;
+            } else {
+                cart.forEach(item => {
+                    total += item.price;
+                    list.innerHTML += `
+                        <div class="flex items-center gap-4 p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                                ${item.details ? `<p class="text-[10px] text-hotPink-400">${item.details}</p>` : ''}
+                                <span class="text-xs font-serif text-iceBlue-400 font-bold">PKR ${item.price.toLocaleString()}</span>
+                            </div>
+                            <button onclick="removeFromCart('${item.cartId}')" class="text-slate-500 hover:text-lipstickRed-500 p-2">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            subtotal.innerText = `PKR ${total.toLocaleString()}`;
+        }
+
+        function toggleCart(show) {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-backdrop');
+            const content = document.getElementById('cart-content');
+
+            if (show) {
+                drawer.classList.remove('pointer-events-none');
+                backdrop.classList.remove('hidden');
+                setTimeout(() => {
+                    backdrop.classList.remove('opacity-0');
+                    content.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                backdrop.classList.add('opacity-0');
+                content.classList.add('translate-x-full');
+                setTimeout(() => {
+                    backdrop.classList.add('hidden');
+                    drawer.classList.add('pointer-events-none');
+                }, 300);
+            }
+        }
+
+        /* CHECKOUT MODAL AUTO-FILL */
+        function openCheckoutModal() {
+            if (cart.length === 0) { showToast("Please add items to cart first!"); return; }
+            
+            if (currentUser) {
+                document.getElementById('chk-name').value = currentUser.name || '';
+                document.getElementById('chk-phone').value = currentUser.phone || '';
+            }
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() { document.getElementById('checkout-modal').classList.add('hidden'); }
+
+        /* CHECKOUT HANDLER WITH PAYMENT METHOD */
+        function handleCheckoutSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('chk-name').value;
+            const phone = document.getElementById('chk-phone').value;
+            const address = document.getElementById('chk-address').value;
+            const paymentMethod = document.getElementById('chk-payment').value;
+
+            const newOrder = {
+                id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+                customerName: name,
+                phone: phone,
+                address: address,
+                paymentMethod: paymentMethod,
+                items: [...cart],
+                total: cart.reduce((sum, item) => sum + item.price, 0),
+                status: "Pending",
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            orders.unshift(newOrder);
+            saveData();
+            renderAdminDashboard();
+
+            let msg = `*NEW ORDER - M.O TRADERS*\n`;
+            msg += `Order ID: ${newOrder.id}\n`;
+            msg += `Name: ${name}\nPhone: ${phone}\nAddress: ${address}\n`;
+            msg += `Payment Method: ${paymentMethod}\n\n*Ordered Items:*\n`;
+            newOrder.items.forEach((item, idx) => {
+                msg += `${idx + 1}. ${item.name} - PKR ${item.price.toLocaleString()}\n`;
+                if(item.details) msg += `   _${item.details}_\n`;
+            });
+            msg += `\n*Total Amount:* PKR ${newOrder.total.toLocaleString()}`;
+
+            cart = [];
+            updateCartUI();
+            closeCheckoutModal();
+            toggleCart(false);
+
+            window.open(`https://wa.me/923001234567?text=${encodeURIComponent(msg)}`, '_blank');
+            showToast("Order placed & direct sent to Admin Panel!");
+        }
+
+        /* ADMIN PANEL CORE CONTROLLERS */
+        function renderAdminDashboard() {
+            const totalRev = orders.filter(o => o.status !== 'Cancelled').reduce((sum, o) => sum + o.total, 0);
+            const pendingOrders = orders.filter(o => o.status === 'Pending').length;
+
+            document.getElementById('stat-revenue').innerText = `PKR ${totalRev.toLocaleString()}`;
+            document.getElementById('stat-orders').innerText = orders.length;
+            document.getElementById('stat-pending-orders').innerText = `${pendingOrders} Pending Requests`;
+            document.getElementById('stat-customers').innerText = customers.length;
+            document.getElementById('stat-products').innerText = products.length;
+
+            renderAdminOrders();
+            renderAdminCustomers();
+            renderAdminProducts();
+        }
+
+        function switchAdminSubTab(tab) {
+            document.getElementById('admin-sec-orders').classList.add('hidden');
+            document.getElementById('admin-sec-customers').classList.add('hidden');
+            document.getElementById('admin-sec-products').classList.add('hidden');
+
+            document.getElementById('admin-tab-orders').className = "pb-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2";
+            document.getElementById('admin-tab-customers').className = "pb-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2";
+            document.getElementById('admin-tab-products').className = "pb-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2";
+
+            if (tab === 'orders') {
+                document.getElementById('admin-sec-orders').classList.remove('hidden');
+                document.getElementById('admin-tab-orders').className = "pb-3 border-b-2 border-iceBlue-500 text-iceBlue-400 flex items-center gap-2";
+            } else if (tab === 'customers') {
+                document.getElementById('admin-sec-customers').classList.remove('hidden');
+                document.getElementById('admin-tab-customers').className = "pb-3 border-b-2 border-hotPink-500 text-hotPink-400 flex items-center gap-2";
+            } else if (tab === 'products') {
+                document.getElementById('admin-sec-products').classList.remove('hidden');
+                document.getElementById('admin-tab-products').className = "pb-3 border-b-2 border-lipstickRed-500 text-lipstickRed-500 flex items-center gap-2";
+            }
+        }
+
+        function renderAdminOrders() {
+            const tableBody = document.getElementById('admin-orders-table-body');
+            const statusFilter = document.getElementById('order-status-filter').value;
+            tableBody.innerHTML = '';
+
+            let filtered = statusFilter === 'all' ? orders : orders.filter(o => o.status === statusFilter);
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No orders found.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(order => {
+                const itemsSummary = order.items.map(i => `${i.name} ${i.details ? `(${i.details})` : ''}`).join('<br>');
+                
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-900/50 transition-colors">
+                        <td class="p-4 font-mono font-bold text-iceBlue-400">${order.id}<br><span class="text-[10px] text-slate-500 font-sans">${order.date}</span></td>
+                        <td class="p-4">
+                            <span class="font-bold text-white block">${order.customerName}</span>
+                            <span class="text-slate-400 block">${order.phone}</span>
+                            <span class="text-slate-500 text-[10px] block max-w-xs truncate">${order.address}</span>
+                            <span class="text-hotPink-400 text-[10px] font-bold block mt-1"><i class="fa-solid fa-credit-card mr-1"></i>${order.paymentMethod || 'Cash on Delivery (COD)'}</span>
+                        </td>
+                        <td class="p-4 text-[11px] leading-relaxed max-w-xs">${itemsSummary}</td>
+                        <td class="p-4 font-serif font-bold text-emerald-400">PKR ${order.total.toLocaleString()}</td>
+                        <td class="p-4">
+                            <select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-[11px] text-white">
+                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                                <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                        <td class="p-4 text-right">
+                            <button onclick="contactCustomerWhatsApp('${order.phone}', '${order.id}')" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> Contact
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderAdminCustomers() {
+            const tableBody = document.getElementById('admin-customers-table-body');
+            tableBody.innerHTML = '';
+
+            if (customers.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No registered customers yet.</td></tr>`;
+                return;
+            }
+
+            customers.forEach(c => {
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-900/50 transition-colors">
+                        <td class="p-4 font-bold text-white">${c.name}</td>
+                        <td class="p-4 text-slate-300">${c.email}</td>
+                        <td class="p-4 font-mono text-iceBlue-400">${c.phone}</td>
+                        <td class="p-4 text-slate-500">${c.joinedDate || 'N/A'}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="contactCustomerWhatsApp('${c.phone}', 'Account')" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold">
+                                <i class="fa-brands fa-whatsapp mr-1"></i> Chat
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = newStatus;
+                saveData();
+                renderAdminDashboard();
+                showToast(`Order ${orderId} updated to ${newStatus}`);
+            }
+        }
+
+        function contactCustomerWhatsApp(phone, context) {
+            const formatted = phone.replace(/[^0-9]/g, '');
+            const msg = `Hi! This is M.O Traders regarding your ${context}.`;
+            window.open(`https://wa.me/92${formatted.slice(-10)}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function renderAdminProducts() {
+            const tableBody = document.getElementById('admin-products-table-body');
+            tableBody.innerHTML = '';
+
+            products.forEach(p => {
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-900/50 transition-colors">
+                        <td class="p-4"><img src="${p.image}" class="w-10 h-10 object-cover rounded-lg border border-slate-700"></td>
+                        <td class="p-4 font-bold text-white">${p.name}</td>
+                        <td class="p-4 capitalize text-slate-400">${p.category.replace('-', ' ')}</td>
+                        <td class="p-4 font-serif font-bold text-iceBlue-400">PKR ${p.price.toLocaleString()}</td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-[10px] text-hotPink-400">${p.badge || 'Active'}</span></td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="editProduct('${p.id}')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-iceBlue-400 text-xs"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteProduct('${p.id}')" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-lipstickRed-500 text-xs"><i class="fa-solid fa-trash-can"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openProductModal(prodId = null) {
+            document.getElementById('product-modal').classList.remove('hidden');
+            if (prodId) {
+                const p = products.find(item => item.id === prodId);
+                document.getElementById('product-modal-title').innerText = "Edit Product";
+                document.getElementById('pm-id').value = p.id;
+                document.getElementById('pm-title').value = p.name;
+                document.getElementById('pm-category').value = p.category;
+                document.getElementById('pm-price').value = p.price;
+                document.getElementById('pm-image').value = p.image;
+                document.getElementById('pm-badge').value = p.badge || '';
+                document.getElementById('pm-desc').value = p.desc || '';
+            } else {
+                document.getElementById('product-modal-title').innerText = "Add New Product";
+                document.getElementById('pm-id').value = '';
+                document.getElementById('pm-title').value = '';
+                document.getElementById('pm-price').value = '';
+                document.getElementById('pm-image').value = '';
+                document.getElementById('pm-badge').value = '';
+                document.getElementById('pm-desc').value = '';
+            }
+        }
+
+        function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
+
+        function handleProductFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('pm-id').value;
+            const title = document.getElementById('pm-title').value;
+            const category = document.getElementById('pm-category').value;
+            const price = parseFloat(document.getElementById('pm-price').value);
+            const image = document.getElementById('pm-image').value;
+            const badge = document.getElementById('pm-badge').value;
+            const desc = document.getElementById('pm-desc').value;
+
+            if (id) {
+                const p = products.find(item => item.id === id);
+                if (p) {
+                    p.name = title; p.category = category; p.price = price;
+                    p.image = image; p.badge = badge; p.desc = desc;
+                }
+            } else {
+                products.unshift({
+                    id: `prod-${Date.now()}`,
+                    name: title, category: category, price: price,
+                    image: image, badge: badge || 'New', desc: desc, rating: 5.0
+                });
+            }
+
+            saveData();
+            renderProducts('all');
+            renderAdminDashboard();
+            closeProductModal();
+            showToast("Product saved successfully!");
+        }
+
+        function editProduct(id) { openProductModal(id); }
+
+        function deleteProduct(id) {
+            if (confirm("Delete this product from catalog?")) {
+                products = products.filter(p => p.id !== id);
+                saveData();
+                renderProducts('all');
+                renderAdminDashboard();
+                showToast("Product deleted.");
+            }
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-cardBg border border-iceBlue-500/50 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-x-10 opacity-0";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-iceBlue-400"></i> ${msg}`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-x-10', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-10');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+    </script>
+</body>
+</html>
