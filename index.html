@@ -6,7 +6,7 @@
     <title>RDDS Enterprises | Web Design & Development</title>
 
     <!-- Built-in SVG Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%234f46e5'/><text x='50%' y='58%' dominant-baseline='central' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='32' fill='%23ffffff'>RDDS</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23c6a15b'/><text x='50%' y='58%' dominant-baseline='central' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='32' fill='%230b0a08'>RDDS</text></svg>">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,16 +17,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f5ff',
-                            100: '#e0ebff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            accent: '#a855f7',
-                            cyan: '#06b6d4',
-                            dark: '#0b0f19',
-                            card: '#131927',
-                            border: '#1f293d'
+                            50: '#f8f4e9',
+                            100: '#e8dcc0',
+                            500: '#c6a15b',
+                            600: '#a98745',
+                            700: '#806632',
+                            accent: '#d8bd80',
+                            cyan: '#e6d3a1',
+                            dark: '#111111',
+                            card: '#191817',
+                            border: '#3b3528'
                         }
                     },
                     fontFamily: {
@@ -53,19 +53,21 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0b0f19;
-            color: #f3f4f6;
+            background-color: #111111;
+            color: #f4f2ed;
         }
         .gradient-text {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            background: linear-gradient(110deg, #e6d3a1 0%, #c6a15b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .gradient-border {
-            border: 1px solid transparent;
-            background-image: linear-gradient(#131927, #131927), linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4));
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
+            border: 1px solid #3b3528;
+            background: #191817;
+        }
+        ::selection {
+            background: #c6a15b;
+            color: #111111;
         }
     </style>
 </head>
@@ -84,7 +86,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col justify-center">
-                        <span class="text-xl font-extrabold tracking-wider text-white leading-none uppercase">DIGITAL SOLUTION</span>
+                        <span class="text-sm sm:text-base font-semibold tracking-wide text-white leading-none">RDDS Enterprises</span>
                     </div>
                 </a>
 
@@ -100,17 +102,17 @@
 
                 <!-- Action Buttons -->
                 <div class="hidden md:flex items-center gap-3">
-                    <a href="https://wa.me/923042178799" target="_blank" class="p-2.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all text-sm" title="WhatsApp Us">
+                    <a href="https://wa.me/923042178799" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all text-sm" title="WhatsApp Us">
                         <i class="fa-brands fa-whatsapp text-base"></i>
                     </a>
-                    <a href="#contact" class="px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-brand-accent hover:from-brand-500 hover:to-brand-500 transition-all duration-300 shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 hover:-translate-y-0.5">
+                                            <a href="#contact" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-brand-dark bg-brand-500 hover:bg-brand-100 transition-colors duration-200">
                         Get In Touch <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
                     </a>
                 </div>
 
                 <!-- Mobile Hamburger Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-lg bg-brand-card text-gray-300 hover:text-white border border-brand-border focus:outline-none">
-                    <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                <button id="mobile-menu-btn" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation menu" class="md:hidden p-2.5 rounded-lg bg-brand-card text-gray-300 hover:text-white border border-brand-border focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl" id="menu-icon" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -124,10 +126,10 @@
             <a href="#portfolio" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Portfolio</a>
             <a href="#contact" class="mobile-link block px-3 py-2 rounded-lg text-base font-medium text-gray-200 hover:bg-brand-border hover:text-white">Contact Us</a>
             <div class="pt-2 flex flex-col gap-2">
-                <a href="https://wa.me/923042178799" target="_blank" class="mobile-link text-center w-full px-6 py-2.5 rounded-xl text-sm font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+                <a href="https://wa.me/923042178799" target="_blank" rel="noopener noreferrer" class="mobile-link text-center w-full px-6 py-2.5 rounded-xl text-sm font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
                     <i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp: 03042178799
                 </a>
-                <a href="#contact" class="mobile-link text-center w-full px-6 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-brand-accent">
+                <a href="#contact" class="mobile-link text-center w-full px-6 py-3 rounded-lg text-sm font-semibold text-brand-dark bg-brand-500 hover:bg-brand-100">
                     Get In Touch
                 </a>
             </div>
@@ -147,19 +149,19 @@
                         RDDS Enterprises
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-                        Innovative <span class="gradient-text">Web Design & Development</span> for your business.
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.12]">
+                        Thoughtful digital experiences, <span class="gradient-text">built for business.</span>
                     </h1>
 
                     <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                        Led by <strong class="text-white">Danish Khan</strong>. I build modern websites and custom web applications tailored to your business needs.
+                        RDDS Enterprises designs and develops clear, reliable websites and web applications, led personally by <strong class="text-white">Danish Khan</strong>.
                     </p>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-white bg-gradient-to-r from-brand-600 via-brand-accent to-brand-cyan hover:opacity-95 transition-all duration-300 shadow-xl shadow-brand-500/25 text-center">
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-lg font-semibold text-brand-dark bg-brand-500 hover:bg-brand-100 transition-colors duration-200 text-center">
                             Start Your Project <i class="fa-solid fa-arrow-right-long ml-2"></i>
                         </a>
-                        <a href="https://wa.me/923042178799" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-emerald-400 hover:text-white bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                        <a href="https://wa.me/923042178799" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-emerald-400 hover:text-white bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500 transition-all duration-300 text-center flex items-center justify-center gap-2">
                             <i class="fa-brands fa-whatsapp text-lg"></i> Quick WhatsApp
                         </a>
                     </div>
@@ -174,43 +176,24 @@
                     </div>
                 </div>
 
-                <!-- Hero Right Widget Graphics -->
-                <div class="lg:col-span-5 relative flex justify-center">
-                    <div class="relative w-full max-w-md">
-                        <div class="rounded-2xl gradient-border bg-brand-card p-6 shadow-2xl relative z-10">
-                            <div class="flex items-center justify-between border-b border-brand-border/80 pb-4 mb-6">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                </div>
-                                <span class="text-xs text-gray-400 font-mono">rddsdigitalsolution.netlify.app</span>
+                <!-- Service overview -->
+                <div class="lg:col-span-5 relative flex justify-center lg:justify-end">
+                    <div class="w-full max-w-md rounded-2xl gradient-border p-8 sm:p-10 shadow-2xl">
+                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-500">RDDS Enterprises</p>
+                        <h2 class="mt-5 text-2xl sm:text-3xl font-semibold leading-snug text-white">A more considered approach to your next website.</h2>
+                        <p class="mt-4 text-sm leading-7 text-gray-400">From the first conversation to launch, work directly with the person designing and building your project.</p>
+                        <div class="mt-8 space-y-4 border-t border-brand-border pt-6">
+                            <div class="flex items-center gap-3 text-sm text-gray-200">
+                                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/10 text-brand-500"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+                                Custom web development
                             </div>
-
-                            <div class="space-y-4">
-                                <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-xs text-gray-400">Project Delivery</p>
-                                        <p class="text-2xl font-bold text-white">On Track</p>
-                                    </div>
-                                    <span class="text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full font-semibold">Quality Focused</span>
-                                </div>
-                                
-                                <div class="p-4 rounded-xl bg-brand-dark/60 border border-brand-border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-xs text-gray-400">Web Speed & Performance</p>
-                                        <p class="text-xl font-bold text-white">99.8% Speed Score</p>
-                                    </div>
-                                    <span class="text-xs text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded-full font-semibold">Performance Ready</span>
-                                </div>
-
-                                <div class="h-28 w-full bg-gradient-to-t from-brand-500/20 via-brand-accent/10 to-transparent rounded-xl border border-brand-border/40 flex items-end justify-between p-3 gap-2">
-                                    <div class="w-full bg-brand-500/40 rounded-t h-[45%]"></div>
-                                    <div class="w-full bg-brand-500/60 rounded-t h-[60%]"></div>
-                                    <div class="w-full bg-brand-accent rounded-t h-[85%]"></div>
-                                    <div class="w-full bg-brand-cyan/80 rounded-t h-[70%]"></div>
-                                    <div class="w-full bg-emerald-400 rounded-t h-[100%]"></div>
-                                </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-200">
+                                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/10 text-brand-500"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i></span>
+                                E-commerce solutions
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-200">
+                                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/10 text-brand-500"><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i></span>
+                                UI/UX and visual design
                             </div>
                         </div>
                     </div>
@@ -220,22 +203,20 @@
         </div>
     </section>
 
-    <!-- Stats Counter Bar -->
-    <section class="py-12 bg-brand-card/50 border-y border-brand-border">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                <div class="space-y-1">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-white counter" data-target="150">0</p>
-                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Web Projects Built</p>
-                </div>
-                <div class="space-y-1">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-accent counter" data-target="98">0</p>
-                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Client Retention %</p>
-                </div>
-                <div class="space-y-1">
-                    <p class="text-3xl sm:text-4xl font-extrabold text-emerald-400 counter" data-target="100">0</p>
-                    <p class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider font-medium">Satisfaction Score %</p>
-                </div>
+    <!-- Working principles -->
+    <section class="py-8 border-y border-brand-border bg-brand-card/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-6 sm:grid-cols-3">
+            <div class="flex items-center gap-3 text-sm text-gray-300">
+                <i class="fa-solid fa-user-check text-brand-500" aria-hidden="true"></i>
+                Direct founder collaboration
+            </div>
+            <div class="flex items-center gap-3 text-sm text-gray-300">
+                <i class="fa-solid fa-mobile-screen-button text-brand-500" aria-hidden="true"></i>
+                Responsive by design
+            </div>
+            <div class="flex items-center gap-3 text-sm text-gray-300">
+                <i class="fa-solid fa-comments text-brand-500" aria-hidden="true"></i>
+                Clear communication throughout
             </div>
         </div>
     </section>
@@ -244,15 +225,15 @@
     <section id="services" class="py-24 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Our Services</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Web Design & Development Solutions</h2>
-                <p class="text-gray-400 text-base sm:text-lg">I create responsive websites and custom web applications to help your business build a strong online presence.</p>
+                <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Services</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">Web Design & Development</h2>
+                <p class="text-gray-400 text-base sm:text-lg">RDDS Enterprises creates responsive websites and custom web applications to help your business build a strong online presence.</p>
             </div>
 
             <!-- Services Grid: 6 Cards -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-500 transition-all duration-300 group flex flex-col justify-between">
+                <div class="bg-brand-card p-8 rounded-2xl border border-brand-border hover:border-brand-500 transition-all duration-300 group flex flex-col justify-between">
                     <div>
                         <div class="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-2xl mb-6 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-code"></i>
@@ -266,7 +247,7 @@
                     </ul>
                 </div>
 
-                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-emerald-400 transition-all duration-300 group flex flex-col justify-between">
+                <div class="bg-brand-card p-8 rounded-2xl border border-brand-border hover:border-emerald-400 transition-all duration-300 group flex flex-col justify-between">
                     <div>
                         <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-cart-shopping"></i>
@@ -280,7 +261,7 @@
                     </ul>
                 </div>
 
-                <div class="bg-brand-card p-8 rounded-3xl border border-brand-border hover:border-brand-500 transition-all duration-300 group flex flex-col justify-between">
+                <div class="bg-brand-card p-8 rounded-2xl border border-brand-border hover:border-brand-500 transition-all duration-300 group flex flex-col justify-between">
                     <div>
                         <div class="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-2xl mb-6 group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-palette"></i>
@@ -309,7 +290,7 @@
 
             <div class="grid gap-10 max-w-2xl mx-auto">
                 <!-- Sole Founder: Danish Khan -->
-                <div class="bg-brand-card rounded-3xl border border-brand-border p-8 relative overflow-hidden group hover:border-brand-500/60 transition-all duration-300">
+                <div class="bg-brand-card rounded-2xl border border-brand-border p-8 relative overflow-hidden group hover:border-brand-500/60 transition-all duration-300">
                     <div class="flex flex-col sm:flex-row items-center gap-6">
                         <img src="./danish-khan.jpg" alt="Danish Khan" class="w-28 h-28 rounded-2xl object-cover object-center shadow-lg shadow-brand-500/30 flex-shrink-0">
                         <div class="text-center sm:text-left space-y-2">
@@ -333,7 +314,7 @@
             <div class="grid max-w-3xl mx-auto gap-16 items-center">
                 <div class="space-y-6">
                     <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">About RDDS Enterprises</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">We Build Better Websites With Passion & Precision</h2>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white leading-tight">Practical websites, crafted with care.</h2>
                     <p class="text-gray-400 text-base leading-relaxed">
                         Founded and personally managed by <strong>Danish Khan</strong>, RDDS Enterprises focuses on practical, high-quality web design and development.
                     </p>
@@ -371,7 +352,7 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div>
                     <span class="text-xs font-semibold text-brand-500 tracking-wider uppercase bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Our Work</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Recent Client Showcase</h2>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3">Selected Work</h2>
                 </div>
 
                 <div class="flex flex-wrap gap-2" id="portfolio-filters">
@@ -404,6 +385,18 @@
                     </div>
                 </div>
 
+                <a href="https://namiraskitchen.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Visit Namira's Kitchen website" class="portfolio-item group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border hover:border-brand-500 transition-colors" data-category="web">
+                    <div class="aspect-video w-full overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80" alt="Fresh meal representing Namira's Kitchen" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-4 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white"><i class="fa-solid fa-arrow-up-right-from-square mr-1.5" aria-hidden="true"></i>View live site</span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-brand-cyan font-mono uppercase tracking-wider">Restaurant Website</span>
+                        <h3 class="text-xl font-bold text-white mt-1 group-hover:text-brand-500 transition-colors">Namira's Kitchen</h3>
+                        <p class="text-sm text-gray-400 mt-2">Visit the live Namira's Kitchen website.</p>
+                    </div>
+                </a>
+
             </div>
         </div>
     </section>
@@ -430,7 +423,7 @@
                             </div>
                         </a>
                         
-                        <a href="https://wa.me/923042178799" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-brand-card border border-brand-border hover:border-emerald-500 transition-colors">
+                        <a href="https://wa.me/923042178799" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-4 rounded-2xl bg-brand-card border border-brand-border hover:border-emerald-500 transition-colors">
                             <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-lg">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </div>
@@ -444,7 +437,7 @@
 
                 <div class="lg:col-span-7">
                     <!-- Netlify Form -->
-                    <form id="contact-form" name="contact" method="POST" data-netlify="true" class="bg-brand-card p-8 rounded-3xl border border-brand-border space-y-5">
+                    <form id="contact-form" name="contact" method="POST" data-netlify="true" class="bg-brand-card p-8 rounded-2xl border border-brand-border space-y-5">
                         <input type="hidden" name="form-name" value="contact" />
 
                         <div class="grid sm:grid-cols-2 gap-5">
@@ -469,7 +462,7 @@
                             <label class="block text-xs font-medium text-gray-300 mb-2">Project Details</label>
                             <textarea id="form-message" name="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-brand-dark border border-brand-border text-white text-sm focus:outline-none focus:border-brand-500 transition-colors" placeholder="Tell us about your project goals and timeline..."></textarea>
                         </div>
-                        <button type="submit" class="w-full py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 via-brand-accent to-brand-cyan hover:opacity-95 transition-opacity shadow-lg shadow-brand-500/25 cursor-pointer">
+                        <button type="submit" class="w-full py-4 rounded-lg font-semibold text-brand-dark bg-brand-500 hover:bg-brand-100 transition-colors cursor-pointer">
                             Send Query <i class="fa-solid fa-paper-plane ml-2"></i>
                         </button>
                     </form>
@@ -489,44 +482,22 @@
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         if (menuBtn && mobileMenu) {
-            menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            const closeMobileMenu = () => {
+                mobileMenu.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuBtn.setAttribute('aria-label', 'Open navigation menu');
+            };
+
+            menuBtn.addEventListener('click', () => {
+                const isOpening = mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                menuBtn.setAttribute('aria-expanded', String(isOpening));
+                menuBtn.setAttribute('aria-label', isOpening ? 'Close navigation menu' : 'Open navigation menu');
+            });
             document.querySelectorAll('.mobile-link').forEach(link => {
-                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                link.addEventListener('click', closeMobileMenu);
             });
         }
-
-        // Animated Stat Counters
-        const counters = document.querySelectorAll('.counter');
-        let countTriggered = false;
-
-        const animateCounters = () => {
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                let count = 0;
-                const speed = target / 50;
-                const updateCount = () => {
-                    count += speed;
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count);
-                        setTimeout(updateCount, 30);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                updateCount();
-            });
-        };
-
-        window.addEventListener('scroll', () => {
-            const firstCounter = document.querySelector('.counter');
-            if (firstCounter && !countTriggered) {
-                const rect = firstCounter.getBoundingClientRect();
-                if (rect.top <= window.innerHeight) {
-                    animateCounters();
-                    countTriggered = true;
-                }
-            }
-        });
 
         // Portfolio Filtering
         const filterBtns = document.querySelectorAll('.filter-btn');
