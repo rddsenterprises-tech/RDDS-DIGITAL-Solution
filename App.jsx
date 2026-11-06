@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import founderPhoto from './danish-khan.jpg';
+
+const founderPhoto = './danish-khan.jpg';
 
 const services = [
   {
@@ -98,6 +99,12 @@ export default function App() {
     const motionTargets = document.querySelectorAll(
       '.hero-copy, .hero-bottom, .section-heading, .service-card, .founder-inner, .principles > div, .project-card, .contact-copy, .contact-form',
     );
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      motionTargets.forEach(target => target.classList.add('is-visible'));
+      return () => window.cancelAnimationFrame(animationFrame);
+    }
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -107,7 +114,7 @@ export default function App() {
           }
         });
       },
-      { threshold: 0.14 },
+      { threshold: 0.05 },
     );
 
     motionTargets.forEach((target, index) => {
