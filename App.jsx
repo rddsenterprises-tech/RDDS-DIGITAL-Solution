@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import founderPhoto from './danish-khan.jpg';
 
 const services = [
   {
@@ -163,7 +164,7 @@ export default function App() {
         <section className={`welcome-overlay${welcomeAnimated ? ' welcome-animate' : ''}`} role="dialog" aria-modal="true" aria-labelledby="welcome-title">
           <div className="welcome-card">
             <div className="welcome-photo">
-              <img src="./danish-khan.jpg" alt="Danish Khan, founder and web developer" onError={event => { event.currentTarget.style.display = 'none'; }} />
+              <img src={founderPhoto} alt="Danish Khan, founder and web developer" onError={event => { event.currentTarget.style.display = 'none'; }} />
               <span className="welcome-photo-label">Danish Khan · Founder</span>
             </div>
             <div className="welcome-content">
@@ -241,7 +242,7 @@ export default function App() {
 
         <section id="founders" className="founder-section">
           <div className="founder-inner">
-            <div className="founder-photo-wrap"><img src="./danish-khan.jpg" alt="Danish Khan, founder of RDDS Enterprises" loading="lazy" decoding="async" /></div>
+            <div className="founder-photo-wrap"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" loading="lazy" decoding="async" /></div>
             <div className="founder-copy">
               <span className="section-kicker">A personal approach</span>
               <h2>Work directly with the person who builds your website.</h2>
