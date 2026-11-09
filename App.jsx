@@ -1,4 +1,5 @@
 import React from "react";
+import founderPhoto from "./danish-khan.jpg";
 
 const services = [
   { n: "01", icon: "⌘", title: "Custom Web Development", desc: "Fast, responsive websites and custom web applications designed around your business.", points: ["Business websites", "Custom web applications"] },
@@ -38,7 +39,7 @@ function App() {
 
         <section className="founder" id="about">
           <div className="founder-inner">
-            <div className="portrait"><img src="/danish-khan.jpg" alt="Danish Khan, founder of RDDS Enterprises" /></div>
+            <div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div>
             <div><label>A PERSONAL APPROACH</label><h2>Work directly with the person who builds your website.</h2><p>RDDS Enterprises is founded and personally managed by Danish Khan. Every project gets direct attention—from early planning and design through development and final delivery.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer</span></div></div>
           </div>
         </section>
@@ -51,7 +52,7 @@ function App() {
         <section className="work" id="work"><div className="section-head"><label>SELECTED WORK</label><h2>Built with <em>purpose.</em></h2><p>A selection of web development and visual design work.</p></div><div className="work-grid">
           <article><div className="work-art art-one">01</div><small>WEB DEVELOPMENT</small><h3>Enterprise Web Dashboard</h3><p>Analytical interfaces for useful business insights and reporting.</p></article>
           <article><div className="work-art art-two">02</div><small>UI/UX & BRANDING</small><h3>Brand Identity & Visuals</h3><p>Brand assets and polished digital interface concepts.</p></article>
-          <a href="https://namira-s-kitchen-app.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">03 ↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a>
+          <a href="https://namiras-kitchen-app.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">03 ↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a>
         </div></section>
 
         <section className="contact" id="contact"><div className="contact-inner"><div><label>LET'S TALK</label><h2>Have a project<br />in mind?</h2><p>Tell us what you're looking to build. Reach out directly and let's make a plan together.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div>
