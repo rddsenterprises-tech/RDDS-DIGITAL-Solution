@@ -271,8 +271,48 @@ function Contact() {
   return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service"><option>Custom Web Development</option><option>E-Commerce Solutions</option><option>UI/UX & Graphic Design</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
 }
 
+
+function RONIEChat() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([{ role: "assistant", text: "Assalam-o-Alaikum! Main RONIE hoon, RDDS Enterprises ka AI assistant. Aapko website ya digital services ke baare mein kya maloomat chahiye?" }]);
+  const [input, setInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const sendMessage = async (event) => {
+    event.preventDefault();
+    const message = input.trim();
+    if (!message || sending) return;
+    const next = [...messages, { role: "user", text: message }];
+    setMessages(next);
+    setInput("");
+    setSending(true);
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: next.slice(-12).map(item => ({ role: item.role === "assistant" ? "model" : "user", parts: [{ text: item.text }] })) })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Chat service is temporarily unavailable.");
+      setMessages(current => [...current, { role: "assistant", text: data.reply }]);
+    } catch (error) {
+      setMessages(current => [...current, { role: "assistant", text: error.message || "Maazrat, abhi jawab nahi mil saka. Aap WhatsApp par rabta kar sakte hain: 03042178799." }]);
+    } finally {
+      setSending(false);
+    }
+  };
+  return <div className="ronie-widget">
+    {open && <section className="ronie-panel" aria-label="RONIE AI chat">
+      <header className="ronie-header"><div className="ronie-avatar">R</div><div><strong>RONIE AI</strong><small>RDDS Enterprises · AI Assistant</small></div><button type="button" onClick={() => setOpen(false)} aria-label="Close chat">×</button></header>
+      <div className="ronie-messages" aria-live="polite">{messages.map((item, index) => <div className={"ronie-message " + item.role} key={index}>{item.text}</div>)}{sending && <div className="ronie-message assistant">RONIE soch raha hai…</div>}</div>
+      <form className="ronie-form" onSubmit={sendMessage}><input value={input} onChange={event => setInput(event.target.value)} placeholder="Apna sawal likhein..." aria-label="Message" /><button type="submit" disabled={sending || !input.trim()} aria-label="Send message">➤</button></form>
+      <a className="ronie-whatsapp" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">WhatsApp par human support ↗</a>
+    </section>}
+    <button className="ronie-launcher" type="button" onClick={() => setOpen(value => !value)} aria-label={open ? "Close RONIE chat" : "Open RONIE AI chat"}>{open ? "×" : <><span>✦</span><small>Chat with RONIE</small></>}</button>
+  </div>;
+}
+
 function PublicSite() {
-  return <div className="site-shell"><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/services" element={<Services />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /></div>;
+  return <div className="site-shell"><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/services" element={<Services />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><RONIEChat /></div>
 }
 
 function App() {
