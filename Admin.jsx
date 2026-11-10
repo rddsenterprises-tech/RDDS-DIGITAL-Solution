@@ -8,7 +8,7 @@ const sections = [
   { id: "blogPosts", table: "blog_posts", label: "Blog posts" },
   { id: "contactMessages", table: "contact_messages", label: "Messages" }
 ];
-const emptyForm = { title: "", description: "", slug: "", category: "", published: true };
+const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", content: "", published: true };
 
 export default function Admin() {
   const [user, setUser] = useState(null);
@@ -111,7 +111,9 @@ export default function Admin() {
       slug: form.slug.trim(),
       category: form.category.trim(),
       published: Boolean(form.published),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      ...(active === "projects" ? { website_url: form.website_url.trim() } : {}),
+      ...(active === "blogPosts" ? { content: form.content.trim() } : {})
     };
     if (!payload.title) return setError("Title zaroor likhein.");
     const section = sections.find(item => item.id === active);
@@ -132,6 +134,8 @@ export default function Admin() {
       description: item.description || "",
       slug: item.slug || "",
       category: item.category || "",
+      website_url: item.website_url || "",
+      content: item.content || "",
       published: item.published !== false
     });
     setShowForm(true);
@@ -188,6 +192,8 @@ export default function Admin() {
         <h2>{editingId ? "Edit record" : "Create new record"}</h2>
         <label>Title<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></label>
         <label>Description<textarea rows="4" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
+        {active === "projects" && <label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label>}
+        {active === "blogPosts" && <label>Article content<textarea rows="8" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} placeholder="Write your article..." /></label>}
         <div className="admin-form-row"><label>Slug<input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="my-first-post" /></label><label>Category<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Web development" /></label></div>
         <label className="admin-check"><input type="checkbox" checked={form.published} onChange={e => setForm({ ...form, published: e.target.checked })} /> Published (visible to public read rules)</label>
         <div className="admin-actions"><button className="admin-primary" type="submit">Save changes</button><button type="button" className="admin-cancel" onClick={() => setShowForm(false)}>Cancel</button></div>
