@@ -72,7 +72,7 @@ export default async function handler(req, res) {
 
     const latestMessage = contents[contents.length - 1].parts[0].text;
     const agent = chooseAgent(latestMessage);
-    const systemInstruction = BASE_INSTRUCTION + "\\n\\n" + AGENT_INSTRUCTIONS[agent];
+    const systemInstruction = BASE_INSTRUCTION + "\n\n" + AGENT_INSTRUCTIONS[agent];
 
     const upstream = await fetch(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
