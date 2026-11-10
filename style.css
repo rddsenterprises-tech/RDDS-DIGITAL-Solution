@@ -30,3 +30,33 @@
   .hero-copy > *, .hero-foot, .topbar { opacity: 1; animation: none; filter: none; transform: none; }
   .hero-orbit, .stars { animation: none; }
 }
+
+
+/* Welcome intro screen */
+.intro-screen{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(ellipse at 50% 45%,#16498a 0%,#0a2857 38%,#04132d 100%);animation:introScreenOut .7s 2.25s ease forwards}
+.intro-glow{position:absolute;width:360px;height:360px;border:1px solid #9ccaff35;border-radius:50%;box-shadow:0 0 0 35px #9ccaff0d,0 0 0 75px #9ccaff09,0 0 90px #1679e855;animation:introPulse 2.2s ease-in-out infinite alternate}
+.intro-logo{position:relative;width:68px;height:68px;border:1px solid #9ccaff;border-radius:50%;display:grid;place-items:center;font:800 38px 'Roboto Slab';color:#d9ecff;box-shadow:0 0 35px #1684ff77;animation:introLogo .8s both}
+.intro-kicker{position:relative;margin:25px 0 8px;color:#8fc4ff;font-size:10px;font-weight:800;letter-spacing:.35em;animation:introText .7s .2s both}
+.intro-screen h1{position:relative;margin:0;color:#e4f1ff;font:800 clamp(28px,5vw,48px) 'Roboto Slab';letter-spacing:.04em;animation:introText .7s .35s both}
+.intro-screen h1 span{color:#81baff}
+.intro-line{position:relative;width:70px;height:2px;margin:20px 0;background:linear-gradient(90deg,transparent,#83bdff,transparent);animation:introLine .8s .55s both}
+.intro-message,.intro-sub{position:relative;color:#d5e6fb;margin:4px 0;animation:introText .7s .6s both}
+.intro-message{font-size:15px}.intro-message strong{color:white}.intro-sub{font-size:12px;color:#9fb9dc;animation-delay:.75s}
+.intro-skip{position:relative;margin-top:27px;border:1px solid #8fc4ff88;border-radius:30px;padding:11px 22px;color:white;background:#0a3c7a88;font-weight:700;font-size:12px;cursor:pointer;animation:introText .7s .9s both}
+@keyframes introScreenOut{to{opacity:0;visibility:hidden;pointer-events:none}}
+@keyframes introPulse{to{transform:scale(1.08);opacity:.55}}
+@keyframes introLogo{from{opacity:0;transform:scale(.65) rotate(-20deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes introText{from{opacity:0;transform:translateY(16px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes introLine{from{width:0;opacity:0}to{width:70px;opacity:1}}
+.page-intro{max-width:900px;margin:auto;padding:105px 24px 65px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#17478355,transparent 65%)}
+.page-intro h1{font:800 clamp(38px,5vw,62px)/1.18 'Roboto Slab';letter-spacing:-.035em;color:#d5e8ff;margin:18px 0}
+.page-intro h1 em,.home-cta h2 em{font-style:normal;color:#80b9ff}
+.page-intro p{max-width:650px;margin:0 auto;color:var(--muted);font-size:15px;line-height:1.8}
+.inner-page{min-height:70vh}.about-founder{margin-top:15px}.services-page{padding-top:25px}.projects-page{padding-top:20px}.center-link{text-align:center;margin-top:35px}.text-link{display:inline-block;margin-top:20px;color:#8fc4ff;font-weight:700;font-size:13px}.text-link:hover{color:white}
+.home-blog{padding-top:75px;padding-bottom:85px}.blog-empty{max-width:700px;margin:0 auto;padding:65px 30px;text-align:center;border:1px solid var(--line);border-radius:18px;background:radial-gradient(ellipse at 50% 0%,#17478355,transparent 75%),#0a2042}.blog-empty.compact{padding:38px 25px}.blog-icon{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 20px;border:1px solid #80b9ff77;border-radius:50%;color:#9dccff;font-size:21px}.blog-empty h2{font:800 clamp(27px,4vw,38px) 'Roboto Slab';color:#d7e9ff;margin:15px 0}.blog-empty h3{font-size:20px;color:#d7e9ff;margin:12px 0}.blog-empty p{max-width:510px;margin:0 auto;color:var(--muted);font-size:14px;line-height:1.8}.blog-coming{display:inline-block;margin-top:25px;padding:9px 16px;border:1px solid #75adf455;border-radius:30px;color:#9bcaff;font-size:10px;font-weight:800;letter-spacing:.16em}
+.home-cta{text-align:center;padding:85px 24px;background:linear-gradient(110deg,#0b2550,#0b1f43);border-block:1px solid var(--line)}.home-cta h2{font:800 clamp(35px,4.5vw,52px)/1.2 'Roboto Slab';color:#d5e8ff;margin:15px 0 25px}
+.blog-page{padding-top:20px}.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.blog-card{overflow:hidden;border:1px solid var(--line);border-radius:15px;background:#0c2247}.blog-card-art{height:175px;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#1764ba,#0a2046 70%);font:800 22px 'Roboto Slab';letter-spacing:.1em;color:#b9dcff}.blog-card-body{padding:22px}.blog-card-body small{color:#80b9ff;font-weight:800;letter-spacing:.12em}.blog-card-body h2{font:700 21px 'Roboto Slab';color:#d8eaff}.blog-card-body p{color:var(--muted);font-size:13px;line-height:1.7}.article-page{max-width:800px;margin:auto;padding:80px 24px}.article-page h1{font:800 clamp(36px,5vw,56px) 'Roboto Slab';color:#d8eaff}.article-page>p,.article-content{color:var(--muted);font-size:16px;line-height:1.9}
+@media(max-width:900px){.topbar nav{gap:16px;font-size:12px}.blog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.topbar nav{gap:12px}.topbar nav a{font-size:11px}.page-intro{padding:75px 20px 45px}.blog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.topbar nav{display:none}.mobile-cta{display:grid}.blog-grid{grid-template-columns:1fr}.intro-glow{width:260px;height:260px}.intro-screen h1{font-size:29px}.intro-message{font-size:13px}.intro-sub{max-width:270px;line-height:1.7}}
+@media(prefers-reduced-motion:reduce){.intro-screen,.intro-logo,.intro-kicker,.intro-screen h1,.intro-line,.intro-message,.intro-sub,.intro-skip,.intro-glow{animation:none!important}.intro-screen{opacity:0;visibility:hidden;pointer-events:none}}
