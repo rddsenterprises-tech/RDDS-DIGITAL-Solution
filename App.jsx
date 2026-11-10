@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, NavLink, useParams, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, NavLink, useParams, useLocation, useNavigate } from "react-router-dom";
 import founderPhoto from "./danish-khan.jpg";
 import { supabase, supabaseConfigured } from "./supabase.js";
 const Admin = lazy(() => import("./Admin.jsx"));
@@ -109,21 +109,49 @@ function SeoManager() {
 
 function IntroScreen() {
   const [visible, setVisible] = useState(true);
+  const [animated, setAnimated] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const timer = window.setTimeout(() => setVisible(false), 2800);
-    return () => window.clearTimeout(timer);
+    const frame = window.requestAnimationFrame(() => setAnimated(true));
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeydown = event => {
+      if (event.key === "Escape") setVisible(false);
+    };
+    window.addEventListener("keydown", handleKeydown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeydown);
+    };
   }, []);
+
+  const enterSite = audience => {
+    setVisible(false);
+    if (audience === "recruiter") navigate("/about");
+  };
+
   if (!visible) return null;
-  return <div className="intro-screen" role="status" aria-label="Welcome to RDDS Enterprises">
-    <div className="intro-glow" />
-    <div className="intro-logo">R</div>
-    <p className="intro-kicker">WELCOME TO</p>
-    <h1>RDDS <span>ENTERPRISES</span></h1>
-    <div className="intro-line" />
-    <p className="intro-message">I'm <strong>Danish Khan</strong> — Founder & Web Developer</p>
-    <p className="intro-sub">Building thoughtful digital experiences for growing businesses.</p>
-    <button className="intro-skip" onClick={() => setVisible(false)}>Enter website ↗</button>
-  </div>;
+
+  return <section className={`welcome-overlay${animated ? " welcome-animate" : ""}`} role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div className="welcome-card">
+      <div className="welcome-photo">
+        <img src={founderPhoto} alt="Danish Khan, founder and web developer" onError={event => { event.currentTarget.style.display = "none"; }} />
+        <span className="welcome-photo-label">Danish Khan · Founder</span>
+      </div>
+      <div className="welcome-content">
+        <span className="welcome-kicker">A personal introduction · RDDS Enterprises</span>
+        <h2 id="welcome-title">Hello, I’m Danish.<br /><span>I build for the web.</span></h2>
+        <p>I personally design and develop thoughtful websites for businesses. How would you like to explore my work?</p>
+        <div className="welcome-actions">
+          <button type="button" onClick={() => enterSite("guest")}>Continue as a guest <span aria-hidden="true">→</span></button>
+          <button className="welcome-secondary" type="button" onClick={() => enterSite("recruiter")}>I’m a recruiter — view my profile <span aria-hidden="true">→</span></button>
+        </div>
+        <p className="welcome-note">Personal collaboration. Thoughtful design. Built with care.</p>
+      </div>
+    </div>
+  </section>;
 }
 
 function Header() {
