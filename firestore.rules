@@ -19,10 +19,10 @@ service cloud.firestore {
 
     // Public pages may read published content; only allowlisted admins can write.
     match /{collectionName}/{documentId} {
-      allow read: if isAdmin()
+      allow read: if collectionName != 'adminUsers' && (isAdmin()
         || (collectionName in ['services', 'projects', 'blogPosts']
-            && resource.data.published == true);
-      allow create, update, delete: if isAdmin();
+            && resource.data.published == true));
+      allow create, update, delete: if collectionName != 'adminUsers' && isAdmin();
     }
   }
 }
