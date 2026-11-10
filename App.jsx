@@ -336,7 +336,7 @@ function Contact() {
 
 function RONIEChat() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([{ role: "assistant", text: "Assalam-o-Alaikum! Main RONIE hoon, RDDS Enterprises ka AI assistant. Aapko website ya digital services ke baare mein kya maloomat chahiye?" }]);
+  const [messages, setMessages] = useState([{ role: "assistant", text: "Assalam-o-Alaikum! Main RONIE hoon — RDDS Enterprises ka AI assistant. Main aapke business aur project ko samajh kar website, online store ya design ke liye behtareen raasta suggest kar sakta hoon. Aap kya plan kar rahe hain?" }]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const sendMessage = async (event) => {
