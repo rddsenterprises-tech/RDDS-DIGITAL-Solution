@@ -28,6 +28,8 @@ export default function Admin() {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [messageFilter, setMessageFilter] = useState("all");
 
   useEffect(() => {
     if (!supabaseConfigured) { setAuthChecked(true); return; }
@@ -60,13 +62,15 @@ export default function Admin() {
       supabase.from("services").select("id,published"),
       supabase.from("projects").select("id,published"),
       supabase.from("blog_posts").select("id,published"),
-      supabase.from("contact_messages").select("id,status,name,email,subject,message,created_at").order("created_at", { ascending: false }).limit(6)
+      supabase.from("contact_messages").select("id,status,name,email,subject,message,created_at").order("created_at", { ascending: false }).limit(6),
+      supabase.from("contact_messages").select("id", { count: "exact", head: true }),
+      supabase.from("contact_messages").select("id", { count: "exact", head: true }).eq("status", "new")
     ]);
-    if (s.error || p.error || b.error || m.error) { setError("Dashboard data load nahi hua. Supabase permissions check karein."); return; }
+    if (s.error || p.error || b.error || m.error || mc.error || uc.error) { setError("Dashboard data load nahi hua. Supabase permissions check karein."); return; }
     const content = [...(s.data || []), ...(p.data || []), ...(b.data || [])];
     setStats({
       services: s.data?.length || 0, projects: p.data?.length || 0, blogPosts: b.data?.length || 0,
-      messages: m.data?.length || 0, unread: (m.data || []).filter(x => x.status === "new").length,
+      messages: mc.count || 0, unread: uc.count || 0,
       published: content.filter(x => x.published !== false).length,
       drafts: content.filter(x => x.published === false).length
     });
@@ -156,6 +160,12 @@ export default function Admin() {
   if (!isAdmin) return <main className="admin-page"><div className="admin-login"><div className="admin-kicker">ACCESS RESTRICTED</div><h1>Not authorised.</h1><p>This account is not on the RDDS administrator allowlist.</p>{error && <div className="admin-error">{error}</div>}<button className="admin-primary" onClick={logout}>Sign out</button><a className="admin-back" href="/">← Back to public website</a></div></main>;
 
   const activeLabel = sections.find(section => section.id === active)?.label || "Overview";
+  const visibleItems = items.filter(item => {
+    const term = searchTerm.trim().toLowerCase();
+    const matchesSearch = !term || [item.title, item.name, item.subject, item.description, item.message, item.email, item.category, item.slug].some(value => String(value || "").toLowerCase().includes(term));
+    const matchesStatus = active !== "contactMessages" || messageFilter === "all" || (item.status || "new") === messageFilter;
+    return matchesSearch && matchesStatus;
+  });
   return <main className="admin-dashboard">
     <aside className="admin-sidebar">
       <a className="admin-brand" href="/"><span className="admin-brand-mark">R</span><span>RDDS <b>ENTERPRISES</b><small>MANAGEMENT STUDIO</small></span></a>
@@ -183,6 +193,7 @@ export default function Admin() {
         </section>
       </div> : <>
         <div className="admin-toolbar"><p>{active === "contactMessages" ? "Review and manage customer enquiries." : "Create, update and publish your website content."}</p>{active !== "contactMessages" && <button className="admin-primary" onClick={() => { setEditingId(null); setForm(emptyForm); setShowForm(v => !v); }}>＋ Add new</button>}</div>
+        <div className="admin-list-tools"><label className="admin-search"><span>⌕</span><input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={active === "contactMessages" ? "Search name, email or message..." : "Search title, category or description..."} /></label>{active === "contactMessages" && <select aria-label="Filter messages by status" value={messageFilter} onChange={e => setMessageFilter(e.target.value)}><option value="all">All statuses</option><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></select>}<span className="admin-result-count">{visibleItems.length} of {items.length} records</span></div>
         {showForm && active !== "contactMessages" && <form className="admin-editor" onSubmit={saveItem}><h2>{editingId ? "Edit record" : "Create new record"}</h2>
           <label>Title<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></label><label>Description<textarea rows="4" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
           {active === "projects" && <label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label>}
@@ -190,8 +201,8 @@ export default function Admin() {
           <div className="admin-form-row"><label>Slug<input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="my-first-post" /></label><label>Category<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Web development" /></label></div>
           <label className="admin-check"><input type="checkbox" checked={form.published} onChange={e => setForm({ ...form, published: e.target.checked })} /> Publish on website</label><div className="admin-actions"><button className="admin-primary" type="submit">Save changes</button><button type="button" className="admin-cancel" onClick={() => setShowForm(false)}>Cancel</button></div>
         </form>}
-        {loading ? <div className="admin-empty">Loading records…</div> : items.length === 0 ? <div className="admin-empty"><span>✦</span><h2>No {activeLabel.toLowerCase()} yet</h2><p>{active === "contactMessages" ? "New messages submitted through your website will appear here." : "Create your first record using the Add new button."}</p></div> :
-          <div className="admin-records">{items.map(item => <article className="admin-record" key={item.id}><div className="admin-record-content"><div className="admin-record-meta">{item.category || activeLabel} · {active === "contactMessages" ? (item.status || "new") : item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{item.description || item.message || item.email || "—"}</p>{active === "contactMessages" && <small className="admin-record-date">{item.email} · {dateLabel(item.created_at)}</small>}</div>
+        {loading ? <div className="admin-empty">Loading records…</div> : items.length === 0 ? <div className="admin-empty"><span>✦</span><h2>No {activeLabel.toLowerCase()} yet</h2><p>{active === "contactMessages" ? "New messages submitted through your website will appear here." : "Create your first record using the Add new button."}</p></div> : visibleItems.length === 0 ? <div className="admin-empty"><span>⌕</span><h2>No matching records</h2><p>Search term ya status filter change karke dobara try karein.</p></div> :
+          <div className="admin-records">{visibleItems.map(item => <article className="admin-record" key={item.id}><div className="admin-record-content"><div className="admin-record-meta">{item.category || activeLabel} · {active === "contactMessages" ? (item.status || "new") : item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{item.description || item.message || item.email || "—"}</p>{active === "contactMessages" && <small className="admin-record-date">{item.email} · {dateLabel(item.created_at)}</small>}</div>
             {active === "contactMessages" ? <div className="admin-record-actions"><select aria-label="Message status" value={item.status || "new"} onChange={e => updateMessageStatus(item.id, e.target.value)}><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></select></div> : <div className="admin-record-actions"><button onClick={() => editItem(item)}>Edit</button><button onClick={() => removeItem(item.id)}>Delete</button></div>}</article>)}</div>}
       </>}
     </section>
