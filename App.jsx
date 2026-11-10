@@ -65,6 +65,14 @@ function Home() {
     return () => { cancelled = true; };
   }, []);
   const displayServices = managedServices.length ? managedServices : services;
+  const [managedPosts, setManagedPosts] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("blog_posts").select("*").eq("published", true).order("created_at", { ascending: false }).limit(2)
+      .then(({ data }) => { if (!cancelled) setManagedPosts(data || []); });
+    return () => { cancelled = true; };
+  }, []);
   return <>
     <section className="hero" id="home">
       <div className="stars" /><div className="hero-orbit" aria-hidden="true"><span /><span /><span /></div>
@@ -85,7 +93,7 @@ function Home() {
       <div className="center-link"><Link className="btn secondary" to="/services">Explore all services ↗</Link></div>
     </section>
     <section className="founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>MEET THE FOUNDER</label><h2>Work directly with the person who builds your website.</h2><p>I'm Danish Khan, Founder & Web Developer at RDDS Enterprises. I personally manage projects from early planning and design through development and final delivery.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer</span></div><Link className="text-link" to="/about">More about me ↗</Link></div></div></section>
-    <section className="home-blog section"><div className="section-head"><label>FROM THE BLOG</label><h2>Ideas, insights & <em>updates.</em></h2><p>Helpful thoughts about websites, design and growing your business online.</p></div><div className="blog-empty compact"><span className="blog-icon">✦</span><h3>Articles are coming soon</h3><p>We're preparing useful articles for business owners and creators.</p><Link className="text-link" to="/blog">Visit the blog ↗</Link></div></section>
+    <section className="home-blog section"><div className="section-head"><label>FROM THE BLOG</label><h2>Ideas, insights & <em>updates.</em></h2><p>Helpful thoughts about websites, design and growing your business online.</p></div>{managedPosts.length ? <div className="blog-grid">{managedPosts.map(post => <article className="blog-card" key={post.id}><div className="blog-card-body"><small>{post.category}</small><h3>{post.title}</h3><p>{post.description}</p><Link className="text-link" to={"/blog/" + post.slug}>Read article ↗</Link></div></article>)}</div> : <div className="blog-empty compact"><span className="blog-icon">✦</span><h3>Articles are coming soon</h3><p>We're preparing useful articles for business owners and creators.</p><Link className="text-link" to="/blog">Visit the blog ↗</Link></div>}</section>
     <section className="home-cta"><label>READY TO GET STARTED?</label><h2>Let's build something<br /><em>meaningful.</em></h2><Link className="btn primary" to="/contact">Start a conversation ↗</Link></section>
   </>;
 }
