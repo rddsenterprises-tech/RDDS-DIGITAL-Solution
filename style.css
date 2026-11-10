@@ -197,3 +197,25 @@ footer{
   body::before,body::after{animation:none!important}
   .service-card,.principle-grid article,.blog-card,.work-grid article,.work-grid>a,.btn,.nav-cta,.intro-skip{transition:none!important}
 }
+
+
+/* RONIE AI floating support chat */
+.ronie-widget{position:fixed;right:24px;bottom:24px;z-index:900}
+.ronie-launcher{width:64px;height:64px;border:1px solid #8fc4ff;border-radius:50%;background:linear-gradient(145deg,#0879fa,#073b8d);color:#fff;box-shadow:0 8px 30px #00102c99,0 0 25px #1684ff55;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;flex-direction:column;transition:transform .2s ease}
+.ronie-launcher:hover{transform:translateY(-3px) scale(1.03)}
+.ronie-launcher>span{font-size:23px;line-height:1}.ronie-launcher small{font-size:9px;font-weight:800;white-space:nowrap}
+.ronie-panel{position:absolute;right:0;bottom:78px;width:min(370px,calc(100vw - 28px));height:min(520px,calc(100svh - 125px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #6baeff66;border-radius:18px;background:#081a37;box-shadow:0 22px 70px #000b;animation:roniePop .22s ease-out}
+@keyframes roniePop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ronie-header{display:flex;align-items:center;gap:11px;padding:15px;background:linear-gradient(110deg,#0d3977,#09234b);border-bottom:1px solid #9ec2f222}
+.ronie-avatar{width:39px;height:39px;border:1px solid #8fc4ff;border-radius:50%;display:grid;place-items:center;color:#d9ecff;font:800 22px 'Roboto Slab';box-shadow:0 0 18px #1684ff55}
+.ronie-header>div:nth-child(2){display:grid;gap:3px;flex:1}.ronie-header strong{font-size:13px;color:#fff;letter-spacing:.08em}.ronie-header small{font-size:10px;color:#a9c5e9}
+.ronie-header button{border:0;background:transparent;color:#d9eaff;font-size:25px;cursor:pointer}
+.ronie-messages{padding:15px;display:flex;flex-direction:column;gap:10px;overflow:auto;flex:1}
+.ronie-message{max-width:88%;padding:11px 13px;border-radius:13px;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.ronie-message.assistant{align-self:flex-start;background:#102d57;border:1px solid #8fc4ff24;color:#d8e8fa;border-bottom-left-radius:4px}
+.ronie-message.user{align-self:flex-end;background:#0759b9;color:#fff;border-bottom-right-radius:4px}
+.ronie-form{display:flex;gap:8px;padding:12px;border-top:1px solid #9ec2f222}
+.ronie-form input{min-width:0;flex:1;padding:12px;border:1px solid #90b3e244;border-radius:10px;background:#06152d;color:#fff;outline:none;font-size:12px}
+.ronie-form input:focus{border-color:#398df5}.ronie-form button{width:42px;border:0;border-radius:10px;background:#0874f9;color:white;font-size:18px;cursor:pointer}.ronie-form button:disabled{opacity:.45;cursor:not-allowed}
+.ronie-whatsapp{padding:0 14px 13px;text-align:center;color:#8fc4ff;font-size:10px}
+@media(max-width:540px){.ronie-widget{right:15px;bottom:16px}.ronie-launcher{width:58px;height:58px}.ronie-panel{bottom:70px}}
