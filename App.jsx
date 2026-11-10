@@ -113,6 +113,7 @@ function IntroScreen() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!visible) return;
     const frame = window.requestAnimationFrame(() => setAnimated(true));
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -125,7 +126,7 @@ function IntroScreen() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeydown);
     };
-  }, []);
+  }, [visible]);
 
   const enterSite = audience => {
     setVisible(false);
