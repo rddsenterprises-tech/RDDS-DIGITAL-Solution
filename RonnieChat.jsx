@@ -24,11 +24,11 @@ export default function RonnieChat() {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, busy, open]);
 
-  const sendMessage = async (value = input) => {
+  const sendMessage = async (value = input, retry = false) => {
     const message = value.trim();
     if (!message || busy) return;
-    const next = [...messages, { role: "user", text: message }];
-    setMessages(next);
+    const next = retry ? messages : [...messages, { role: "user", text: message }];
+    if (!retry) setMessages(next);
     setInput("");
     setError("");
     setBusy(true);
@@ -37,7 +37,7 @@ export default function RonnieChat() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: next.slice(-12).map(item => ({ role: item.role, text: item.text }))
+          messages: next.slice(1).slice(-12).map(item => ({ role: item.role, text: item.text }))
         })
       });
       const data = await response.json().catch(() => ({}));
@@ -64,7 +64,7 @@ export default function RonnieChat() {
           <p>{item.text}</p>
         </div>)}
         {busy && <div className="ronie-message assistant"><span className="ronie-mini-avatar">R</span><p className="ronie-typing"><i/><i/><i/></p></div>}
-        {error && <div className="ronie-error">{error} <button onClick={() => sendMessage(messages[messages.length - 1]?.text || "")}>Retry</button></div>}
+        {error && <div className="ronie-error">{error} <button onClick={() => sendMessage(messages[messages.length - 1]?.text || "", true)}>Retry</button></div>}
         {messages.length === 1 && <div className="ronie-quick">{quickQuestions.map(question => <button key={question} onClick={() => sendMessage(question)}>{question} ↗</button>)}</div>}
         <div ref={endRef}/>
       </div>
