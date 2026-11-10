@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, NavLink, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, NavLink, useParams, useLocation } from "react-router-dom";
 import founderPhoto from "./danish-khan.jpg";
 import { supabase, supabaseConfigured } from "./supabase.js";
 const Admin = lazy(() => import("./Admin.jsx"));
@@ -11,6 +11,101 @@ const services = [
 ];
 
 const blogPosts = [];
+
+const SITE_URL = "https://rddsdigitalsolution.vercel.app";
+
+function SeoManager() {
+  const location = useLocation();
+  useEffect(() => {
+    const path = location.pathname.replace(/\\/$/, "") || "/";
+    const pages = {
+      "/": {
+        title: "RDDS Enterprises | Website Design & Development in Pakistan",
+        description: "RDDS Enterprises creates modern business websites, e-commerce stores and custom web applications. Work directly with Danish Khan for thoughtful design and development."
+      },
+      "/about": {
+        title: "About RDDS Enterprises | Danish Khan",
+        description: "Meet Danish Khan, founder of RDDS Enterprises. Learn about our personal approach to website design, development and digital experiences."
+      },
+      "/services": {
+        title: "Website Development & E-Commerce Services | RDDS Enterprises",
+        description: "Explore custom website development, e-commerce solutions, UI/UX design and graphic design services from RDDS Enterprises."
+      },
+      "/projects": {
+        title: "Website Portfolio & Projects | RDDS Enterprises",
+        description: "Explore selected website and digital projects by RDDS Enterprises, including business and restaurant website work."
+      },
+      "/blog": {
+        title: "Web Design & Digital Insights | RDDS Enterprises Blog",
+        description: "Read practical insights about website development, e-commerce, design and building a stronger online presence."
+      },
+      "/contact": {
+        title: "Contact RDDS Enterprises | Start Your Website Project",
+        description: "Contact RDDS Enterprises about a business website, online store or design project. Speak directly with founder Danish Khan."
+      }
+    };
+    const page = pages[path] || (path.startsWith("/blog/") ? {
+      title: "Article | RDDS Enterprises",
+      description: "Read web development, design and digital business insights from RDDS Enterprises."
+    } : {
+      title: "Page Not Found | RDDS Enterprises",
+      description: "The page you requested could not be found on RDDS Enterprises."
+    });
+    const canonical = SITE_URL + (path === "/" ? "/" : path);
+    const setMeta = (key, value, property = false) => {
+      const selector = property ? `meta[property="${key}"]` : `meta[name="${key}"]`;
+      let element = document.head.querySelector(selector);
+      if (!element) {
+        element = document.createElement("meta");
+        element.setAttribute(property ? "property" : "name", key);
+        document.head.appendChild(element);
+      }
+      element.setAttribute("content", value);
+    };
+    document.title = page.title;
+    setMeta("description", page.description);
+    setMeta("robots", path === "/admin" ? "noindex,nofollow" : "index,follow");
+    setMeta("og:type", "website", true);
+    setMeta("og:site_name", "RDDS Enterprises", true);
+    setMeta("og:title", page.title, true);
+    setMeta("og:description", page.description, true);
+    setMeta("og:url", canonical, true);
+    setMeta("og:image", founderPhoto, true);
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", page.title);
+    setMeta("twitter:description", page.description);
+    setMeta("twitter:image", founderPhoto);
+    let canonicalLink = document.head.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement("link");
+      canonicalLink.rel = "canonical";
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.href = canonical;
+    let schema = document.getElementById("rdds-organization-schema");
+    if (!schema) {
+      schema = document.createElement("script");
+      schema.id = "rdds-organization-schema";
+      schema.type = "application/ld+json";
+      document.head.appendChild(schema);
+    }
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "RDDS Enterprises",
+      url: SITE_URL,
+      founder: { "@type": "Person", name: "Danish Khan" },
+      email: "rdds.enterprises@gmail.com",
+      sameAs: [
+        "https://www.facebook.com/RDds1995/",
+        "https://www.instagram.com/rdds.enterprises"
+      ]
+    });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [location.pathname]);
+  return null;
+}
+
 
 function IntroScreen() {
   const [visible, setVisible] = useState(true);
