@@ -70,11 +70,14 @@ function SeoManager() {
     setMeta("og:title", page.title, true);
     setMeta("og:description", page.description, true);
     setMeta("og:url", canonical, true);
-    setMeta("og:image", founderPhoto, true);
+    const socialImage = new URL(founderPhoto, SITE_URL).href;
+    setMeta("og:image", socialImage, true);
+    setMeta("og:image:alt", "Danish Khan, founder of RDDS Enterprises", true);
     setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", page.title);
     setMeta("twitter:description", page.description);
-    setMeta("twitter:image", founderPhoto);
+    setMeta("twitter:image", socialImage);
+    setMeta("twitter:image:alt", "Danish Khan, founder of RDDS Enterprises");
     let canonicalLink = document.head.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {
       canonicalLink = document.createElement("link");
@@ -91,14 +94,44 @@ function SeoManager() {
     }
     schema.textContent = JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "Organization",
-      name: "RDDS Enterprises",
-      url: SITE_URL,
-      founder: { "@type": "Person", name: "Danish Khan" },
-      email: "rdds.enterprises@gmail.com",
-      sameAs: [
-        "https://www.facebook.com/RDds1995/",
-        "https://www.instagram.com/rdds.enterprises"
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": SITE_URL + "/#business",
+          name: "RDDS Enterprises",
+          url: SITE_URL,
+          description: "Website design, custom web development, e-commerce solutions and UI/UX design.",
+          founder: { "@id": SITE_URL + "/#founder" },
+          email: "rdds.enterprises@gmail.com",
+          telephone: "+923042178799",
+          areaServed: { "@type": "Country", name: "Pakistan" },
+          serviceType: [
+            "Custom Web Development",
+            "Business Website Design",
+            "E-Commerce Website Development",
+            "UI/UX Design",
+            "Graphic Design"
+          ],
+          sameAs: [
+            "https://www.facebook.com/RDds1995/",
+            "https://www.instagram.com/rdds.enterprises"
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": SITE_URL + "/#founder",
+          name: "Danish Khan",
+          jobTitle: "Founder & Web Developer",
+          worksFor: { "@id": SITE_URL + "/#business" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": SITE_URL + "/#website",
+          url: SITE_URL,
+          name: "RDDS Enterprises",
+          publisher: { "@id": SITE_URL + "/#business" },
+          inLanguage: "en-PK"
+        }
       ]
     });
     window.scrollTo({ top: 0, behavior: "instant" });
