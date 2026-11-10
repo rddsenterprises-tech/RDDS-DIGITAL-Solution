@@ -89,7 +89,7 @@ function Services() {
 }
 
 function Projects() {
-  return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of web development and visual design work.</PageIntro><section className="work projects-page"><div className="work-grid"><article><div className="work-art art-one">01</div><small>WEB DEVELOPMENT</small><h3>Enterprise Web Dashboard</h3><p>Analytical interfaces for useful business insights and reporting.</p></article><article><div className="work-art art-two">02</div><small>UI/UX & BRANDING</small><h3>Brand Identity & Visuals</h3><p>Brand assets and polished digital interface concepts.</p></article><a href="https://namiras-kitchen-app.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">03 ↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a></div></section></main>;
+  return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of completed work.</PageIntro><section className="work projects-page"><div className="work-grid"><a href="https://namiras-kitchen-app.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a></div></section></main>;
 }
 
 function Blog() {
