@@ -1,0 +1,3 @@
+-- RDDS admin schema. Applied to Supabase project ghejomowjomohauqntoi.
+-- See the Supabase migration history for the authoritative applied version.
+-- Tables: admin_users, services, projects, blog_posts, contact_messages.
