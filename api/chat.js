@@ -55,8 +55,11 @@ export default async function handler(req, res) {
 
     const result = await upstream.json();
     if (!upstream.ok) {
-      console.error("Gemini API error:", upstream.status, result?.error?.message || "Unknown error");
-      return res.status(502).json({ error: "AI service is temporarily unavailable. Please try again shortly." });
+      const providerMessage = String(result?.error?.message || "Unknown Gemini API error").slice(0, 240);
+      console.error("Gemini API error:", upstream.status, providerMessage);
+      return res.status(502).json({
+        error: `Gemini API error (HTTP ${upstream.status}): ${providerMessage}`
+      });
     }
 
     const reply = result?.candidates?.[0]?.content?.parts
