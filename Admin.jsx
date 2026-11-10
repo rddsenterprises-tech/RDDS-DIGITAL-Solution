@@ -58,7 +58,7 @@ export default function Admin() {
   }, [user]);
 
   const loadOverview = async () => {
-    const [s, p, b, m] = await Promise.all([
+    const [s, p, b, m, mc, uc] = await Promise.all([
       supabase.from("services").select("id,published"),
       supabase.from("projects").select("id,published"),
       supabase.from("blog_posts").select("id,published"),
