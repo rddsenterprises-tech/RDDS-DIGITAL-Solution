@@ -7,7 +7,7 @@ RONIE is the RDDS Enterprises website support chatbot. The browser sends chat me
 1. Open Google AI Studio and create a Gemini API key: https://aistudio.google.com/app/apikey
 2. In Vercel, open the RDDS project → Settings → Environment Variables.
 3. Add `GEMINI_API_KEY` with the key from AI Studio. Do not paste the key into GitHub or website source files.
-4. Optionally add `GEMINI_MODEL` with `gemini-2.5-flash`.
+4. Optionally add `GEMINI_MODEL` with `gemini-3.8-flash`.
 5. Apply to Production (and Preview if needed), save, then redeploy the latest deployment.
 
 ## Local development
