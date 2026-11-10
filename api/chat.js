@@ -74,28 +74,69 @@ export default async function handler(req, res) {
     const agent = chooseAgent(latestMessage);
     const systemInstruction = BASE_INSTRUCTION + "\n\n" + AGENT_INSTRUCTIONS[agent];
 
-    const upstream = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey
-        },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: systemInstruction }] },
-          contents,
-          generationConfig: { maxOutputTokens: 850, temperature: 0.65 }
-        })
-      }
-    );
+    const modelCandidates = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash"];
+    let result = null;
+    let lastStatus = 503;
+    let lastMessage = "The AI service is temporarily busy.";
 
-    const result = await upstream.json();
-    if (!upstream.ok) {
-      const providerMessage = String(result?.error?.message || "Unknown Gemini API error").slice(0, 240);
-      console.error("Gemini API error:", upstream.status, providerMessage);
-      return res.status(502).json({
-        error: `Gemini API error (HTTP ${upstream.status}): ${providerMessage}`
+    for (const model of modelCandidates) {
+      let modelSucceeded = false;
+
+      // Retry temporary overloads twice with short exponential backoff.
+      for (let attempt = 0; attempt < 2; attempt += 1) {
+        let upstream;
+        try {
+          upstream = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-goog-api-key": apiKey
+              },
+              body: JSON.stringify({
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                contents,
+                generationConfig: { maxOutputTokens: 850, temperature: 0.65 }
+              })
+            }
+          );
+        } catch (networkError) {
+          lastStatus = 503;
+          lastMessage = "Network connection to the AI service failed.";
+          if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 700));
+          continue;
+        }
+
+        const payload = await upstream.json().catch(() => ({}));
+        if (upstream.ok) {
+          result = payload;
+          modelSucceeded = true;
+          break;
+        }
+
+        lastStatus = upstream.status;
+        lastMessage = String(payload?.error?.message || "Unknown Gemini API error").slice(0, 240);
+
+        // Only retry transient server/availability/rate-limit errors.
+        if (![408, 429, 500, 502, 503, 504].includes(upstream.status)) {
+          console.error("Gemini API error:", upstream.status, lastMessage);
+          return res.status(502).json({
+            error: `Gemini API error (HTTP ${upstream.status}): ${lastMessage}`
+          });
+        }
+
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 700));
+      }
+
+      if (modelSucceeded) break;
+      console.warn(`RONIE model ${model} unavailable (HTTP ${lastStatus}); trying fallback if available.`);
+    }
+
+    if (!result) {
+      console.error("All Gemini models unavailable:", lastStatus, lastMessage);
+      return res.status(503).json({
+        error: "RONIE is receiving heavy AI traffic right now. Please try again in a moment, or contact RDDS on WhatsApp: 03042178799."
       });
     }
 
