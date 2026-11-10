@@ -17,7 +17,7 @@ const SITE_URL = "https://rddsdigitalsolution.vercel.app";
 function SeoManager() {
   const location = useLocation();
   useEffect(() => {
-    const path = location.pathname.replace(/\\/$/, "") || "/";
+    const path = location.pathname.replace(/\/$/, "") || "/";
     const pages = {
       "/": {
         title: "RDDS Enterprises | Website Design & Development in Pakistan",
