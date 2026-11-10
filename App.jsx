@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link, NavLink, useParams } from "react-router-dom";
 import founderPhoto from "./danish-khan.jpg";
-import Admin from "./Admin.jsx";
+const Admin = lazy(() => import("./Admin.jsx"));
 
 const services = [
   { n: "01", icon: "⌘", title: "Custom Web Development", desc: "Fast, responsive websites and custom web applications designed around your business.", points: ["Business websites", "Custom web applications"] },
@@ -112,7 +112,7 @@ function PublicSite() {
 }
 
 function App() {
-  return <BrowserRouter><Routes><Route path="/admin" element={<Admin />} /><Route path="*" element={<PublicSite />} /></Routes></BrowserRouter>;
+  return <BrowserRouter><Routes><Route path="/admin" element={<Suspense fallback={<div className="admin-loading">RDDS Admin load ho raha hai…</div>}><Admin /></Suspense>} /><Route path="*" element={<PublicSite />} /></Routes></BrowserRouter>;
 }
 
 export default App;
