@@ -75,3 +75,15 @@
 .admin-toolbar p{margin:0}
 @media(max-width:1000px){.admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.admin-sidebar{display:flex;align-items:stretch}.admin-sidebar .admin-brand{margin:0 0 15px}.admin-sidebar-bottom{margin-top:10px}.admin-profile{display:none}.admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.admin-stat-card{padding:14px}.admin-stat-card>strong{font-size:25px}.admin-insight-grid{grid-template-columns:1fr}.admin-welcome{padding:22px;min-height:130px}.admin-welcome h2{font-size:19px}.admin-welcome-mark{right:10px;font-size:105px}.admin-top-actions{width:100%;justify-content:space-between}.admin-top h1{font-size:27px}}
+
+
+/* RDDS admin search and enquiry controls */
+.admin-list-tools{display:flex;align-items:center;gap:12px;margin:0 0 18px;padding:12px;border:1px solid #ffffff12;border-radius:11px;background:#0b2040}
+.admin-search{display:flex;align-items:center;gap:10px;flex:1;min-width:180px;padding:0 12px;border:1px solid #ffffff20;border-radius:8px;background:#071a35;color:#c5a56c}
+.admin-search>span{font-size:20px}
+.admin-search input{width:100%;min-width:0;padding:11px 0;border:0;outline:0;background:transparent;color:#edf3fc;font:12px 'DM Sans',sans-serif}
+.admin-search input::placeholder{color:#7589a5}
+.admin-list-tools>select{padding:11px 13px;border:1px solid #ffffff20;border-radius:8px;background:#10294b;color:#dbe6f5;font:11px 'DM Sans',sans-serif}
+.admin-result-count{color:#8498b4;font-size:10px;white-space:nowrap}
+.admin-record-actions select:focus,.admin-list-tools select:focus,.admin-search:focus-within{border-color:#c5a56c88;outline:none}
+@media(max-width:700px){.admin-list-tools{align-items:stretch;flex-wrap:wrap;gap:9px}.admin-search{flex-basis:100%}.admin-list-tools>select{flex:1}.admin-result-count{align-self:center}}
