@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link, NavLink, useParams } from "react-router-dom";
 import founderPhoto from "./danish-khan.jpg";
-import Admin from "./Admin.jsx";
+import { supabase, supabaseConfigured } from "./supabase.js";
+const Admin = lazy(() => import("./Admin.jsx"));
 
 const services = [
   { n: "01", icon: "⌘", title: "Custom Web Development", desc: "Fast, responsive websites and custom web applications designed around your business.", points: ["Business websites", "Custom web applications"] },
@@ -55,6 +56,23 @@ function PageIntro({ eyebrow, title, children }) {
 }
 
 function Home() {
+  const [managedServices, setManagedServices] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true })
+      .then(({ data }) => { if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] }))); });
+    return () => { cancelled = true; };
+  }, []);
+  const displayServices = managedServices.length ? managedServices : services;
+  const [managedPosts, setManagedPosts] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("blog_posts").select("*").eq("published", true).order("created_at", { ascending: false }).limit(2)
+      .then(({ data }) => { if (!cancelled) setManagedPosts(data || []); });
+    return () => { cancelled = true; };
+  }, []);
   return <>
     <section className="hero" id="home">
       <div className="stars" /><div className="hero-orbit" aria-hidden="true"><span /><span /><span /></div>
@@ -71,11 +89,11 @@ function Home() {
     </section>
     <section className="section">
       <div className="section-head"><label>WHAT WE DO</label><h2>Digital made to work <em>for you.</em></h2><p>From the first conversation to launch, get a practical, personal approach to creating your next website.</p></div>
-      <div className="service-grid">{services.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
+      <div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
       <div className="center-link"><Link className="btn secondary" to="/services">Explore all services ↗</Link></div>
     </section>
     <section className="founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>MEET THE FOUNDER</label><h2>Work directly with the person who builds your website.</h2><p>I'm Danish Khan, Founder & Web Developer at RDDS Enterprises. I personally manage projects from early planning and design through development and final delivery.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer</span></div><Link className="text-link" to="/about">More about me ↗</Link></div></div></section>
-    <section className="home-blog section"><div className="section-head"><label>FROM THE BLOG</label><h2>Ideas, insights & <em>updates.</em></h2><p>Helpful thoughts about websites, design and growing your business online.</p></div><div className="blog-empty compact"><span className="blog-icon">✦</span><h3>Articles are coming soon</h3><p>We're preparing useful articles for business owners and creators.</p><Link className="text-link" to="/blog">Visit the blog ↗</Link></div></section>
+    <section className="home-blog section"><div className="section-head"><label>FROM THE BLOG</label><h2>Ideas, insights & <em>updates.</em></h2><p>Helpful thoughts about websites, design and growing your business online.</p></div>{managedPosts.length ? <div className="blog-grid">{managedPosts.map(post => <article className="blog-card" key={post.id}><div className="blog-card-body"><small>{post.category}</small><h3>{post.title}</h3><p>{post.description}</p><Link className="text-link" to={"/blog/" + post.slug}>Read article ↗</Link></div></article>)}</div> : <div className="blog-empty compact"><span className="blog-icon">✦</span><h3>Articles are coming soon</h3><p>We're preparing useful articles for business owners and creators.</p><Link className="text-link" to="/blog">Visit the blog ↗</Link></div>}</section>
     <section className="home-cta"><label>READY TO GET STARTED?</label><h2>Let's build something<br /><em>meaningful.</em></h2><Link className="btn primary" to="/contact">Start a conversation ↗</Link></section>
   </>;
 }
@@ -85,26 +103,77 @@ function About() {
 }
 
 function Services() {
-  return <main className="inner-page"><PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro><section className="section services-page"><div className="service-grid">{services.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section><section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section></main>;
+  const [managedServices, setManagedServices] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true })
+      .then(({ data }) => { if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] }))); });
+    return () => { cancelled = true; };
+  }, []);
+  const displayServices = managedServices.length ? managedServices : services;
+  return <main className="inner-page"><PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro><section className="section services-page"><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section><section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section></main>;
 }
 
 function Projects() {
-  return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of web development and visual design work.</PageIntro><section className="work projects-page"><div className="work-grid"><article><div className="work-art art-one">01</div><small>WEB DEVELOPMENT</small><h3>Enterprise Web Dashboard</h3><p>Analytical interfaces for useful business insights and reporting.</p></article><article><div className="work-art art-two">02</div><small>UI/UX & BRANDING</small><h3>Brand Identity & Visuals</h3><p>Brand assets and polished digital interface concepts.</p></article><a href="https://namiraskitchen.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">03 ↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a></div></section></main>;
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("projects").select("*").eq("published", true).order("created_at", { ascending: false })
+      .then(({ data }) => { if (!cancelled) setItems(data || []); });
+    return () => { cancelled = true; };
+  }, []);
+  return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of completed work.</PageIntro><section className="work projects-page"><div className="work-grid">
+    {items.map(item => item.website_url ? <a key={item.id} href={item.website_url} target="_blank" rel="noreferrer"><div className="work-art art-one">↗</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></a> : <article key={item.id}><div className="work-art art-one">✦</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></article>)}
+    <a href="https://namiraskitchen.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a>
+  </div></section></main>;
 }
 
 function Blog() {
-  return <main className="inner-page"><PageIntro eyebrow="RDDS JOURNAL" title={<>Ideas worth <em>sharing.</em></>}>Articles, tips and updates about web development, design, e-commerce and building a stronger online presence.</PageIntro><section className="section blog-page">{blogPosts.length ? <div className="blog-grid">{blogPosts.map(post => <article className="blog-card" key={post.slug}><div className="blog-card-art">RDDS JOURNAL</div><div className="blog-card-body"><small>{post.category}</small><h2>{post.title}</h2><p>{post.excerpt}</p><Link className="text-link" to={"/blog/" + post.slug}>Read article ↗</Link></div></article>)}</div> : <div className="blog-empty"><span className="blog-icon">✦</span><label>THE FIRST CHAPTER STARTS HERE</label><h2>Our blog is getting ready.</h2><p>There are no published articles yet. Soon, you'll find practical guides, website tips, design insights and updates from RDDS Enterprises here.</p><span className="blog-coming">NEW ARTICLES COMING SOON</span></div>}</section></main>;
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("blog_posts").select("*").eq("published", true).order("created_at", { ascending: false })
+      .then(({ data }) => { if (!cancelled) setPosts(data || []); });
+    return () => { cancelled = true; };
+  }, []);
+  return <main className="inner-page"><PageIntro eyebrow="RDDS JOURNAL" title={<>Ideas worth <em>sharing.</em></>}>Articles, tips and updates about web development, design, e-commerce and building a stronger online presence.</PageIntro><section className="section blog-page">{posts.length ? <div className="blog-grid">{posts.map(post => <article className="blog-card" key={post.slug}><div className="blog-card-art">RDDS JOURNAL</div><div className="blog-card-body"><small>{post.category}</small><h2>{post.title}</h2><p>{post.description}</p><Link className="text-link" to={"/blog/" + post.slug}>Read article ↗</Link></div></article>)}</div> : <div className="blog-empty"><span className="blog-icon">✦</span><label>THE FIRST CHAPTER STARTS HERE</label><h2>Our blog is getting ready.</h2><p>There are no published articles yet. Soon, you'll find practical guides, website tips, design insights and updates from RDDS Enterprises here.</p><span className="blog-coming">NEW ARTICLES COMING SOON</span></div>}</section></main>;
 }
 
 function BlogPost() {
   const { slug } = useParams();
-  const post = blogPosts.find(item => item.slug === slug);
+  const [post, setPost] = useState(null);
+  useEffect(() => {
+    if (!supabaseConfigured || !slug) return;
+    let cancelled = false;
+    supabase.from("blog_posts").select("*").eq("slug", slug).eq("published", true).maybeSingle()
+      .then(({ data }) => { if (!cancelled) setPost(data || null); });
+    return () => { cancelled = true; };
+  }, [slug]);
   if (!post) return <main className="inner-page"><div className="blog-empty"><h2>Article not found</h2><p>This article may have been moved or is not published yet.</p><Link className="text-link" to="/blog">← Back to blog</Link></div></main>;
-  return <main className="inner-page"><article className="article-page"><label>{post.category}</label><h1>{post.title}</h1><p>{post.excerpt}</p><div className="article-content">{post.content}</div><Link className="text-link" to="/blog">← Back to blog</Link></article></main>;
+  return <main className="inner-page"><article className="article-page"><label>{post.category}</label><h1>{post.title}</h1><p>{post.description}</p><div className="article-content">{post.content || post.description}</div><Link className="text-link" to="/blog">← Back to blog</Link></article></main>;
 }
 
 function Contact() {
-  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form action="https://formsubmit.co/rdds.enterprises@gmail.com" method="POST"><input type="hidden" name="_subject" value="New RDDS Enterprises enquiry" /><input type="hidden" name="_captcha" value="true" /><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service"><option>Custom Web Development</option><option>E-Commerce Solutions</option><option>UI/UX & Graphic Design</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button></form></div></section></main>;
+  const [submitState, setSubmitState] = useState("");
+  const submitContact = async event => {
+    event.preventDefault();
+    setSubmitState("");
+    if (!supabaseConfigured) return setSubmitState("Contact form abhi configured nahi hai. Please WhatsApp ya email se rabta karein.");
+    const formElement = event.currentTarget;
+    const values = new FormData(formElement);
+    const { error } = await supabase.from("contact_messages").insert({
+      name: String(values.get("name") || "").trim(),
+      email: String(values.get("email") || "").trim(),
+      subject: String(values.get("service") || "Website enquiry"),
+      message: String(values.get("message") || "").trim()
+    });
+    if (error) setSubmitState("Message send nahi hua. Please dobara try karein ya WhatsApp karein.");
+    else { setSubmitState("Shukriya! Aapka message successfully receive ho gaya."); formElement.reset(); }
+  };
+  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service"><option>Custom Web Development</option><option>E-Commerce Solutions</option><option>UI/UX & Graphic Design</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
 }
 
 function PublicSite() {
@@ -112,7 +181,7 @@ function PublicSite() {
 }
 
 function App() {
-  return <BrowserRouter><Routes><Route path="/admin" element={<Admin />} /><Route path="*" element={<PublicSite />} /></Routes></BrowserRouter>;
+  return <BrowserRouter><Routes><Route path="/admin" element={<Suspense fallback={<div className="admin-loading">RDDS Admin load ho raha hai…</div>}><Admin /></Suspense>} /><Route path="*" element={<PublicSite />} /></Routes></BrowserRouter>;
 }
 
 export default App;

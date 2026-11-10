@@ -1,35 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut
-} from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  serverTimestamp,
-  updateDoc
-} from "firebase/firestore";
-import { auth, db, firebaseConfigured } from "./firebase.js";
+import { supabase, supabaseConfigured } from "./supabase.js";
 import "./admin.css";
 
 const sections = [
-  { id: "services", label: "Services" },
-  { id: "projects", label: "Projects" },
-  { id: "blogPosts", label: "Blog posts" },
-  { id: "contactMessages", label: "Messages" }
+  { id: "services", table: "services", label: "Services" },
+  { id: "projects", table: "projects", label: "Projects" },
+  { id: "blogPosts", table: "blog_posts", label: "Blog posts" },
+  { id: "contactMessages", table: "contact_messages", label: "Messages" }
 ];
-
-const emptyForm = { title: "", description: "", slug: "", category: "", published: true };
+const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", content: "", published: true };
 
 export default function Admin() {
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [membershipChecked, setMembershipChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -41,54 +26,80 @@ export default function Admin() {
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    if (!firebaseConfigured || !auth) {
+    if (!supabaseConfigured) {
       setAuthChecked(true);
       return;
     }
-    return onAuthStateChanged(auth, async currentUser => {
-      setUser(currentUser);
-      setIsAdmin(false);
+    supabase.auth.getSession().then(({ data, error: sessionError }) => {
+      if (sessionError) setError("Session load nahi hua. Dobara sign in karein.");
+      setUser(data?.session?.user ?? null);
       setAuthChecked(true);
-      if (!currentUser) return;
-      try {
-        const membership = await getDoc(doc(db, "adminUsers", currentUser.uid));
-        setIsAdmin(membership.exists());
-      } catch {
-        setError("Admin permission verify nahi ho saki. Firestore Security Rules check karein.");
-      }
     });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsAdmin(false);
+      setMembershipChecked(false);
+    });
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-    if (!user || !isAdmin || !db) return;
     let cancelled = false;
+    setIsAdmin(false);
+    setMembershipChecked(false);
+    if (!user) {
+      setMembershipChecked(true);
+      return;
+    }
+    supabase.from("admin_users").select("user_id").eq("user_id", user.id).maybeSingle()
+      .then(({ data, error: membershipError }) => {
+        if (cancelled) return;
+        if (membershipError) setError("Admin permission verify nahi hui. Supabase RLS aur admin_users setup check karein.");
+        setIsAdmin(Boolean(data));
+        setMembershipChecked(true);
+      });
+    return () => { cancelled = true; };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user || !isAdmin) return;
+    let cancelled = false;
+    const section = sections.find(item => item.id === active);
+    if (!section) return;
     setLoading(true);
-    getDocs(collection(db, active))
-      .then(snapshot => {
-        if (!cancelled) setItems(snapshot.docs.map(item => ({ id: item.id, ...item.data() })));
-      })
-      .catch(() => {
-        if (!cancelled) setError("Data load nahi hua. Firestore Rules aur database check karein.");
-      })
-      .finally(() => { if (!cancelled) setLoading(false); });
+    supabase.from(section.table).select("*").order("created_at", { ascending: false })
+      .then(({ data, error: queryError }) => {
+        if (cancelled) return;
+        if (queryError) setError("Records load nahi huay. Supabase table permissions check karein.");
+        else setItems(data || []);
+        setLoading(false);
+      });
     return () => { cancelled = true; };
   }, [active, user, isAdmin]);
 
   const login = async event => {
     event.preventDefault();
     setError("");
-    try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
-      setPassword("");
-    } catch {
-      setError("Login nahi hua. Email aur password dobara check karein.");
-    }
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password
+    });
+    if (loginError) setError("Login nahi hua. Email aur password dobara check karein.");
+    else setPassword("");
   };
 
   const logout = async () => {
-    await signOut(auth);
+    const { error: logoutError } = await supabase.auth.signOut();
+    if (logoutError) setError("Sign out nahi ho saka. Dobara koshish karein.");
     setIsAdmin(false);
     setItems([]);
+  };
+
+  const loadItems = async () => {
+    const section = sections.find(item => item.id === active);
+    const { data, error: queryError } = await supabase.from(section.table).select("*").order("created_at", { ascending: false });
+    if (queryError) setError("Records refresh nahi huay.");
+    else setItems(data || []);
   };
 
   const saveItem = async event => {
@@ -100,20 +111,20 @@ export default function Admin() {
       slug: form.slug.trim(),
       category: form.category.trim(),
       published: Boolean(form.published),
-      updatedAt: serverTimestamp()
+      updated_at: new Date().toISOString(),
+      ...(active === "projects" ? { website_url: form.website_url.trim() } : {}),
+      ...(active === "blogPosts" ? { content: form.content.trim() } : {})
     };
     if (!payload.title) return setError("Title zaroor likhein.");
-    try {
-      if (editingId) await updateDoc(doc(db, active, editingId), payload);
-      else await addDoc(collection(db, active), { ...payload, createdAt: serverTimestamp() });
-      setForm(emptyForm);
-      setEditingId(null);
-      setShowForm(false);
-      const snapshot = await getDocs(collection(db, active));
-      setItems(snapshot.docs.map(item => ({ id: item.id, ...item.data() })));
-    } catch {
-      setError("Save nahi hua. Firestore permissions check karein.");
-    }
+    const section = sections.find(item => item.id === active);
+    const result = editingId
+      ? await supabase.from(section.table).update(payload).eq("id", editingId)
+      : await supabase.from(section.table).insert(payload);
+    if (result.error) return setError("Save nahi hua. Supabase admin permission check karein.");
+    setForm(emptyForm);
+    setEditingId(null);
+    setShowForm(false);
+    await loadItems();
   };
 
   const editItem = item => {
@@ -123,6 +134,8 @@ export default function Admin() {
       description: item.description || "",
       slug: item.slug || "",
       category: item.category || "",
+      website_url: item.website_url || "",
+      content: item.content || "",
       published: item.published !== false
     });
     setShowForm(true);
@@ -130,15 +143,13 @@ export default function Admin() {
 
   const removeItem = async id => {
     if (!window.confirm("Kya aap is record ko delete karna chahte hain?")) return;
-    try {
-      await deleteDoc(doc(db, active, id));
-      setItems(current => current.filter(item => item.id !== id));
-    } catch {
-      setError("Delete nahi hua. Firestore permissions check karein.");
-    }
+    const section = sections.find(item => item.id === active);
+    const { error: deleteError } = await supabase.from(section.table).delete().eq("id", id);
+    if (deleteError) return setError("Delete nahi hua. Supabase admin permission check karein.");
+    setItems(current => current.filter(item => item.id !== id));
   };
 
-  if (!firebaseConfigured) return <SetupScreen />;
+  if (!supabaseConfigured) return <SetupScreen />;
   if (!authChecked) return <div className="admin-loading">RDDS Admin load ho raha hai…</div>;
 
   if (!user) return <main className="admin-page"><div className="admin-login">
@@ -155,9 +166,10 @@ export default function Admin() {
     <a className="admin-back" href="/">← Back to public website</a>
   </div></main>;
 
+  if (!membershipChecked) return <div className="admin-loading">Admin permission verify ho rahi hai…</div>;
   if (!isAdmin) return <main className="admin-page"><div className="admin-login">
     <div className="admin-kicker">ACCESS RESTRICTED</div><h1>Not authorised.</h1>
-    <p>This Firebase account is not on the RDDS administrator allowlist.</p>
+    <p>This Supabase account is not on the RDDS administrator allowlist.</p>
     {error && <div className="admin-error">{error}</div>}
     <button className="admin-primary" onClick={logout}>Sign out</button>
     <a className="admin-back" href="/">← Back to public website</a>
@@ -180,12 +192,14 @@ export default function Admin() {
         <h2>{editingId ? "Edit record" : "Create new record"}</h2>
         <label>Title<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></label>
         <label>Description<textarea rows="4" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
+        {active === "projects" && <label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label>}
+        {active === "blogPosts" && <label>Article content<textarea rows="8" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} placeholder="Write your article..." /></label>}
         <div className="admin-form-row"><label>Slug<input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="my-first-post" /></label><label>Category<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Web development" /></label></div>
         <label className="admin-check"><input type="checkbox" checked={form.published} onChange={e => setForm({ ...form, published: e.target.checked })} /> Published (visible to public read rules)</label>
         <div className="admin-actions"><button className="admin-primary" type="submit">Save changes</button><button type="button" className="admin-cancel" onClick={() => setShowForm(false)}>Cancel</button></div>
       </form>}
-      {loading ? <div className="admin-empty">Loading records…</div> : items.length === 0 ? <div className="admin-empty"><span>✦</span><h2>No {activeLabel.toLowerCase()} yet</h2><p>{active === "contactMessages" ? "New messages stored in Firestore will appear here." : "Create your first record using the Add new button."}</p></div> :
-        <div className="admin-records">{items.map(item => <article className="admin-record" key={item.id}><div><div className="admin-record-meta">{item.category || activeLabel} · {item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{item.description || item.message || item.email || "—"}</p></div>{active !== "contactMessages" && <div className="admin-record-actions"><button onClick={() => editItem(item)}>Edit</button><button onClick={() => removeItem(item.id)}>Delete</button></div>}</article>)}</div>}
+      {loading ? <div className="admin-empty">Loading records…</div> : items.length === 0 ? <div className="admin-empty"><span>✦</span><h2>No {activeLabel.toLowerCase()} yet</h2><p>{active === "contactMessages" ? "New messages stored in Supabase will appear here." : "Create your first record using the Add new button."}</p></div> :
+        <div className="admin-records">{items.map(item => <article className="admin-record" key={item.id}><div><div className="admin-record-meta">{item.category || activeLabel} · {item.published === false ? "Draft" : (item.status || "Published")}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{item.description || item.message || item.email || "—"}</p></div>{active !== "contactMessages" && <div className="admin-record-actions"><button onClick={() => editItem(item)}>Edit</button><button onClick={() => removeItem(item.id)}>Delete</button></div>}</article>)}</div>}
     </section>
   </main>;
 }
@@ -193,9 +207,9 @@ export default function Admin() {
 function SetupScreen() {
   return <main className="admin-page"><div className="admin-login admin-setup">
     <a className="admin-brand" href="/">R <span>RDDS ENTERPRISES</span></a>
-    <div className="admin-kicker">FIREBASE CONNECTION REQUIRED</div><h1>One quick setup.</h1>
-    <p>The RDDS admin panel code is ready, but Firebase is not connected yet. Add your Firebase web app settings to the Vercel environment variables to activate secure login.</p>
-    <ol><li>Create the Firebase project and Firestore database.</li><li>Enable Authentication → Email/Password.</li><li>Copy the Firebase web app config into the Vercel variables listed in <code>.env.example</code>.</li><li>Publish <code>firestore.rules</code> and add the authorised admin UID to <code>adminUsers</code>.</li></ol>
+    <div className="admin-kicker">SUPABASE CONNECTION REQUIRED</div><h1>One quick setup.</h1>
+    <p>Supabase project connection is missing. Add the two public Supabase settings from your project to the Vercel environment variables listed in <code>.env.example</code>.</p>
+    <ol><li>Open Supabase Dashboard → Authentication → Users and create the administrator with Email/Password.</li><li>Copy that user's UUID from the Users list.</li><li>Run the admin allowlist SQL shown in <code>supabase/ADMIN_SETUP.md</code>.</li><li>Redeploy the website after adding the Vercel environment variables.</li></ol>
     <a className="admin-back" href="/">← Back to public website</a>
   </div></main>;
 }
