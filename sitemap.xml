@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rddsdigitalsolution.vercel.app/</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/about</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/services</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/pricing</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/projects</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/blog</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/blog/digital-zamane-mein-business-ke-liye-website-kyun-zaroori-hai</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/contact</loc></url>
 </urlset>
