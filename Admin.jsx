@@ -130,14 +130,19 @@ export default function Admin() {
   };
   const saveItem = async event => {
     event.preventDefault(); setError("");
-    const payload = {
+    const payload = active === "pricingPackages" ? {
+      title: form.title.trim(), service_type: form.service_type, tier: form.tier,
+      price_pkr: Number(form.price_pkr), price_usd: Number(form.price_usd),
+      delivery_days: form.delivery_days.trim(), features: form.features_text.split("\n").map(value => value.trim()).filter(Boolean),
+      sort_order: Number(form.sort_order) || 1, published: Boolean(form.published), updated_at: new Date().toISOString()
+    } : {
       title: form.title.trim(), description: form.description.trim(), slug: form.slug.trim(),
       category: form.category.trim(), published: Boolean(form.published), updated_at: new Date().toISOString(),
       ...(active === "projects" ? { website_url: form.website_url.trim() } : {}),
-      ...(active === "pricingPackages" ? { service_type: form.service_type, tier: form.tier, price_pkr: Number(form.price_pkr), price_usd: Number(form.price_usd), delivery_days: form.delivery_days.trim(), features: form.features_text.split("\n").map(value => value.trim()).filter(Boolean), sort_order: Number(form.sort_order) || 1 } : {}),
       ...(active === "blogPosts" ? { content: form.content.trim() } : {})
     };
     if (!payload.title) return setError("Title zaroor likhein.");
+    if (active === "pricingPackages" && (!payload.price_pkr || !payload.price_usd || !payload.delivery_days)) return setError("PKR, USD aur delivery time zaroor fill karein.");
     const section = sections.find(item => item.id === active);
     const result = editingId ? await supabase.from(section.table).update(payload).eq("id", editingId) : await supabase.from(section.table).insert(payload);
     if (result.error) return setError("Save nahi hua. Supabase admin permission check karein.");
