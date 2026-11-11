@@ -1,6 +1,7 @@
 -- RDDS recruiter portal: run once in Supabase SQL Editor.
 create table if not exists public.recruiter_profiles (
   id uuid primary key references auth.users(id) on delete cascade,
+  email text not null default '',
   full_name text not null default '',
   company_name text not null default '',
   phone text not null default '',
@@ -37,15 +38,17 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.recruiter_profiles (id, full_name, company_name, phone, purpose)
+  insert into public.recruiter_profiles (id, email, full_name, company_name, phone, purpose)
   values (
     new.id,
+    coalesce(new.email, ''),
     coalesce(new.raw_user_meta_data ->> 'full_name', ''),
     coalesce(new.raw_user_meta_data ->> 'company_name', ''),
     coalesce(new.raw_user_meta_data ->> 'phone', ''),
     coalesce(new.raw_user_meta_data ->> 'purpose', '')
   )
   on conflict (id) do update set
+    email = excluded.email,
     full_name = excluded.full_name,
     company_name = excluded.company_name,
     phone = excluded.phone,
