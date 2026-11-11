@@ -22,7 +22,7 @@ function SeoManager() {
     const pages = {
       "/": {
         title: "RDDS Enterprises | Website Design & Development in Pakistan",
-        description: "RDDS Enterprises creates modern business websites, e-commerce stores and custom web applications. Work directly with Danish Khan for thoughtful design and development."
+        description: "RDDS Enterprises builds business websites and e-commerce stores in Pakistan and worldwide. Work directly with founder Danish Khan."
       },
       "/recruiter": {
         title: "Recruiter Portal | RDDS Enterprises",
@@ -36,9 +36,13 @@ function SeoManager() {
         title: "Website Development & E-Commerce Services | RDDS Enterprises",
         description: "Explore custom website development, e-commerce solutions, UI/UX design and graphic design services from RDDS Enterprises."
       },
+      "/pricing": {
+        title: "Website & E-Commerce Packages | RDDS Enterprises",
+        description: "Compare RDDS website development and e-commerce packages in PKR and USD. Choose a plan or request a custom project quote."
+      },
       "/projects": {
         title: "Website Portfolio & Projects | RDDS Enterprises",
-        description: "Explore selected website and digital projects by RDDS Enterprises, including business and restaurant website work."
+        description: "Explore RDDS website projects, development capabilities and digital solutions for businesses."
       },
       "/blog": {
         title: "Web Design & Digital Insights | RDDS Enterprises Blog",
@@ -325,7 +329,7 @@ function Services() {
   const displayServices = managedServices.length ? managedServices : services;
   return <main className="inner-page">
     <PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro>
-    <section className="section services-page"><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section>
+    <section className="section services-page"><div className="section-head"><label>HOW WE CAN HELP</label><h2>Services built around <em>your goals.</em></h2><p>Choose focused support for a new business website, an online store or a more polished digital identity. Every project starts with understanding your requirements.</p></div><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section>
     <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
   </main>;
 }
@@ -391,8 +395,9 @@ function Projects() {
       });
     return () => { cancelled = true; };
   }, []);
-  return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of completed work.</PageIntro><section className="work projects-page"><div className="work-grid">
+  return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>Explore website and digital solutions created for business needs. Our work can include business websites, e-commerce experiences and custom features, with each project shaped around its audience and goals.</PageIntro><section className="work projects-page"><div className="section-head"><label>PROJECT PORTFOLIO</label><h2>Practical solutions. <em>Thoughtful execution.</em></h2><p>Browse the published projects below to see the type of work RDDS delivers. Project details are added as client work is approved for public display.</p></div><div className="work-grid">
     {items.map(item => item.website_url ? <a key={item.id} href={item.website_url} target="_blank" rel="noreferrer"><div className="work-art art-one">↗</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></a> : <article key={item.id}><div className="work-art art-one">✦</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></article>)}
+    {!items.length && <div className="blog-empty"><span className="blog-icon">✦</span><h3>New projects are being prepared</h3><p>We are preparing approved project previews for this portfolio. If you would like to discuss a website or online store, contact RDDS to talk through your requirements and receive relevant examples.</p><Link className="text-link" to="/contact">Discuss your project ↗</Link></div>}
   </div></section></main>;
 }
 
