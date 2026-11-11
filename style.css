@@ -304,3 +304,16 @@ footer{
   .welcome-overlay,.welcome-card{animation:none!important;opacity:1;transform:none}
   .welcome-actions button{transition:none}
 }
+
+/* International language selector */
+.language-switcher{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 10px;border:1px solid #78adf055;border-radius:9px;background:linear-gradient(145deg,#0d2c58dd,#071b39ee);box-shadow:inset 0 1px 0 #ffffff0a,0 5px 18px #0002;color:#dcecff;flex:0 0 auto}
+.language-switcher:focus-within{border-color:#8fc4ff;box-shadow:0 0 0 3px #1684ff20,0 0 18px #1684ff22}
+.language-globe{font-size:17px;color:#8fc4ff;line-height:1}
+.language-switcher select{appearance:none;-webkit-appearance:none;max-width:132px;min-width:94px;padding:8px 22px 8px 0;border:0;outline:0;background:transparent;color:#e6f2ff;font:600 11px 'DM Sans',sans-serif;cursor:pointer}
+.language-switcher select option{background:#0a2042;color:#e6f2ff}
+.language-current-flag{position:absolute;right:10px;pointer-events:none;font-size:14px;opacity:.9}
+#google_translate_element{display:none!important}
+.goog-te-banner-frame,.goog-te-balloon-frame{display:none!important}
+body{top:0!important}
+@media(max-width:900px){.language-switcher{margin-left:2px}}
+@media(max-width:620px){.topbar nav.mobile-open .language-switcher{display:flex;align-self:flex-start;margin:12px 10px 8px}.language-switcher select{font-size:12px;min-width:112px}}
