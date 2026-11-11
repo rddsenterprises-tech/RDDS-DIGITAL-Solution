@@ -1,3 +1,13 @@
+const uniqueProjects = rows => {
+  const seen = new Set();
+  return rows.filter(item => {
+    const key = String(item.website_url || item.slug || item.id || "").trim().toLowerCase().replace(/\/$/, "");
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./admin.css";
@@ -93,7 +103,7 @@ export default function Admin() {
       .then(({ data, error: queryError }) => {
         if (cancelled) return;
         if (queryError) setError("Records load nahi huay. Supabase table permissions check karein.");
-        else setItems(data || []);
+        else setItems(active === "projects" ? uniqueProjects(data || []) : (data || []));
         setLoading(false);
       });
     return () => { cancelled = true; };
@@ -114,7 +124,7 @@ export default function Admin() {
     const section = sections.find(item => item.id === active);
     const { data, error: queryError } = await supabase.from(section.table).select("*").order("created_at", { ascending: false });
     if (queryError) setError("Records refresh nahi huay.");
-    else setItems(data || []);
+    else setItems(active === "projects" ? uniqueProjects(data || []) : (data || []));
     await loadOverview();
   };
   const saveItem = async event => {
