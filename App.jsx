@@ -330,7 +330,18 @@ function Projects() {
     if (!supabaseConfigured) return;
     let cancelled = false;
     supabase.from("projects").select("*").eq("published", true).order("created_at", { ascending: false })
-      .then(({ data }) => { if (!cancelled) setItems(data || []); });
+      .then(({ data }) => {
+        if (cancelled) return;
+        // Keep one card per project URL/slug so stale or repeated records never render twice.
+        const seen = new Set();
+        const uniqueItems = (data || []).filter(item => {
+          const key = String(item.website_url || item.slug || item.id || "").trim().toLowerCase().replace(/\/$/, "");
+          if (!key || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        setItems(uniqueItems);
+      });
     return () => { cancelled = true; };
   }, []);
   return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of completed work.</PageIntro><section className="work projects-page"><div className="work-grid">
