@@ -313,15 +313,43 @@ function About() {
 
 function Services() {
   const [managedServices, setManagedServices] = useState([]);
+  const [packages, setPackages] = useState([]);
+  const [currency, setCurrency] = useState("PKR");
   useEffect(() => {
     if (!supabaseConfigured) return;
     let cancelled = false;
-    supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true })
-      .then(({ data }) => { if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] }))); });
+    Promise.all([
+      supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true }),
+      supabase.from("pricing_packages").select("*").eq("published", true).order("sort_order", { ascending: true })
+    ]).then(([serviceResult, packageResult]) => {
+      if (cancelled) return;
+      if (serviceResult.data?.length) setManagedServices(serviceResult.data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] })));
+      if (packageResult.data) setPackages(packageResult.data);
+    });
     return () => { cancelled = true; };
   }, []);
   const displayServices = managedServices.length ? managedServices : services;
-  return <main className="inner-page"><PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro><section className="section services-page"><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section><section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section></main>;
+  const websitePackages = packages.filter(item => item.service_type === "website");
+  const storePackages = packages.filter(item => item.service_type === "ecommerce");
+  const formatPrice = item => currency === "PKR" ? "Rs. " + Number(item.price_pkr).toLocaleString("en-PK") : "$" + Number(item.price_usd).toLocaleString("en-US") + " USD";
+  const renderPackages = items => <div className="pricing-grid">{items.map(item => <article className={"pricing-card" + (item.tier === "business" ? " pricing-featured" : "")} key={item.id}>
+    {item.tier === "business" && <span className="pricing-popular">MOST POPULAR</span>}
+    <div className="pricing-tier">{item.tier.toUpperCase()} PLAN</div><h3>{item.title}</h3><div className="pricing-price">{formatPrice(item)}</div>
+    <p className="pricing-delivery">◷ {item.delivery_days}</p>
+    <ul>{(Array.isArray(item.features) ? item.features : []).map((feature, index) => <li key={index}><span>✓</span>{feature}</li>)}</ul>
+    <Link className="btn primary pricing-cta" to={"/contact?package=" + encodeURIComponent(item.title + " - " + formatPrice(item))}>Choose this package ↗</Link>
+  </article>)}</div>;
+  return <main className="inner-page">
+    <PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro>
+    <section className="section services-page"><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section>
+    <section className="section pricing-section"><div className="section-head"><label>TRANSPARENT PACKAGES</label><h2>Choose the right <em>plan.</em></h2><p>Clear packages for businesses at every stage. Need something different? Ask us for a custom quotation.</p></div>
+      <div className="pricing-currency" role="group" aria-label="Choose pricing currency"><button type="button" className={currency === "PKR" ? "active" : ""} onClick={() => setCurrency("PKR")}>🇵🇰 PKR</button><button type="button" className={currency === "USD" ? "active" : ""} onClick={() => setCurrency("USD")}>🇺🇸 USD</button></div>
+      <div className="pricing-group"><div className="pricing-group-heading"><span>01</span><div><h3>Website Development</h3><p>Professional websites for your business and brand.</p></div></div>{renderPackages(websitePackages)}</div>
+      <div className="pricing-group"><div className="pricing-group-heading"><span>02</span><div><h3>E-Commerce Website Development</h3><p>Practical online stores to showcase products and receive orders.</p></div></div>{renderPackages(storePackages)}</div>
+      <div className="pricing-terms"><strong>Project terms</strong><p>50% advance to start and 50% before final handover. Domain, hosting, paid third-party services and payment gateway charges are separate. Extra pages, products and custom integrations are quoted separately. Revisions are limited to each package.</p></div>
+    </section>
+    <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
+  </main>;
 }
 
 function Projects() {
