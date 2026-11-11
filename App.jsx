@@ -438,6 +438,15 @@ function Blog() {
 function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
+  const faqs = [
+    { question: "Why does a small business need a professional website?", answer: "A professional website gives customers a reliable place to understand your business, review your services and contact you. It also gives you more control over your online presence than relying only on social media profiles." },
+    { question: "Can a business website help customers find me on Google?", answer: "Yes. A well-structured website with useful, relevant content and sound technical foundations can help search engines understand your business. Rankings and traffic are not guaranteed and depend on competition, relevance and ongoing work." },
+    { question: "How much does a business website cost in Pakistan?", answer: "The cost depends on the number of pages, design requirements, content, integrations and custom features. RDDS offers website packages and can provide a project-specific quotation after discussing your requirements." },
+    { question: "Can RDDS build an e-commerce website or online store?", answer: "Yes. RDDS provides Shopify and custom e-commerce development. Depending on the agreed scope, a project can include product pages, store setup, payment integration support and order-management features." },
+    { question: "Can RDDS work with clients outside Pakistan?", answer: "Yes. RDDS is based in Pakistan and can collaborate remotely with businesses in other markets, including the UAE, Canada, the United Kingdom and the United States. Project communication and delivery arrangements are agreed individually." },
+    { question: "What should I prepare before starting a website project?", answer: "Prepare a short description of your business, your main goals, the services or products you want to show, any preferred examples, and the features you need. If you do not have everything ready, RDDS can discuss the requirements with you first." }
+  ];
+
   useEffect(() => {
     if (!supabaseConfigured || !slug) return;
     let cancelled = false;
@@ -445,8 +454,77 @@ function BlogPost() {
       .then(({ data }) => { if (!cancelled) setPost(data || null); });
     return () => { cancelled = true; };
   }, [slug]);
+
+  useEffect(() => {
+    if (!post) return;
+    const canonical = SITE_URL + "/blog/" + post.slug;
+    document.title = post.title + " | RDDS Enterprises";
+    let description = document.head.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement("meta");
+      description.name = "description";
+      document.head.appendChild(description);
+    }
+    description.content = post.description || post.title;
+    let canonicalLink = document.head.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement("link");
+      canonicalLink.rel = "canonical";
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.href = canonical;
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": canonical + "#article",
+          mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+          headline: post.title,
+          description: post.description || post.title,
+          articleSection: post.category || "Website Development",
+          inLanguage: "en",
+          author: {
+            "@type": "Person",
+            name: "Danish Khan",
+            jobTitle: "Founder & Web Developer",
+            url: SITE_URL + "/about"
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "RDDS Enterprises",
+            url: SITE_URL
+          },
+          ...(post.created_at ? { datePublished: post.created_at } : {}),
+          ...(post.updated_at ? { dateModified: post.updated_at } : {})
+        },
+        {
+          "@type": "FAQPage",
+          "@id": canonical + "#faq",
+          mainEntity: faqs.map(item => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: { "@type": "Answer", text: item.answer }
+          }))
+        }
+      ]
+    };
+    let schemaScript = document.getElementById("rdds-article-schema");
+    if (!schemaScript) {
+      schemaScript = document.createElement("script");
+      schemaScript.id = "rdds-article-schema";
+      schemaScript.type = "application/ld+json";
+      document.head.appendChild(schemaScript);
+    }
+    schemaScript.textContent = JSON.stringify(schema);
+    return () => {
+      schemaScript.remove();
+    };
+  }, [post]);
+
   if (!post) return <main className="inner-page"><div className="blog-empty"><h2>Article not found</h2><p>This article may have been moved or is not published yet.</p><Link className="text-link" to="/blog">← Back to blog</Link></div></main>;
-  return <main className="inner-page"><article className="article-page"><label>{post.category}</label><h1>{post.title}</h1><p>{post.description}</p><div className="article-content">{post.content || post.description}</div><Link className="text-link" to="/blog">← Back to blog</Link></article></main>;
+  return <main className="inner-page"><article className="article-page"><label>{post.category}</label><h1>{post.title}</h1><p>{post.description}</p><div className="article-content" style={{ whiteSpace: "pre-line" }}>{post.content || post.description}</div><section className="article-faq" aria-labelledby="article-faq-title"><h2 id="article-faq-title">Frequently Asked Questions</h2>{faqs.map((item, index) => <details className="article-faq-item" key={index}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section><Link className="text-link" to="/blog">← Back to blog</Link></article></main>;
 }
 
 function Contact() {
