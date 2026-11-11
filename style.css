@@ -317,3 +317,23 @@ footer{
 body{top:0!important}
 @media(max-width:900px){.language-switcher{margin-left:2px}}
 @media(max-width:620px){.topbar nav.mobile-open .language-switcher{display:flex;align-self:flex-start;margin:12px 10px 8px}.language-switcher select{font-size:12px;min-width:112px}}
+
+/* RDDS package pricing */
+.pricing-section{padding-top:35px}.pricing-currency{display:flex;justify-content:center;gap:8px;margin:0 auto 42px}
+.pricing-currency button{padding:10px 20px;border:1px solid #8eb8e544;border-radius:9px;background:#0b2042;color:#b9cce6;font:700 12px 'DM Sans',sans-serif;cursor:pointer}
+.pricing-currency button.active{border-color:#83baff;background:linear-gradient(110deg,#0759bd,#0b3c7b);color:#fff;box-shadow:0 8px 24px #006bdb33}
+.pricing-group{margin:0 0 58px}.pricing-group-heading{display:flex;align-items:center;gap:16px;margin:0 0 22px}
+.pricing-group-heading>span{width:42px;height:42px;display:grid;place-items:center;border:1px solid #c5a56c66;border-radius:12px;color:#e2c58e;font:700 15px 'Roboto Slab'}
+.pricing-group-heading h3{margin:0;color:#edf4ff;font:700 clamp(20px,3vw,27px) 'Roboto Slab'}.pricing-group-heading p{margin:5px 0 0;color:#91a8c7;font-size:12px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.pricing-card{position:relative;display:flex;flex-direction:column;padding:27px 24px 24px;border:1px solid #8eb8e52b;border-radius:15px;background:linear-gradient(155deg,#0d2850,#091b38);box-shadow:0 16px 38px #0002}
+.pricing-card.pricing-featured{border-color:#c5a56c88;background:linear-gradient(155deg,#192f52,#101f3b);box-shadow:0 18px 45px #0003,0 0 28px #c5a56c0d}
+.pricing-popular{position:absolute;top:-11px;right:18px;padding:5px 10px;border-radius:20px;background:#c5a56c;color:#101b2e;font-size:9px;font-weight:900;letter-spacing:.1em}
+.pricing-tier{color:#8bbcff;font-size:9px;font-weight:800;letter-spacing:.18em}.pricing-card h3{margin:10px 0 8px;color:#f2f6fc;font:700 21px 'Roboto Slab'}
+.pricing-price{color:#fff;font:800 clamp(25px,2.4vw,32px) 'DM Sans',sans-serif;letter-spacing:-.04em;white-space:nowrap}.pricing-delivery{margin:10px 0 18px;color:#a9bedb;font-size:11px}
+.pricing-card ul{display:grid;gap:11px;margin:0 0 25px;padding:18px 0 0;border-top:1px solid #ffffff13;list-style:none}
+.pricing-card li{display:flex;gap:9px;color:#c1d0e5;font-size:12px;line-height:1.5}.pricing-card li span{color:#8bc4ff;font-weight:900}
+.pricing-cta{margin-top:auto;justify-content:center;text-align:center}.pricing-terms{max-width:850px;margin:5px auto 0;padding:20px 23px;border:1px solid #8eb8e522;border-radius:12px;background:#091d3a}
+.pricing-terms strong{color:#e6c98f;font-size:12px}.pricing-terms p{margin:8px 0 0;color:#9db0ca;font-size:11px;line-height:1.8}
+.admin-editor select{width:100%;padding:13px;border:1px solid #9ec2f244;border-radius:8px;background:#061630;color:white;outline:none}.admin-editor select:focus{border-color:#4396ff}
+@media(max-width:900px){.pricing-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.pricing-grid{grid-template-columns:1fr}.pricing-group{margin-bottom:43px}.pricing-card{padding:24px 21px}.pricing-price{font-size:30px}.pricing-currency{margin-bottom:32px}}
