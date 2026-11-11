@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rddsdigitalsolution.vercel.app/sitemap.xml
