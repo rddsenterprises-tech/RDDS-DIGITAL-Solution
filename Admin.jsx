@@ -15,12 +15,13 @@ import "./admin.css";
 const sections = [
   { id: "overview", label: "Overview", icon: "▦" },
   { id: "services", table: "services", label: "Services", icon: "◇" },
+  { id: "pricingPackages", table: "pricing_packages", label: "Pricing packages", icon: "$" },
   { id: "projects", table: "projects", label: "Projects", icon: "▧" },
   { id: "blogPosts", table: "blog_posts", label: "Blog posts", icon: "▤" },
   { id: "contactMessages", table: "contact_messages", label: "Messages", icon: "✉" },
   { id: "recruiters", table: "recruiter_profiles", label: "Recruiters", icon: "♙" }
 ];
-const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", content: "", published: true };
+const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
 const dateLabel = value => value ? new Date(value).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" }) : "—";
 
 export default function Admin() {
@@ -129,13 +130,19 @@ export default function Admin() {
   };
   const saveItem = async event => {
     event.preventDefault(); setError("");
-    const payload = {
+    const payload = active === "pricingPackages" ? {
+      title: form.title.trim(), service_type: form.service_type, tier: form.tier,
+      price_pkr: Number(form.price_pkr), price_usd: Number(form.price_usd),
+      delivery_days: form.delivery_days.trim(), features: form.features_text.split("\n").map(value => value.trim()).filter(Boolean),
+      sort_order: Number(form.sort_order) || 1, published: Boolean(form.published), updated_at: new Date().toISOString()
+    } : {
       title: form.title.trim(), description: form.description.trim(), slug: form.slug.trim(),
       category: form.category.trim(), published: Boolean(form.published), updated_at: new Date().toISOString(),
       ...(active === "projects" ? { website_url: form.website_url.trim() } : {}),
       ...(active === "blogPosts" ? { content: form.content.trim() } : {})
     };
     if (!payload.title) return setError("Title zaroor likhein.");
+    if (active === "pricingPackages" && (!payload.price_pkr || !payload.price_usd || !payload.delivery_days)) return setError("PKR, USD aur delivery time zaroor fill karein.");
     const section = sections.find(item => item.id === active);
     const result = editingId ? await supabase.from(section.table).update(payload).eq("id", editingId) : await supabase.from(section.table).insert(payload);
     if (result.error) return setError("Save nahi hua. Supabase admin permission check karein.");
@@ -143,7 +150,7 @@ export default function Admin() {
   };
   const editItem = item => {
     setEditingId(item.id);
-    setForm({ title: item.title || "", description: item.description || "", slug: item.slug || "", category: item.category || "", website_url: item.website_url || "", content: item.content || "", published: item.published !== false });
+    setForm({ ...emptyForm, title: item.title || "", description: item.description || "", slug: item.slug || "", category: item.category || "", website_url: item.website_url || "", content: item.content || "", service_type: item.service_type || "website", tier: item.tier || "starter", price_pkr: item.price_pkr ?? "", price_usd: item.price_usd ?? "", delivery_days: item.delivery_days || "", features_text: Array.isArray(item.features) ? item.features.join("\n") : "", sort_order: item.sort_order || 1, published: item.published !== false });
     setShowForm(true);
   };
   const removeItem = async id => {
@@ -219,14 +226,22 @@ export default function Admin() {
         <div className="admin-toolbar"><p>{active === "contactMessages" ? "Review and manage customer enquiries." : "Create, update and publish your website content."}</p>{active !== "contactMessages" && <button className="admin-primary" onClick={() => { setEditingId(null); setForm(emptyForm); setShowForm(v => !v); }}>＋ Add new</button>}</div>
         <div className="admin-list-tools"><label className="admin-search"><span>⌕</span><input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={active === "contactMessages" ? "Search name, email or message..." : "Search title, category or description..."} /></label>{(active === "contactMessages" || active === "recruiters") && <select aria-label="Filter records by status" value={messageFilter} onChange={e => setMessageFilter(e.target.value)}><option value="all">All statuses</option>{active === "contactMessages" ? <><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></> : <><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></>}</select>}<span className="admin-result-count">{visibleItems.length} of {items.length} records</span></div>
         {showForm && active !== "contactMessages" && <form className="admin-editor" onSubmit={saveItem}><h2>{editingId ? "Edit record" : "Create new record"}</h2>
-          <label>Title<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></label><label>Description<textarea rows="4" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
-          {active === "projects" && <label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label>}
-          {active === "blogPosts" && <label>Article content<textarea rows="8" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} placeholder="Write your article..." /></label>}
-          <div className="admin-form-row"><label>Slug<input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="my-first-post" /></label><label>Category<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Web development" /></label></div>
+          {active === "pricingPackages" ? <>
+            <label>Package name<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required placeholder="Business" /></label>
+            <div className="admin-form-row"><label>Service<select value={form.service_type} onChange={e => setForm({ ...form, service_type: e.target.value })}><option value="website">Website Development</option><option value="ecommerce">E-Commerce Website Development</option></select></label><label>Package tier<select value={form.tier} onChange={e => setForm({ ...form, tier: e.target.value })}><option value="starter">Starter</option><option value="business">Business</option><option value="premium">Premium</option></select></label></div>
+            <div className="admin-form-row"><label>Price in PKR<input type="number" min="1" value={form.price_pkr} onChange={e => setForm({ ...form, price_pkr: e.target.value })} required /></label><label>Price in USD<input type="number" min="1" value={form.price_usd} onChange={e => setForm({ ...form, price_usd: e.target.value })} required /></label></div>
+            <div className="admin-form-row"><label>Delivery time<input value={form.delivery_days} onChange={e => setForm({ ...form, delivery_days: e.target.value })} required placeholder="5–8 working days" /></label><label>Display order<input type="number" min="1" value={form.sort_order} onChange={e => setForm({ ...form, sort_order: e.target.value })} /></label></div>
+            <label>Package features (one per line)<textarea rows="7" value={form.features_text} onChange={e => setForm({ ...form, features_text: e.target.value })} placeholder={"Up to 5 pages\nMobile responsive design\nWhatsApp integration"} /></label>
+          </> : <>
+            <label>Title<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></label><label>Description<textarea rows="4" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
+            {active === "projects" && <label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label>}
+            {active === "blogPosts" && <label>Article content<textarea rows="8" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} placeholder="Write your article..." /></label>}
+            <div className="admin-form-row"><label>Slug<input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="my-first-post" /></label><label>Category<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Web development" /></label></div>
+          </>}
           <label className="admin-check"><input type="checkbox" checked={form.published} onChange={e => setForm({ ...form, published: e.target.checked })} /> Publish on website</label><div className="admin-actions"><button className="admin-primary" type="submit">Save changes</button><button type="button" className="admin-cancel" onClick={() => setShowForm(false)}>Cancel</button></div>
         </form>}
         {loading ? <div className="admin-empty">Loading records…</div> : items.length === 0 ? <div className="admin-empty"><span>✦</span><h2>No {activeLabel.toLowerCase()} yet</h2><p>{active === "contactMessages" ? "New messages submitted through your website will appear here." : "Create your first record using the Add new button."}</p></div> : visibleItems.length === 0 ? <div className="admin-empty"><span>⌕</span><h2>No matching records</h2><p>Search term ya status filter change karke dobara try karein.</p></div> :
-          <div className="admin-records">{visibleItems.map(item => <article className="admin-record" key={item.id}><div className="admin-record-content"><div className="admin-record-meta">{item.category || activeLabel} · {active === "contactMessages" ? (item.status || "new") : item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{active === "recruiters" ? [item.company_name, item.phone, item.email, item.purpose].filter(Boolean).join(" · ") : item.description || item.message || item.email || "—"}</p>{(active === "contactMessages" || active === "recruiters") && <small className="admin-record-date">{item.email || ""} · {dateLabel(item.created_at)}</small>}{active === "recruiters" && item.admin_notes && <small className="admin-record-date">Admin notes: {item.admin_notes}</small>}</div>
+          <div className="admin-records">{visibleItems.map(item => <article className="admin-record" key={item.id}><div className="admin-record-content"><div className="admin-record-meta">{item.category || activeLabel} · {active === "contactMessages" ? (item.status || "new") : item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{active === "recruiters" ? [item.company_name, item.phone, item.email, item.purpose].filter(Boolean).join(" · ") : active === "pricingPackages" ? `${item.service_type === "ecommerce" ? "E-Commerce" : "Website"} · PKR ${Number(item.price_pkr).toLocaleString("en-PK")} · ${item.price_usd} USD · ${item.delivery_days}` : item.description || item.message || item.email || "—"}</p>{active === "pricingPackages" && <small className="admin-record-date">{(Array.isArray(item.features) ? item.features : []).join(" · ")}</small>}{(active === "contactMessages" || active === "recruiters") && <small className="admin-record-date">{item.email || ""} · {dateLabel(item.created_at)}</small>}{active === "recruiters" && item.admin_notes && <small className="admin-record-date">Admin notes: {item.admin_notes}</small>}</div>
             {active === "contactMessages" ? <div className="admin-record-actions"><select aria-label="Message status" value={item.status || "new"} onChange={e => updateMessageStatus(item.id, e.target.value)}><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></select></div> : active === "recruiters" ? <div className="admin-record-actions"><select aria-label="Recruiter interest status" value={item.interest_status || "Pending"} onChange={e => updateRecruiterStatus(item.id, e.target.value)}><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></select><button onClick={() => updateRecruiterNotes(item)}>Notes</button></div> : <div className="admin-record-actions"><button onClick={() => editItem(item)}>Edit</button><button onClick={() => removeItem(item.id)}>Delete</button></div>}</article>)}</div>}
       </>}
     </section>

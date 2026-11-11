@@ -246,7 +246,7 @@ function Header() {
   return <header className="topbar">
     <Link className="brand" to="/" onClick={closeMenu}><span className="brand-mark">R</span><span>RDDS <b>ENTERPRISES</b></span></Link>
     <nav className={menuOpen ? "mobile-open" : ""}>
-      <NavLink to="/" end onClick={closeMenu}>Home</NavLink><NavLink to="/about" onClick={closeMenu}>About</NavLink><NavLink to="/services" onClick={closeMenu}>Services</NavLink><NavLink to="/projects" onClick={closeMenu}>Projects</NavLink><NavLink to="/blog" onClick={closeMenu}>Blog</NavLink><NavLink className="nav-cta" to="/contact" onClick={closeMenu}>Contact us</NavLink><LanguageSelector />
+      <NavLink to="/" end onClick={closeMenu}>Home</NavLink><NavLink to="/about" onClick={closeMenu}>About</NavLink><NavLink to="/services" onClick={closeMenu}>Services</NavLink><NavLink to="/pricing" onClick={closeMenu}>Pricing</NavLink><NavLink to="/projects" onClick={closeMenu}>Projects</NavLink><NavLink to="/blog" onClick={closeMenu}>Blog</NavLink><NavLink className="nav-cta" to="/contact" onClick={closeMenu}>Contact us</NavLink><LanguageSelector />
     </nav>
     <button className="mobile-cta" type="button" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen}>{menuOpen ? "✕" : "☰"}</button>
   </header>;
@@ -317,11 +317,58 @@ function Services() {
     if (!supabaseConfigured) return;
     let cancelled = false;
     supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true })
-      .then(({ data }) => { if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] }))); });
+      .then(({ data }) => {
+        if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] })));
+      });
     return () => { cancelled = true; };
   }, []);
   const displayServices = managedServices.length ? managedServices : services;
-  return <main className="inner-page"><PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro><section className="section services-page"><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section><section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section></main>;
+  return <main className="inner-page">
+    <PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro>
+    <section className="section services-page"><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section>
+    <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
+  </main>;
+}
+
+function Pricing() {
+  const [packages, setPackages] = useState([]);
+  const [currency, setCurrency] = useState("PKR");
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!supabaseConfigured) { setLoading(false); return; }
+    let cancelled = false;
+    supabase.from("pricing_packages").select("*").eq("published", true).order("sort_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (!error && data) setPackages(data);
+        setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, []);
+  const websitePackages = packages.filter(item => item.service_type === "website");
+  const storePackages = packages.filter(item => item.service_type === "ecommerce");
+  const formatPrice = item => currency === "PKR" ? "Rs. " + Number(item.price_pkr).toLocaleString("en-PK") : "$" + Number(item.price_usd).toLocaleString("en-US") + " USD";
+  const renderPackages = items => <div className="pricing-grid">{items.map(item => <article className={"pricing-card" + (item.tier === "business" ? " pricing-featured" : "")} key={item.id}>
+    {item.tier === "business" && <span className="pricing-popular">MOST POPULAR</span>}
+    <div className="pricing-tier">{item.tier.toUpperCase()} PLAN</div><h3>{item.title}</h3><div className="pricing-price">{formatPrice(item)}</div>
+    <p className="pricing-delivery">◷ {item.delivery_days}</p>
+    <ul>{(Array.isArray(item.features) ? item.features : []).map((feature, index) => <li key={index}><span>✓</span>{feature}</li>)}</ul>
+    <Link className="btn primary pricing-cta" to={"/contact?package=" + encodeURIComponent(item.title + " - " + formatPrice(item))}>Choose this package ↗</Link>
+  </article>)}</div>;
+  return <main className="inner-page">
+    <PageIntro eyebrow="RDDS PRICING" title={<>Clear plans. <em>Clear value.</em></>}>Choose a package that matches your business goals. Custom requirements can be quoted separately.</PageIntro>
+    <section className="section pricing-section">
+      <div className="section-head"><label>TRANSPARENT PACKAGES</label><h2>Choose the right <em>plan.</em></h2><p>Professional website and online store packages for businesses in Pakistan and worldwide.</p></div>
+      <div className="pricing-currency" role="group" aria-label="Choose pricing currency"><button type="button" className={currency === "PKR" ? "active" : ""} onClick={() => setCurrency("PKR")}>🇵🇰 PKR</button><button type="button" className={currency === "USD" ? "active" : ""} onClick={() => setCurrency("USD")}>🇺🇸 USD</button></div>
+      {loading ? <p className="pricing-loading">Loading packages…</p> : <>
+        <div className="pricing-group"><div className="pricing-group-heading"><span>01</span><div><h3>Website Development</h3><p>Professional websites for your business and brand.</p></div></div>{renderPackages(websitePackages)}</div>
+        <div className="pricing-group"><div className="pricing-group-heading"><span>02</span><div><h3>E-Commerce Website Development</h3><p>Practical online stores to showcase products and receive orders.</p></div></div>{renderPackages(storePackages)}</div>
+        {packages.length === 0 && <p>No published packages are available right now. Please contact us for a quotation.</p>}
+      </>}
+      <div className="pricing-terms"><strong>Project terms</strong><p>50% advance to start and 50% before final handover. Domain, hosting, paid third-party services and payment gateway charges are separate. Extra pages, products and custom integrations are quoted separately. Revisions are limited to each package.</p></div>
+    </section>
+    <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
+  </main>;
 }
 
 function Projects() {
@@ -376,6 +423,8 @@ function BlogPost() {
 }
 
 function Contact() {
+  const location = useLocation();
+  const selectedPackage = new URLSearchParams(location.search).get("package") || "";
   const [submitState, setSubmitState] = useState("");
   const submitContact = async event => {
     event.preventDefault();
@@ -392,7 +441,7 @@ function Contact() {
     if (error) setSubmitState("Message send nahi hua. Please dobara try karein ya WhatsApp karein.");
     else { setSubmitState("Shukriya! Aapka message successfully receive ho gaya."); formElement.reset(); }
   };
-  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service"><option>Custom Web Development</option><option>E-Commerce Solutions</option><option>UI/UX & Graphic Design</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
+  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service" defaultValue={selectedPackage || "Website Development"}>{selectedPackage && <option value={selectedPackage}>{selectedPackage}</option>}<option>Website Development</option><option>E-Commerce Website Development</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
 }
 
 
@@ -436,7 +485,7 @@ function RONIEChat() {
 }
 
 function PublicSite() {
-  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><RONIEChat /></div>
+  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><RONIEChat /></div>
 }
 
 function App() {
