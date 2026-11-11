@@ -337,3 +337,13 @@ body{top:0!important}
 .pricing-terms strong{color:#e6c98f;font-size:12px}.pricing-terms p{margin:8px 0 0;color:#9db0ca;font-size:11px;line-height:1.8}
 .admin-editor select{width:100%;padding:13px;border:1px solid #9ec2f244;border-radius:8px;background:#061630;color:white;outline:none}.admin-editor select:focus{border-color:#4396ff}
 @media(max-width:900px){.pricing-grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.pricing-grid{grid-template-columns:1fr}.pricing-group{margin-bottom:43px}.pricing-card{padding:24px 21px}.pricing-price{font-size:30px}.pricing-currency{margin-bottom:32px}}
+
+
+/* Blog article FAQ */
+.article-faq{margin:52px 0 28px;padding-top:28px;border-top:1px solid var(--line)}
+.article-faq h2{margin:0 0 20px;color:#d8eaff;font:700 clamp(24px,3vw,32px) 'Roboto Slab'}
+.article-faq-item{margin:12px 0;border:1px solid var(--line);border-radius:12px;background:#0c2247;overflow:hidden}
+.article-faq-item summary{padding:17px 19px;color:#e4efff;font-size:14px;font-weight:700;cursor:pointer;list-style-position:inside}
+.article-faq-item summary::marker{color:#80b9ff}
+.article-faq-item p{margin:0;padding:0 19px 18px;color:var(--muted);font-size:13px;line-height:1.8}
+.article-content{white-space:pre-line;overflow-wrap:anywhere}
