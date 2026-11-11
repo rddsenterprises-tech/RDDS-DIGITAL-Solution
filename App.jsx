@@ -193,13 +193,60 @@ function IntroScreen() {
   </section>;
 }
 
+const supportedLanguages = [
+  { code: "en", flag: "🇬🇧", label: "English" },
+  { code: "ur", flag: "🇵🇰", label: "اردو" },
+  { code: "ar", flag: "🇸🇦", label: "العربية" },
+  { code: "fr", flag: "🇫🇷", label: "Français" },
+  { code: "de", flag: "🇩🇪", label: "Deutsch" },
+  { code: "es", flag: "🇪🇸", label: "Español" },
+  { code: "zh-CN", flag: "🇨🇳", label: "中文" }
+];
+function LanguageSelector() {
+  const getSavedLanguage = () => {
+    const entry = document.cookie.split("; ").find(item => item.startsWith("googtrans="));
+    return entry ? decodeURIComponent(entry.split("=")[1]).split("/").pop() || "en" : "en";
+  };
+  const [language, setLanguage] = useState(getSavedLanguage);
+  useEffect(() => {
+    window.googleTranslateElementInit = () => {
+      if (window.google?.translate?.TranslateElement && document.getElementById("google_translate_element")) {
+        new window.google.translate.TranslateElement({ pageLanguage: "en", includedLanguages: "en,ur,ar,fr,de,es,zh-CN", autoDisplay: false }, "google_translate_element");
+      }
+    };
+    if (!document.getElementById("google-translate-script")) {
+      const script = document.createElement("script");
+      script.id = "google-translate-script";
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      document.body.appendChild(script);
+    } else if (window.google?.translate?.TranslateElement) window.googleTranslateElementInit();
+  }, []);
+  const changeLanguage = event => {
+    const nextLanguage = event.target.value;
+    setLanguage(nextLanguage);
+    if (nextLanguage === "en") document.cookie = "googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    else document.cookie = "googtrans=/en/" + nextLanguage + ";path=/;SameSite=Lax";
+    window.location.reload();
+  };
+  const selected = supportedLanguages.find(item => item.code === language) || supportedLanguages[0];
+  return <div className="language-switcher">
+    <span className="language-globe" aria-hidden="true">◎</span>
+    <select aria-label="Select website language" value={language} onChange={changeLanguage} title="Choose your language">
+      {supportedLanguages.map(item => <option value={item.code} key={item.code}>{item.flag}  {item.label}</option>)}
+    </select>
+    <span className="language-current-flag" aria-hidden="true">{selected.flag}</span>
+    <div id="google_translate_element" aria-hidden="true" />
+  </div>;
+}
+
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
   return <header className="topbar">
     <Link className="brand" to="/" onClick={closeMenu}><span className="brand-mark">R</span><span>RDDS <b>ENTERPRISES</b></span></Link>
     <nav className={menuOpen ? "mobile-open" : ""}>
-      <NavLink to="/" end onClick={closeMenu}>Home</NavLink><NavLink to="/about" onClick={closeMenu}>About</NavLink><NavLink to="/services" onClick={closeMenu}>Services</NavLink><NavLink to="/projects" onClick={closeMenu}>Projects</NavLink><NavLink to="/blog" onClick={closeMenu}>Blog</NavLink><NavLink className="nav-cta" to="/contact" onClick={closeMenu}>Contact us</NavLink>
+      <NavLink to="/" end onClick={closeMenu}>Home</NavLink><NavLink to="/about" onClick={closeMenu}>About</NavLink><NavLink to="/services" onClick={closeMenu}>Services</NavLink><NavLink to="/projects" onClick={closeMenu}>Projects</NavLink><NavLink to="/blog" onClick={closeMenu}>Blog</NavLink><NavLink className="nav-cta" to="/contact" onClick={closeMenu}>Contact us</NavLink><LanguageSelector />
     </nav>
     <button className="mobile-cta" type="button" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen}>{menuOpen ? "✕" : "☰"}</button>
   </header>;
