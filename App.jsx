@@ -328,8 +328,30 @@ function Services() {
   }, []);
   const displayServices = managedServices.length ? managedServices : services;
   return <main className="inner-page">
-    <PageIntro eyebrow="OUR SERVICES" title={<>Digital made to work <em>for you.</em></>}>Practical digital solutions built around your goals, your customers and your business.</PageIntro>
-    <section className="section services-page"><div className="section-head"><label>HOW WE CAN HELP</label><h2>Services built around <em>your goals.</em></h2><p>Choose focused support for a new business website, an online store or a more polished digital identity. Every project starts with understanding your requirements.</p></div><div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div></section>
+    <PageIntro eyebrow="OUR SERVICES" title={<>Website Development & <em>Digital Solutions.</em></>}>RDDS Enterprises provides website development services in Pakistan and works remotely with businesses internationally. Discuss your goals directly with founder Danish Khan, from planning and design through development and launch.</PageIntro>
+    <section className="section services-page">
+      <div className="section-head"><label>HOW WE CAN HELP</label><h2>Website and e-commerce services <em>built around your goals.</em></h2><p>Choose focused support for a new business website, an online store or a more polished digital identity. Every project starts with understanding your requirements, audience and budget.</p></div>
+      <div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
+    </section>
+    <section className="section services-detail">
+      <div className="section-head"><label>WHAT EACH SERVICE INCLUDES</label><h2>Practical solutions for <em>growing businesses.</em></h2></div>
+      <div className="principle-grid">
+        <article><b>01 · WEBSITE DEVELOPMENT</b><h3>Custom business websites</h3><p>Plan and build a responsive business website that explains your services, introduces your brand and makes it easy for customers to contact you. Project scope can include page planning, responsive layouts, contact forms and essential on-page SEO foundations.</p></article>
+        <article><b>02 · E-COMMERCE</b><h3>Online store development</h3><p>Launch or improve an online store with Shopify or a custom build. Depending on the agreed scope, work can include product organisation, store pages, payment integration support and practical order-management features.</p></article>
+        <article><b>03 · UI/UX & GRAPHIC DESIGN</b><h3>Clear, consistent visual design</h3><p>Improve how your business looks and feels online with brand graphics, visual assets and user-friendly web or mobile interface designs. Design decisions are shaped around your customers and the purpose of each page.</p></article>
+      </div>
+    </section>
+    <section className="section services-detail">
+      <div className="section-head"><label>OUR APPROACH</label><h2>A clear process, <em>from brief to launch.</em></h2></div>
+      <div className="principle-grid">
+        <article><b>01</b><h3>Understand</h3><p>We discuss your business, audience, required features, timeline and budget before defining the project scope.</p></article>
+        <article><b>02</b><h3>Design & build</h3><p>The agreed pages and features are designed and developed for desktop and mobile, with progress shared along the way.</p></article>
+        <article><b>03</b><h3>Review & launch</h3><p>We review the agreed work, address included revisions and prepare the website for handover and launch.</p></article>
+      </div>
+    </section>
+    <section className="section services-detail">
+      <div className="section-head"><label>WORKING WITH RDDS</label><h2>Based in Pakistan. <em>Available to work worldwide.</em></h2><p>RDDS Enterprises is based in Pakistan and can collaborate remotely with clients in markets such as the UAE, Canada, the United Kingdom and the United States. Meetings, communication and delivery arrangements are agreed around each project. We do not claim local offices in these markets.</p><p>For project scope and package information, explore our <Link className="text-link" to="/pricing">website and e-commerce pricing</Link>, or <Link className="text-link" to="/projects">view the project portfolio</Link>.</p></div>
+    </section>
     <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
   </main>;
 }
