@@ -289,6 +289,7 @@ function Projects() {
   return <main className="inner-page"><PageIntro eyebrow="SELECTED WORK" title={<>Built with <em>purpose.</em></>}>A selection of completed work.</PageIntro><section className="work projects-page"><div className="work-grid">
     {items.map(item => item.website_url ? <a key={item.id} href={item.website_url} target="_blank" rel="noreferrer"><div className="work-art art-one">↗</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></a> : <article key={item.id}><div className="work-art art-one">✦</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></article>)}
     <a href="https://namiraskitchen.vercel.app/" target="_blank" rel="noreferrer"><div className="work-art art-three">↗</div><small>RESTAURANT WEBSITE</small><h3>Namira's Kitchen</h3><p>Explore a restaurant website project.</p></a>
+    <a href="https://motraderspos.vercel.app/demo" target="_blank" rel="noreferrer"><div className="work-art art-two">↗</div><small>BUSINESS POS SYSTEM</small><h3>M.O. Traders POS</h3><p>Explore the point-of-sale demo with sample figures starting at Rs. 0. Demo data stays separate from the live business records.</p></a>
   </div></section></main>;
 }
 
