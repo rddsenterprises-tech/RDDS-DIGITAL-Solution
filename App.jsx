@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link, NavLink, useParams, useLocation, useNavigate } from "react-router-dom";
 import founderPhoto from "./danish-khan.jpg";
 import { supabase, supabaseConfigured } from "./supabase.js";
+import RecruiterPortal from "./Recruiter.jsx";
 const Admin = lazy(() => import("./Admin.jsx"));
 
 const services = [
@@ -22,6 +23,10 @@ function SeoManager() {
       "/": {
         title: "RDDS Enterprises | Website Design & Development in Pakistan",
         description: "RDDS Enterprises creates modern business websites, e-commerce stores and custom web applications. Work directly with Danish Khan for thoughtful design and development."
+      },
+      "/recruiter": {
+        title: "Recruiter Portal | RDDS Enterprises",
+        description: "Recruiter sign in and registration portal for RDDS Enterprises."
       },
       "/about": {
         title: "About RDDS Enterprises | Danish Khan",
@@ -163,7 +168,7 @@ function IntroScreen() {
 
   const enterSite = audience => {
     setVisible(false);
-    if (audience === "recruiter") navigate("/about");
+    if (audience === "recruiter") navigate("/recruiter");
   };
 
   if (!visible) return null;
@@ -374,7 +379,7 @@ function RONIEChat() {
 }
 
 function PublicSite() {
-  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/services" element={<Services />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><RONIEChat /></div>
+  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><RONIEChat /></div>
 }
 
 function App() {
