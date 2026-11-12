@@ -101,7 +101,6 @@ export default async function handler(req, res) {
         instructions,
         input,
         max_output_tokens: 850,
-        temperature: 0.65
       }),
       signal: AbortSignal.timeout(30000)
     });
