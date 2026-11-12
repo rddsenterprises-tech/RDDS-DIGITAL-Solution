@@ -1,4 +1,4 @@
-const MODEL = process.env.OPENAI_MODEL || 'gpt-5-mini';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 
 const BASE_INSTRUCTION = `
 You are RONIE, the intelligent digital assistant for RDDS Enterprises in Pakistan.
@@ -47,6 +47,18 @@ function cleanText(value, maxLength = 4000) {
   return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 }
 
+function buildContents(messages) {
+  const contents = [];
+  for (const message of messages) {
+    const role = message.role === "user" ? "user" : "model";
+    const previous = contents[contents.length - 1];
+    if (previous?.role === role) previous.parts[0].text += "\n" + message.text;
+    else contents.push({ role, parts: [{ text: message.text }] });
+  }
+  while (contents[0]?.role === "model") contents.shift();
+  return contents;
+}
+
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (req.method !== "POST") {
@@ -54,10 +66,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed." });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(503).json({
-      error: "RONIE AI setup pending. RDDS admin: add OPENAI_API_KEY to Vercel Environment Variables and redeploy."
+      error: "RONIE AI setup pending. RDDS admin: add GEMINI_API_KEY to Vercel Environment Variables and redeploy."
     });
   }
 
@@ -73,50 +85,47 @@ export default async function handler(req, res) {
       .filter(item => ["user", "model", "assistant"].includes(item?.role) && Array.isArray(item?.parts))
       .slice(-12)
       .map(item => ({
-        role: item.role === "user" ? "user" : "assistant",
+        role: item.role === "user" ? "user" : "model",
         text: cleanText(item.parts.find(part => typeof part?.text === "string")?.text)
       }))
       .filter(item => item.text);
 
-    while (messages[0]?.role === "assistant") messages.shift();
-    if (!messages.length || messages[messages.length - 1].role !== "user") {
+    const contents = buildContents(messages);
+    if (!contents.length || contents[contents.length - 1].role !== "user") {
       return res.status(400).json({ error: "Please enter a message first." });
     }
 
-    const agent = chooseAgent(messages[messages.length - 1].text);
-    const instructions = BASE_INSTRUCTION + "\n\n" + AGENT_INSTRUCTIONS[agent];
-    const input = messages.map(item => ({
-      role: item.role,
-      content: [{ type: "input_text", text: item.text }]
-    }));
+    const latestMessage = contents[contents.length - 1].parts[0].text;
+    const agent = chooseAgent(latestMessage);
+    const systemInstruction = BASE_INSTRUCTION + "\n\n" + AGENT_INSTRUCTIONS[agent];
 
-    const upstream = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        instructions,
-        input,
-        max_output_tokens: 850,
-      }),
-      signal: AbortSignal.timeout(30000)
-    });
+    const upstream = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
+        },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemInstruction }] },
+          contents,
+          generationConfig: { maxOutputTokens: 850, temperature: 0.65 }
+        }),
+        signal: AbortSignal.timeout(30000)
+      }
+    );
 
     const payload = await upstream.json().catch(() => ({}));
     if (!upstream.ok) {
-      const message = payload?.error?.message || `OpenAI request failed with status ${upstream.status}.`;
-      console.error("RDDS RONIE OpenAI error:", upstream.status, message);
+      const message = payload?.error?.message || `Gemini request failed with status ${upstream.status}.`;
+      console.error("RDDS RONIE Gemini error:", upstream.status, message);
       return res.status(upstream.status).json({ error: message });
     }
 
-    const reply = payload.output_text || (payload.output || [])
-      .flatMap(item => item.content || [])
-      .filter(part => part.type === "output_text" && part.text)
-      .map(part => part.text)
-      .join("\n")
+    const reply = (payload.candidates?.[0]?.content?.parts || [])
+      .map(part => part.text || "")
+      .join("")
       .trim();
 
     if (!reply) return res.status(502).json({ error: "RONIE could not generate a reply. Please try again." });
@@ -125,7 +134,7 @@ export default async function handler(req, res) {
     const timedOut = error?.name === "TimeoutError" || error?.name === "AbortError";
     console.error("RDDS RONIE handler error:", error);
     return res.status(timedOut ? 504 : 502).json({
-      error: timedOut ? "RONIE took too long to respond. Please try again." : "Could not connect to OpenAI. Please try again."
+      error: timedOut ? "RONIE took too long to respond. Please try again." : "Could not connect to Gemini. Please try again."
     });
   }
 }
