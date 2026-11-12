@@ -34,11 +34,11 @@ Answer questions about RDDS, its services, process, and how to get started. Be w
 
 function chooseAgent(message) {
   const text = String(message || "").toLowerCase();
-  if (/\\b(bug|error|issue|problem|not working|website down|support|complaint|repair|fix|login|update my order|project status)\\b/.test(text) ||
+  if (/\b(bug|error|issue|problem|not working|website down|support|complaint|repair|fix|login|update my order|project status)\b/.test(text) ||
       /(masla|maslay|kaam nahi|error|issue|support|complaint|theek nahi|problem|login|status)/.test(text)) return "support";
-  if (/\\b(build|develop|create|make|need|want|require|project|website|store|ecommerce|e-commerce|app|redesign|features|quotation|quote|estimate)\\b/.test(text) ||
+  if (/\b(build|develop|create|make|need|want|require|project|website|store|ecommerce|e-commerce|app|redesign|features|quotation|quote|estimate)\b/.test(text) ||
       /(banwana|banani|banwana hai|website chahiye|store chahiye|project|features|design karwana|kitna kharcha|price|cost|budget)/.test(text)) return "project";
-  if (/\\b(price|pricing|cost|business|grow|sell|sales|customer|marketing|service|services|package|hire|contact|buy)\\b/.test(text) ||
+  if (/\b(price|pricing|cost|business|grow|sell|sales|customer|marketing|service|services|package|hire|contact|buy)\b/.test(text) ||
       /(business|karobar|sales|customers|service|services|rate|qeemat|rabta|kaam karwana)/.test(text)) return "sales";
   return "general";
 }
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     }
 
     const agent = chooseAgent(messages[messages.length - 1].text);
-    const instructions = BASE_INSTRUCTION + "\\n\\n" + AGENT_INSTRUCTIONS[agent];
+    const instructions = BASE_INSTRUCTION + "\n\n" + AGENT_INSTRUCTIONS[agent];
     const input = messages.map(item => ({
       role: item.role,
       content: [{ type: "input_text", text: item.text }]
@@ -117,7 +117,7 @@ export default async function handler(req, res) {
       .flatMap(item => item.content || [])
       .filter(part => part.type === "output_text" && part.text)
       .map(part => part.text)
-      .join("\\n")
+      .join("\n")
       .trim();
 
     if (!reply) return res.status(502).json({ error: "RONIE could not generate a reply. Please try again." });
