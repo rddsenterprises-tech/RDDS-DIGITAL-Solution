@@ -567,7 +567,7 @@ function RONIEChat() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.slice(-12).map(item => ({ role: item.role === "assistant" ? "model" : "user", parts: [{ text: item.text }] })) })
+        body: JSON.stringify({ messages: next.slice(1).slice(-12).map(item => ({ role: item.role === "assistant" ? "model" : "user", parts: [{ text: item.text }] })) })
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Chat service is temporarily unavailable.");
