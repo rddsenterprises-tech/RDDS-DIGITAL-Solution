@@ -8,4 +8,7 @@
   <url><loc>https://rddsdigitalsolution.vercel.app/blog</loc></url>
   <url><loc>https://rddsdigitalsolution.vercel.app/blog/digital-zamane-mein-business-ke-liye-website-kyun-zaroori-hai</loc></url>
   <url><loc>https://rddsdigitalsolution.vercel.app/contact</loc></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/solutions</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/products</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://rddsdigitalsolution.vercel.app/industries</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
