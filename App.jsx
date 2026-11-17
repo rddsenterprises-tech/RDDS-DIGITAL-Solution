@@ -6,9 +6,14 @@ import RecruiterPortal from "./Recruiter.jsx";
 const Admin = lazy(() => import("./Admin.jsx"));
 
 const services = [
-  { n: "01", icon: "⌘", title: "Custom Web Development", desc: "Fast, responsive websites and custom web applications designed around your business.", points: ["Business websites", "Custom web applications"] },
-  { n: "02", icon: "▣", title: "E-Commerce Solutions", desc: "Online stores with clear product journeys, practical management and secure integrations.", points: ["Shopify and custom stores", "Store setup and integrations"] },
-  { n: "03", icon: "✳", title: "UI/UX & Graphic Design", desc: "Clean visual identities and intuitive interfaces that make your brand stand out.", points: ["Brand identity and graphics", "Web and mobile UI/UX"] }
+  { n: "01", icon: "⌘", title: "Website Development", desc: "Fast, responsive business websites built around your brand, audience and goals.", points: ["Corporate and business websites", "Landing pages and custom features"] },
+  { n: "02", icon: "▣", title: "E-Commerce Development", desc: "Online stores designed to present products clearly and make ordering straightforward.", points: ["Shopify and custom stores", "Product and order journeys"] },
+  { n: "03", icon: "✳", title: "Custom Web Applications", desc: "Purpose-built web apps and business tools for your team's real workflows.", points: ["Portals and dashboards", "Custom business workflows"] },
+  { n: "04", icon: "◇", title: "UI/UX & Graphic Design", desc: "Consistent visual identities and intuitive digital experiences for your brand.", points: ["Brand identity and graphics", "Web and mobile UI/UX"] },
+  { n: "05", icon: "↗", title: "SEO Services", desc: "Search-friendly foundations and ongoing improvements that help customers discover you.", points: ["Technical and on-page SEO", "Content and search visibility"] },
+  { n: "06", icon: "◎", title: "Digital Marketing", desc: "Practical digital campaigns and brand communication shaped around your audience.", points: ["Campaign planning", "Social media support"] },
+  { n: "07", icon: "⚙", title: "Website Maintenance", desc: "Ongoing updates, technical care and performance improvements for your website.", points: ["Updates and troubleshooting", "Performance and security checks"] },
+  { n: "08", icon: "⌁", title: "IT & Business Support", desc: "Clear technical guidance and digital consultation as your business evolves.", points: ["Technical consultation", "Digital operations support"] }
 ];
 
 const blogPosts = [];
@@ -272,7 +277,7 @@ function Footer() {
   return <footer>
     <Link className="brand" to="/"><span className="brand-mark">R</span><span>RDDS <b>ENTERPRISES</b></span></Link>
     <small>© {new Date().getFullYear()} RDDS Enterprises. All rights reserved.</small>
-    <div><a href="https://www.facebook.com/RDds1995/" target="_blank" rel="noreferrer">Facebook</a><a href="https://www.instagram.com/rdds.enterprises" target="_blank" rel="noreferrer">Instagram</a><a href="https://wa.me/923042178799" target="_blank" rel="noreferrer">WhatsApp</a></div>
+    <div><Link to="/solutions">Solutions</Link><Link to="/industries">Industries</Link><Link to="/blog">Insights</Link><a href="https://www.facebook.com/RDds1995/" target="_blank" rel="noreferrer">Facebook</a><a href="https://www.instagram.com/rdds.enterprises" target="_blank" rel="noreferrer">Instagram</a><a href="https://wa.me/923042178799" target="_blank" rel="noreferrer">WhatsApp</a></div>
   </footer>;
 }
 
@@ -604,7 +609,7 @@ function Contact() {
     if (error) setSubmitState("Message send nahi hua. Please dobara try karein ya WhatsApp karein.");
     else { setSubmitState("Shukriya! Aapka message successfully receive ho gaya."); formElement.reset(); }
   };
-  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service" defaultValue={selectedPackage || "Website Development"}>{selectedPackage && <option value={selectedPackage}>{selectedPackage}</option>}<option>Website Development</option><option>E-Commerce Website Development</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
+  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service" defaultValue={selectedPackage || "Website Development"}>{selectedPackage && <option value={selectedPackage}>{selectedPackage}</option>}<option>Website Development</option><option>E-Commerce Website Development</option><option>Custom Web Application</option><option>UI/UX & Graphic Design</option><option>SEO Services</option><option>Digital Marketing</option><option>Website Maintenance</option><option>IT & Business Support</option><option>Digital Product / SaaS Idea</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
 }
 
 
