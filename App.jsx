@@ -28,6 +28,18 @@ function SeoManager() {
         title: "Recruiter Portal | RDDS Enterprises",
         description: "Recruiter sign in and registration portal for RDDS Enterprises."
       },
+      "/solutions": {
+        title: "Digital Solutions for Businesses | RDDS Enterprises",
+        description: "Explore integrated web, software, e-commerce, digital growth and IT support solutions from RDDS Enterprises."
+      },
+      "/products": {
+        title: "Digital Products & Custom Platforms | RDDS Enterprises",
+        description: "Explore custom digital product development, business platforms and SaaS-ready product experiences from RDDS Enterprises."
+      },
+      "/industries": {
+        title: "Industries We Support | RDDS Enterprises",
+        description: "Digital solutions for retail, food, professional services, education, manufacturing and growing businesses."
+      },
       "/about": {
         title: "About RDDS Enterprises | Danish Khan",
         description: "Meet Danish Khan, founder of RDDS Enterprises. Learn about our personal approach to website design, development and digital experiences."
@@ -250,7 +262,7 @@ function Header() {
   return <header className="topbar">
     <Link className="brand" to="/" onClick={closeMenu}><span className="brand-mark">R</span><span>RDDS <b>ENTERPRISES</b></span></Link>
     <nav className={menuOpen ? "mobile-open" : ""}>
-      <NavLink to="/" end onClick={closeMenu}>Home</NavLink><NavLink to="/about" onClick={closeMenu}>About</NavLink><NavLink to="/services" onClick={closeMenu}>Services</NavLink><NavLink to="/pricing" onClick={closeMenu}>Pricing</NavLink><NavLink to="/projects" onClick={closeMenu}>Projects</NavLink><NavLink to="/blog" onClick={closeMenu}>Blog</NavLink><NavLink className="nav-cta" to="/contact" onClick={closeMenu}>Contact us</NavLink><LanguageSelector />
+      <NavLink to="/" end onClick={closeMenu}>Home</NavLink><NavLink to="/solutions" onClick={closeMenu}>Solutions</NavLink><NavLink to="/services" onClick={closeMenu}>Services</NavLink><NavLink to="/products" onClick={closeMenu}>Products</NavLink><NavLink to="/pricing" onClick={closeMenu}>Pricing</NavLink><NavLink to="/projects" onClick={closeMenu}>Work</NavLink><NavLink to="/about" onClick={closeMenu}>About</NavLink><NavLink className="nav-cta" to="/contact" onClick={closeMenu}>Contact</NavLink><LanguageSelector />
     </nav>
     <button className="mobile-cta" type="button" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen}>{menuOpen ? "✕" : "☰"}</button>
   </header>;
@@ -290,18 +302,18 @@ function Home() {
     <section className="hero" id="home">
       <div className="stars" /><div className="hero-orbit" aria-hidden="true"><span /><span /><span /></div>
       <div className="hero-copy">
-        <div className="eyebrow"><i /> RDDS ENTERPRISES · WEB DESIGN & DEVELOPMENT</div>
-        <h1>Premium websites.<br /><em>Elevate your brand.</em></h1>
-        <p>Thoughtful digital experiences, designed and built personally by <strong>Danish Khan.</strong></p>
+        <div className="eyebrow"><i /> RDDS ENTERPRISES · ALL-IN-ONE DIGITAL SOLUTIONS</div>
+        <h1>One digital partner.<br /><em>Every business solution.</em></h1>
+        <p>From websites and software to e-commerce, digital growth and ongoing IT support — built around your business, with direct founder collaboration.</p>
         <div className="hero-actions"><Link className="btn primary" to="/contact">Get a consultation <span>↗</span></Link><Link className="btn secondary" to="/projects">View projects</Link></div>
       </div>
       <div className="hero-foot">
-        <div className="ticker"><span>Custom-built websites</span><b>✦</b><span>SEO-ready design</span><b>✦</b><span>Responsive by design</span><b>✦</b><span>Direct founder collaboration</span></div>
+        <div className="ticker"><span>Web & software</span><b>✦</b><span>E-commerce</span><b>✦</b><span>Digital growth</span><b>✦</b><span>IT & business support</span></div>
         <div className="benefits"><div><strong>◫ Modern design</strong><small>Designed for experience</small></div><div><strong>↗ Blazing fast</strong><small>Optimised for the web</small></div><div><strong>◇ SEO ready</strong><small>Built with best practices</small></div><div><strong>✧ Personal support</strong><small>Direct communication</small></div></div>
       </div>
     </section>
     <section className="section">
-      <div className="section-head"><label>WHAT WE DO</label><h2>Digital made to work <em>for you.</em></h2><p>From the first conversation to launch, get a practical, personal approach to creating your next website.</p></div>
+      <div className="section-head"><label>WHAT WE DO</label><h2>Everything digital. <em>One reliable partner.</em></h2><p>Connect your brand, customer experience and business operations with joined-up digital solutions.</p></div>
       <div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
       <div className="center-link"><Link className="btn secondary" to="/services">Explore all services ↗</Link></div>
     </section>
@@ -313,6 +325,52 @@ function Home() {
 
 function About() {
   return <main className="inner-page"><PageIntro eyebrow="ABOUT THE FOUNDER" title={<>A personal approach.<br /><em>From first idea to launch.</em></>}>RDDS Enterprises is founded and personally managed by Danish Khan, with a focus on thoughtful design, practical development and clear communication.</PageIntro><section className="founder about-founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>FOUNDER & WEB DEVELOPER</label><h2>Hi, I'm Danish Khan.</h2><p>I work directly with businesses to plan, design and build modern websites and digital experiences. I believe a good website should look professional, work smoothly on every device and make it easier for customers to connect with a business.</p><p>At RDDS Enterprises, every project receives direct attention throughout the process—from understanding the idea to development, launch and support.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer · RDDS Enterprises</span></div></div></div></section><section className="section"><div className="principle-grid"><article><b>01</b><h3>Direct collaboration</h3><p>Work one-to-one with the founder throughout your project.</p></article><article><b>02</b><h3>Responsive by design</h3><p>Useful, beautiful experiences on every screen size.</p></article><article><b>03</b><h3>Clear communication</h3><p>Stay informed and involved from kickoff to launch.</p></article></div></section></main>;
+}
+
+
+const solutionDivisions = [
+  { number: "01", title: "Web & Software Solutions", text: "Business websites, e-commerce experiences, custom web applications and user-focused interface design.", items: ["Business & corporate websites", "Custom web applications", "E-commerce development", "UI/UX and interface design"] },
+  { number: "02", title: "Digital Growth", text: "Build a stronger online presence with practical digital marketing, search visibility and brand communication.", items: ["SEO foundations & ongoing optimisation", "Digital marketing campaigns", "Branding & creative design", "Social media content support"] },
+  { number: "03", title: "Digital Products", text: "Plan and develop purpose-built digital products, internal tools and platform experiences around real business needs.", items: ["Custom business platforms", "Internal tools & dashboards", "Product concept to MVP", "SaaS-ready product development"] },
+  { number: "04", title: "IT & Business Support", text: "Keep your digital operations supported with maintenance, technical guidance and practical improvements.", items: ["Website care & maintenance", "Technical troubleshooting", "Security and performance reviews", "Digital consultation"] }
+];
+
+function Solutions() {
+  return <main className="inner-page">
+    <PageIntro eyebrow="ALL-IN-ONE DIGITAL SOLUTIONS" title={<>One partner for your<br /><em>digital business.</em></>}>Bring your website, online sales, brand presence and day-to-day digital needs together with a practical solutions partner. RDDS works with businesses in Pakistan and internationally.</PageIntro>
+    <section className="section division-section">
+      <div className="section-head"><label>OUR SOLUTION DIVISIONS</label><h2>Connected services. <em>Clear outcomes.</em></h2><p>Start with one requirement or combine services into a coordinated project plan.</p></div>
+      <div className="division-grid">{solutionDivisions.map(item => <article className="division-card" key={item.number}><span>{item.number}</span><h3>{item.title}</h3><p>{item.text}</p><ul>{item.items.map(point => <li key={point}>↗ {point}</li>)}</ul><Link className="text-link" to="/contact">Discuss this solution ↗</Link></article>)}</div>
+    </section>
+    <section className="home-cta"><label>BUILT AROUND YOUR BUSINESS</label><h2>Let's map out your<br /><em>next digital step.</em></h2><Link className="btn primary" to="/contact">Talk to RDDS ↗</Link></section>
+  </main>;
+}
+
+function Products() {
+  return <main className="inner-page">
+    <PageIntro eyebrow="DIGITAL PRODUCTS & PLATFORMS" title={<>Ideas into useful<br /><em>digital products.</em></>}>RDDS can help shape and build custom digital products, business platforms and internal tools. Product availability and scope are confirmed individually before any commitment.</PageIntro>
+    <section className="section product-studio">
+      <div className="product-studio-panel"><div className="product-orbit" aria-hidden="true">RDDS</div><div><label>RDDS PRODUCT STUDIO</label><h2>Purpose-built tools.<br /><em>Designed for real work.</em></h2><p>Have an idea for a platform, portal, management tool or subscription-based product? We can discuss the requirements, define a practical first version and plan the build.</p><Link className="btn primary" to="/contact">Discuss a product idea ↗</Link></div></div>
+      <div className="principle-grid product-principles"><article><b>01 · DISCOVERY</b><h3>Define the problem</h3><p>Clarify users, workflows, features and the outcome your product should deliver.</p></article><article><b>02 · PRODUCT DESIGN</b><h3>Plan the experience</h3><p>Shape the structure, interface and key journeys before development begins.</p></article><article><b>03 · DEVELOPMENT</b><h3>Build in stages</h3><p>Agree a realistic scope, milestones and delivery plan for your product.</p></article></div>
+      <p className="product-note">No ready-made subscriptions or live SaaS catalogue are being advertised here. Each product engagement is scoped and quoted individually.</p>
+    </section>
+  </main>;
+}
+
+function Industries() {
+  const sectors = [
+    ["Retail & E-commerce", "Product catalogues, online stores, order journeys and customer-facing business websites."],
+    ["Food & Hospitality", "Restaurant websites, menus, ordering experiences and brand presentation."],
+    ["Professional Services", "Credible service websites, enquiry journeys, portfolios and lead capture."],
+    ["Education & Training", "Information-rich websites, course pages, registration flows and learning support tools."],
+    ["Manufacturing & Trade", "Company profiles, product showcases, buyer enquiries and business communication."],
+    ["Startups & Growing Businesses", "Launch-ready websites, MVPs, digital identity and scalable foundations."]
+  ];
+  return <main className="inner-page">
+    <PageIntro eyebrow="INDUSTRIES WE SUPPORT" title={<>Digital built around<br /><em>your industry.</em></>}>Different businesses have different customers, workflows and goals. We shape the solution around what your organisation needs — not a one-size-fits-all template.</PageIntro>
+    <section className="section industries-section"><div className="industry-grid">{sectors.map(([name, description], index) => <article className="industry-card" key={name}><span>{String(index + 1).padStart(2, "0")}</span><h3>{name}</h3><p>{description}</p><Link className="text-link" to="/contact">Explore a solution ↗</Link></article>)}</div></section>
+    <section className="home-cta"><label>YOUR BUSINESS IS UNIQUE</label><h2>Let's build around<br /><em>your requirements.</em></h2><Link className="btn primary" to="/contact">Start a conversation ↗</Link></section>
+  </main>;
 }
 
 function Services() {
@@ -569,7 +627,7 @@ function TawkToWidget() {
 }
 
 function PublicSite() {
-  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><TawkToWidget /></div>;
+  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/solutions" element={<Solutions />} /><Route path="/products" element={<Products />} /><Route path="/industries" element={<Industries />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><TawkToWidget /></div>;
 }
 
 function App() {
