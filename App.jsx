@@ -550,49 +550,23 @@ function Contact() {
 }
 
 
-function RONIEChat() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([{ role: "assistant", text: "Assalam-o-Alaikum! Main RONIE hoon — RDDS Enterprises ka AI assistant. Main aapke business aur project ko samajh kar website, online store ya design ke liye behtareen raasta suggest kar sakta hoon. Aap kya plan kar rahe hain?" }]);
-  const [input, setInput] = useState("");
-  const [sending, setSending] = useState(false);
-  const sendMessage = async (event) => {
-    event.preventDefault();
-    const message = input.trim();
-    if (!message || sending) return;
-    const next = [...messages, { role: "user", text: message }];
-    setMessages(next);
-    setInput("");
-    setSending(true);
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.slice(1).slice(-12).map(item => ({ role: item.role === "assistant" ? "model" : "user", parts: [{ text: item.text }] })) })
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Chat service is temporarily unavailable.");
-      setMessages(current => [...current, { role: "assistant", text: data.reply }]);
-    } catch (error) {
-      setMessages(current => [...current, { role: "assistant", text: error.message || "Maazrat, abhi jawab nahi mil saka. Aap WhatsApp par rabta kar sakte hain: 03042178799." }]);
-    } finally {
-      setSending(false);
-    }
-  };
-  return <div className="ronie-widget">
-    {open && <section className="ronie-panel" aria-label="RONIE AI chat">
-      <header className="ronie-header"><div className="ronie-avatar">R</div><div><strong>RONIE AI</strong><small>RDDS Enterprises · AI Assistant</small></div><button type="button" onClick={() => setOpen(false)} aria-label="Close chat">×</button></header>
-      <div className="ronie-messages" aria-live="polite">{messages.map((item, index) => <div className={"ronie-message " + item.role} key={index}>{item.text}</div>)}{sending && <div className="ronie-message assistant">RONIE soch raha hai…</div>}</div>
-      <form className="ronie-form" onSubmit={sendMessage}><input value={input} onChange={event => setInput(event.target.value)} placeholder="Apna sawal likhein..." aria-label="Message" /><button type="submit" disabled={sending || !input.trim()} aria-label="Send message">➤</button></form>
-      <a className="ronie-whatsapp" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">WhatsApp par human support ↗</a>
-    </section>}
-    <button className="ronie-launcher" type="button" onClick={() => setOpen(value => !value)} aria-label={open ? "Close RONIE chat" : "Open RONIE AI chat"}>{open ? "×" : <><span>✦</span><small>Chat with RONIE</small></>}</button>
-  </div>;
-}
+function TawkToWidget() {
+  useEffect(() => {
+    if (document.querySelector('script[src^="https://embed.tawk.to/"]')) return;
 
-function PublicSite() {
-  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><RONIEChat /></div>
-}
+    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_LoadStart = new Date();
 
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://embed.tawk.to/6afbeff03aac2a3cbe12ec18/1k7k22hgg";
+    script.charset = "UTF-8";
+    script.setAttribute("crossorigin", "*");
+    document.body.appendChild(script);
+  }, []);
+
+  return null;
+}
 function App() {
   return <BrowserRouter><Routes><Route path="/admin" element={<Suspense fallback={<div className="admin-loading">RDDS Admin load ho raha hai…</div>}><Admin /></Suspense>} /><Route path="*" element={<PublicSite />} /></Routes></BrowserRouter>;
 }
