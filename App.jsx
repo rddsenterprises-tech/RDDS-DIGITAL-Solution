@@ -567,6 +567,11 @@ function TawkToWidget() {
 
   return null;
 }
+
+function PublicSite() {
+  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><TawkToWidget /></div>;
+}
+
 function App() {
   return <BrowserRouter><Routes><Route path="/admin" element={<Suspense fallback={<div className="admin-loading">RDDS Admin load ho raha hai…</div>}><Admin /></Suspense>} /><Route path="*" element={<PublicSite />} /></Routes></BrowserRouter>;
 }
