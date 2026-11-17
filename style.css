@@ -325,3 +325,38 @@ body{top:0!important}
 .article-faq-item summary::marker{color:#80b9ff}
 .article-faq-item p{margin:0;padding:0 19px 18px;color:var(--muted);font-size:13px;line-height:1.8}
 .article-content{white-space:pre-line;overflow-wrap:anywhere}
+
+
+/* RDDS All-in-One Digital Solutions refresh */
+.topbar{backdrop-filter:blur(18px);background:#06152be8;border-bottom:1px solid #7bb8ff24}
+.topbar nav{gap:clamp(10px,1.35vw,20px)}
+.topbar nav a{font-size:12px;white-space:nowrap}
+.topbar nav a.active{color:#9bcaff}
+.brand-mark{box-shadow:0 0 24px #1784ff44}
+.hero{background:radial-gradient(ellipse at 50% 20%,#15519a55,transparent 48%),linear-gradient(180deg,#071a3a,#06152d)}
+.hero-copy{max-width:900px}
+.hero h1{font-size:clamp(42px,6vw,76px)}
+.hero-copy>p{max-width:660px}
+.division-section,.industries-section,.product-studio{padding-top:35px}
+.division-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.division-card,.industry-card{position:relative;padding:30px;border:1px solid #8ebeff32;border-radius:18px;background:linear-gradient(145deg,#102b52d9,#081a35f2);box-shadow:inset 0 1px #ffffff08;transition:transform .25s,border-color .25s}
+.division-card:hover,.industry-card:hover{transform:translateY(-5px);border-color:#63aaff88}
+.division-card>span,.industry-card>span{color:#78b9ff;font-size:12px;font-weight:800;letter-spacing:.15em}
+.division-card h3,.industry-card h3{font:700 22px 'Roboto Slab';color:#d9eaff;margin:17px 0 10px}
+.division-card p,.industry-card p{color:var(--muted);font-size:14px;line-height:1.8}
+.division-card ul{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.division-card li{color:#b8d5f8;font-size:12px}
+.product-studio-panel{display:grid;grid-template-columns:.7fr 1.3fr;align-items:center;gap:50px;padding:45px;border:1px solid #8ebeff35;border-radius:22px;background:radial-gradient(ellipse at 20% 50%,#1261ad44,transparent 60%),linear-gradient(145deg,#102b52,#081a35)}
+.product-studio-panel h2{font:800 clamp(30px,4vw,48px)/1.2 'Roboto Slab';color:#d9eaff;margin:15px 0}
+.product-studio-panel h2 em{font-style:normal;color:#80b9ff}
+.product-studio-panel p{max-width:620px;color:var(--muted);line-height:1.8;font-size:14px;margin-bottom:25px}
+.product-orbit{width:min(230px,100%);aspect-ratio:1;border:1px solid #7db9ff88;border-radius:50%;display:grid;place-items:center;margin:auto;color:#d8ecff;font:800 38px 'Roboto Slab';letter-spacing:.12em;background:radial-gradient(circle,#1b5c9b88,#081a35 68%);box-shadow:0 0 0 18px #5ba5ff0b,0 0 0 38px #5ba5ff08,0 0 55px #0879fa33}
+.product-principles{margin-top:25px}
+.product-note{margin:28px auto 0;max-width:850px;text-align:center;color:#8ea8c9;font-size:12px;line-height:1.7}
+.industry-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.industry-card{padding:26px}
+.industry-card h3{font-size:18px}
+.industry-card .text-link{margin-top:10px}
+@media(max-width:1050px){.topbar nav{gap:9px}.topbar nav a{font-size:11px}}
+@media(max-width:850px){.division-grid{grid-template-columns:1fr 1fr}.industry-grid{grid-template-columns:1fr 1fr}.product-studio-panel{gap:28px;padding:32px}}
+@media(max-width:620px){.topbar nav{display:none}.topbar nav.mobile-open{display:flex}.division-grid,.industry-grid{grid-template-columns:1fr}.division-card ul{grid-template-columns:1fr}.product-studio-panel{grid-template-columns:1fr;text-align:center;padding:28px 22px}.product-orbit{width:150px}.product-studio-panel .btn{margin:auto}}
