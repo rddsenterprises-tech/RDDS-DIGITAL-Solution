@@ -21,7 +21,7 @@ const sections = [
   { id: "contactMessages", table: "contact_messages", label: "Messages", icon: "✉" },
   { id: "recruiters", table: "recruiter_profiles", label: "Recruiters", icon: "♙" }
 ];
-const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
+const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", thumbnail_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
 const dateLabel = value => value ? new Date(value).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" }) : "—";
 
 export default function Admin() {
@@ -138,7 +138,7 @@ export default function Admin() {
     } : {
       title: form.title.trim(), description: form.description.trim(), slug: form.slug.trim(),
       category: form.category.trim(), published: Boolean(form.published), updated_at: new Date().toISOString(),
-      ...(active === "projects" ? { website_url: form.website_url.trim() } : {}),
+      ...(active === "projects" ? { website_url: form.website_url.trim(), thumbnail_url: form.thumbnail_url.trim() } : {}),
       ...(active === "blogPosts" ? { content: form.content.trim() } : {})
     };
     if (!payload.title) return setError("Title zaroor likhein.");
@@ -150,7 +150,7 @@ export default function Admin() {
   };
   const editItem = item => {
     setEditingId(item.id);
-    setForm({ ...emptyForm, title: item.title || "", description: item.description || "", slug: item.slug || "", category: item.category || "", website_url: item.website_url || "", content: item.content || "", service_type: item.service_type || "website", tier: item.tier || "starter", price_pkr: item.price_pkr ?? "", price_usd: item.price_usd ?? "", delivery_days: item.delivery_days || "", features_text: Array.isArray(item.features) ? item.features.join("\n") : "", sort_order: item.sort_order || 1, published: item.published !== false });
+    setForm({ ...emptyForm, title: item.title || "", description: item.description || "", slug: item.slug || "", category: item.category || "", website_url: item.website_url || "", thumbnail_url: item.thumbnail_url || "", content: item.content || "", service_type: item.service_type || "website", tier: item.tier || "starter", price_pkr: item.price_pkr ?? "", price_usd: item.price_usd ?? "", delivery_days: item.delivery_days || "", features_text: Array.isArray(item.features) ? item.features.join("\n") : "", sort_order: item.sort_order || 1, published: item.published !== false });
     setShowForm(true);
   };
   const removeItem = async id => {
@@ -234,7 +234,7 @@ export default function Admin() {
             <label>Package features (one per line)<textarea rows="7" value={form.features_text} onChange={e => setForm({ ...form, features_text: e.target.value })} placeholder={"Up to 5 pages\nMobile responsive design\nWhatsApp integration"} /></label>
           </> : <>
             <label>Title<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required /></label><label>Description<textarea rows="4" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
-            {active === "projects" && <label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label>}
+            {active === "projects" && <><label>Project website URL<input type="url" value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://example.com" /></label><label>Thumbnail image URL<input type="url" value={form.thumbnail_url} onChange={e => setForm({ ...form, thumbnail_url: e.target.value })} placeholder="https://example.com/project-screenshot.png" /><small className="admin-field-help">Original website screenshot ka direct image URL paste karein. JPG, PNG ya WebP supported.</small>{form.thumbnail_url && <img className="admin-thumbnail-preview" src={form.thumbnail_url} alt="Project thumbnail preview" onError={e => { e.currentTarget.style.display = "none"; }} onLoad={e => { e.currentTarget.style.display = "block"; }} />}</label></>}
             {active === "blogPosts" && <label>Article content<textarea rows="8" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} placeholder="Write your article..." /></label>}
             <div className="admin-form-row"><label>Slug<input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="my-first-post" /></label><label>Category<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Web development" /></label></div>
           </>}
