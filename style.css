@@ -325,3 +325,6 @@ body{top:0!important}
 .article-faq-item summary::marker{color:#80b9ff}
 .article-faq-item p{margin:0;padding:0 19px 18px;color:var(--muted);font-size:13px;line-height:1.8}
 .article-content{white-space:pre-line;overflow-wrap:anywhere}
+
+/* Portfolio project thumbnail images */
+.work-thumbnail{width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:14px;margin:0 0 18px;background:#0b2040;border:1px solid #ffffff18}.work-thumbnail img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}.work-grid>a:hover .work-thumbnail img{transform:scale(1.035)}
