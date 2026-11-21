@@ -30,6 +30,25 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (() => {
+        const addStoreLink = () => {
+          const nav = document.querySelector(".topbar nav");
+          if (!nav || nav.querySelector('[data-rdds-store-link="true"]')) return;
+          const link = document.createElement("a");
+          link.href = "https://rddscustomize.vercel.app/";
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Customized Store";
+          link.setAttribute("data-rdds-store-link", "true");
+          link.style.whiteSpace = "nowrap";
+          nav.insertBefore(link, nav.querySelector(".nav-cta") || null);
+        };
+        const observer = new MutationObserver(addStoreLink);
+        observer.observe(document.getElementById("root"), { childList: true, subtree: true });
+        addStoreLink();
+      })();
+    </script>
     <script type="module" src="/index.jsx"></script>
   </body>
 </html>
