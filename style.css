@@ -328,3 +328,19 @@ body{top:0!important}
 
 /* Portfolio project thumbnail images */
 .work-thumbnail{width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:14px;margin:0 0 18px;background:#0b2040;border:1px solid #ffffff18}.work-thumbnail img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}.work-grid>a:hover .work-thumbnail img{transform:scale(1.035)}
+
+
+/* RDDS company profile — homepage only */
+.company-profile{padding-top:82px;padding-bottom:88px;overflow:hidden}
+.company-profile-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:.82fr 1.18fr;align-items:center;gap:54px}
+.company-profile-copy>label{color:#8bbcff;font-size:10px;font-weight:800;letter-spacing:.19em}
+.company-profile-copy h2{margin:15px 0 17px;color:#e7f1ff;font:800 clamp(32px,4vw,48px)/1.2 'Roboto Slab',serif;letter-spacing:-.035em}
+.company-profile-copy h2 em{color:#8bbcff;font-style:normal}
+.company-profile-copy>p{max-width:440px;color:var(--muted);font-size:14px;line-height:1.9}
+.company-profile-actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:26px}
+.company-profile-note{display:block;margin-top:17px;color:#829bbd;font-size:10px;letter-spacing:.08em}
+.company-profile-preview{min-width:0;padding:12px;border:1px solid #8eb8e544;border-radius:17px;background:linear-gradient(145deg,#102b53,#071a36);box-shadow:0 24px 65px #0005,0 0 35px #1684ff12}
+.company-profile-frame{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#081a35}
+.company-profile-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.company-profile-preview>span{display:block;padding:12px 4px 2px;color:#91bfff;font-size:9px;font-weight:800;letter-spacing:.16em}
+@media(max-width:760px){.company-profile{padding:60px 20px}.company-profile-inner{grid-template-columns:1fr;gap:30px}.company-profile-copy h2{font-size:36px}.company-profile-actions{gap:9px}.company-profile-actions .btn{font-size:12px;padding:12px 15px}}
