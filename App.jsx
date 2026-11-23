@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link, NavLink, useParams, useLocation, us
 import founderPhoto from "./danish-khan.jpg";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import RecruiterPortal from "./Recruiter.jsx";
+import ClientPortal from "./ClientPortal.jsx";
 const Admin = lazy(() => import("./Admin.jsx"));
 
 const services = [
@@ -23,6 +24,10 @@ function SeoManager() {
       "/": {
         title: "RDDS Enterprises | Website Design & Development in Pakistan",
         description: "RDDS Enterprises builds business websites and e-commerce stores in Pakistan and worldwide. Work directly with founder Danish Khan."
+      },
+      "/client": {
+        title: "Client Portal & Free Website Demo | RDDS Enterprises",
+        description: "Create your RDDS client account, request your one-time free website demo and track its progress."
       },
       "/recruiter": {
         title: "Recruiter Portal | RDDS Enterprises",
@@ -411,6 +416,10 @@ function Pricing() {
         <div className="pricing-group"><div className="pricing-group-heading"><span>02</span><div><h3>E-Commerce Website Development</h3><p>Practical online stores to showcase products and receive orders.</p></div></div>{renderPackages(storePackages)}</div>
         {packages.length === 0 && <p>No published packages are available right now. Please contact us for a quotation.</p>}
       </>}
+      <section className="free-demo-offer">
+        <div className="free-demo-copy"><span>START WITH CONFIDENCE</span><h2>Try RDDS with a <em>Free Demo.</em></h2><p>Get a complimentary homepage preview for your business before choosing a paid website package. Create a client account to request and track your demo.</p><ul><li>One homepage design preview</li><li>Your business name and visual direction</li><li>Admin-reviewed request and private demo link</li><li>No payment or purchase obligation</li></ul><small>One free demo per verified client. Domain, hosting and full website development are not included.</small></div>
+        <div className="free-demo-price"><span>COMPLIMENTARY</span><strong>Rs. 0</strong><p>One-time business offer</p><Link className="btn primary" to="/client?mode=signup">Get Your Free Demo ↗</Link><small>Client registration required</small></div>
+      </section>
       <div className="pricing-terms"><strong>Project terms</strong><p>50% advance to start and 50% before final handover. Domain, hosting, paid third-party services and payment gateway charges are separate. Extra pages, products and custom integrations are quoted separately. Revisions are limited to each package.</p></div>
     </section>
     <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
@@ -589,7 +598,7 @@ function TawkToWidget() {
 }
 
 function PublicSite() {
-  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><TawkToWidget /></div>;
+  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/client" element={<ClientPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><TawkToWidget /></div>;
 }
 
 function App() {

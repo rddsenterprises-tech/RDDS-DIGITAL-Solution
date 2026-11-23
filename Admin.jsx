@@ -12,6 +12,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./admin.css";
 
+const clientPortalEnabled = import.meta.env.VITE_CLIENT_PORTAL_ENABLED === "true";
+
 const sections = [
   { id: "overview", label: "Overview", icon: "▦" },
   { id: "services", table: "services", label: "Services", icon: "◇" },
@@ -19,6 +21,7 @@ const sections = [
   { id: "projects", table: "projects", label: "Projects", icon: "▧" },
   { id: "blogPosts", table: "blog_posts", label: "Blog posts", icon: "▤" },
   { id: "contactMessages", table: "contact_messages", label: "Messages", icon: "✉" },
+  ...(clientPortalEnabled ? [{ id: "demoRequests", table: "rdds_demo_requests", label: "Free Demo Requests", icon: "✧" }] : []),
   { id: "recruiters", table: "recruiter_profiles", label: "Recruiters", icon: "♙" }
 ];
 const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", thumbnail_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
@@ -34,7 +37,7 @@ export default function Admin() {
   const [error, setError] = useState("");
   const [active, setActive] = useState("overview");
   const [items, setItems] = useState([]);
-  const [stats, setStats] = useState({ services: 0, projects: 0, blogPosts: 0, messages: 0, unread: 0, recruiters: 0, published: 0, drafts: 0 });
+  const [stats, setStats] = useState({ services: 0, projects: 0, blogPosts: 0, messages: 0, unread: 0, recruiters: 0, demoRequests: 0, published: 0, drafts: 0 });
   const [recentMessages, setRecentMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -70,20 +73,22 @@ export default function Admin() {
   }, [user]);
 
   const loadOverview = async () => {
-    const [s, p, b, m, mc, uc, rc] = await Promise.all([
+    const demoCountQuery = clientPortalEnabled ? supabase.from("rdds_demo_requests").select("id", { count: "exact", head: true }) : Promise.resolve({ count: 0, error: null });
+    const [s, p, b, m, mc, uc, rc, dc] = await Promise.all([
       supabase.from("services").select("id,published"),
       supabase.from("projects").select("id,published"),
       supabase.from("blog_posts").select("id,published"),
       supabase.from("contact_messages").select("id,status,name,email,subject,message,created_at").order("created_at", { ascending: false }).limit(6),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }).eq("status", "new"),
-      supabase.from("recruiter_profiles").select("id", { count: "exact", head: true })
+      supabase.from("recruiter_profiles").select("id", { count: "exact", head: true }),
+      demoCountQuery
     ]);
-    if (s.error || p.error || b.error || m.error || mc.error || uc.error || rc.error) { setError("Dashboard data load nahi hua. Supabase permissions check karein."); return; }
+    if (s.error || p.error || b.error || m.error || mc.error || uc.error || rc.error || dc.error) { setError("Dashboard data load nahi hua. Supabase permissions check karein."); return; }
     const content = [...(s.data || []), ...(p.data || []), ...(b.data || [])];
     setStats({
       services: s.data?.length || 0, projects: p.data?.length || 0, blogPosts: b.data?.length || 0,
-      messages: mc.count || 0, unread: uc.count || 0, recruiters: rc.count || 0,
+      messages: mc.count || 0, unread: uc.count || 0, recruiters: rc.count || 0, demoRequests: dc.count || 0,
       published: content.filter(x => x.published !== false).length,
       drafts: content.filter(x => x.published === false).length
     });
@@ -160,6 +165,27 @@ export default function Admin() {
     if (deleteError) return setError("Delete nahi hua. Supabase admin permission check karein.");
     setItems(current => current.filter(item => item.id !== id)); await loadOverview();
   };
+  const updateDemoStatus = async (id, status) => {
+    const patch = { status, updated_at: new Date().toISOString(), ...(status === "archived" ? { archived_at: new Date().toISOString() } : { archived_at: null }) };
+    const { error: updateError } = await supabase.from("rdds_demo_requests").update(patch).eq("id", id);
+    if (updateError) return setError("Demo status update nahi hua.");
+    await loadItems();
+  };
+  const updateDemoLink = async item => {
+    const demo_url = window.prompt("Client demo URL (https://...)", item.demo_url || "");
+    if (demo_url === null) return;
+    const { error: updateError } = await supabase.from("rdds_demo_requests").update({ demo_url: demo_url.trim() || null, updated_at: new Date().toISOString(), ...(demo_url.trim() ? { status: "demo_sent" } : {}) }).eq("id", item.id);
+    if (updateError) return setError("Demo link save nahi hua.");
+    await loadItems();
+  };
+  const updateDemoNotes = async item => {
+    const admin_notes = window.prompt("Internal/client update notes", item.admin_notes || "");
+    if (admin_notes === null) return;
+    const { error: updateError } = await supabase.from("rdds_demo_requests").update({ admin_notes, updated_at: new Date().toISOString() }).eq("id", item.id);
+    if (updateError) return setError("Demo notes save nahi huay.");
+    await loadItems();
+  };
+
   const updateMessageStatus = async (id, status) => {
     const { error: updateError } = await supabase.from("contact_messages").update({ status }).eq("id", id);
     if (updateError) return setError("Message status update nahi hua.");
@@ -193,8 +219,8 @@ export default function Admin() {
   const activeLabel = sections.find(section => section.id === active)?.label || "Overview";
   const visibleItems = items.filter(item => {
     const term = searchTerm.trim().toLowerCase();
-    const matchesSearch = !term || [item.title, item.name, item.subject, item.description, item.message, item.email, item.category, item.slug].some(value => String(value || "").toLowerCase().includes(term));
-    const matchesStatus = active === "contactMessages" ? (messageFilter === "all" || (item.status || "new") === messageFilter) : active === "recruiters" ? (messageFilter === "all" || (item.interest_status || "Pending") === messageFilter) : true;
+    const matchesSearch = !term || [item.title, item.name, item.client_name, item.business_name, item.client_phone, item.subject, item.description, item.message, item.email, item.client_email, item.category, item.slug].some(value => String(value || "").toLowerCase().includes(term));
+    const matchesStatus = active === "contactMessages" ? (messageFilter === "all" || (item.status || "new") === messageFilter) : active === "recruiters" ? (messageFilter === "all" || (item.interest_status || "Pending") === messageFilter) : active === "demoRequests" ? (messageFilter === "all" || item.status === messageFilter) : true;
     return matchesSearch && matchesStatus;
   });
   return <main className="admin-dashboard">
@@ -213,7 +239,7 @@ export default function Admin() {
           <StatCard label="Services" value={stats.services} icon="◇" note="Total service entries" />
           <StatCard label="Projects" value={stats.projects} icon="▧" note="Portfolio entries" />
           <StatCard label="Blog posts" value={stats.blogPosts} icon="▤" note="Articles in your journal" />
-          <StatCard label="Messages" value={stats.messages} icon="✉" note={stats.unread + " new enquiries"} /><StatCard label="Recruiters" value={stats.recruiters} icon="♙" note="Registered recruiter accounts" accent />
+          <StatCard label="Messages" value={stats.messages} icon="✉" note={stats.unread + " new enquiries"} /><StatCard label="Recruiters" value={stats.recruiters} icon="♙" note="Registered recruiter accounts" /><StatCard label="Free Demo requests" value={stats.demoRequests} icon="✧" note="Client demo pipeline" accent />
         </div>
         <div className="admin-insight-grid">
           <section className="admin-panel"><div className="admin-panel-head"><div><span>CONTENT STATUS</span><h3>Publishing overview</h3></div><span className="admin-panel-icon">◷</span></div><div className="admin-publish-numbers"><div><strong>{stats.published}</strong><span>Published</span></div><div><strong>{stats.drafts}</strong><span>Drafts</span></div></div><div className="admin-progress"><span style={{ width: (stats.published + stats.drafts ? stats.published / (stats.published + stats.drafts) * 100 : 0) + "%" }} /></div><p className="admin-muted">Content entries across services, projects and blog.</p></section>
@@ -223,9 +249,9 @@ export default function Admin() {
           {recentMessages.length ? <div className="admin-message-list">{recentMessages.slice(0,5).map(message => <div className="admin-message-row" key={message.id}><span className="admin-message-avatar">{(message.name || "M").slice(0,1).toUpperCase()}</span><div className="admin-message-info"><strong>{message.name || "Website visitor"}</strong><small>{message.subject || message.email || "New enquiry"} · {dateLabel(message.created_at)}</small></div><span className={"admin-message-status " + (message.status || "new")}>{message.status || "new"}</span></div>)}</div> : <div className="admin-no-data">No enquiries received yet. New website contact messages will appear here.</div>}
         </section>
       </div> : <>
-        <div className="admin-toolbar"><p>{active === "contactMessages" ? "Review and manage customer enquiries." : "Create, update and publish your website content."}</p>{active !== "contactMessages" && <button className="admin-primary" onClick={() => { setEditingId(null); setForm(emptyForm); setShowForm(v => !v); }}>＋ Add new</button>}</div>
-        <div className="admin-list-tools"><label className="admin-search"><span>⌕</span><input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={active === "contactMessages" ? "Search name, email or message..." : "Search title, category or description..."} /></label>{(active === "contactMessages" || active === "recruiters") && <select aria-label="Filter records by status" value={messageFilter} onChange={e => setMessageFilter(e.target.value)}><option value="all">All statuses</option>{active === "contactMessages" ? <><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></> : <><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></>}</select>}<span className="admin-result-count">{visibleItems.length} of {items.length} records</span></div>
-        {showForm && active !== "contactMessages" && <form className="admin-editor" onSubmit={saveItem}><h2>{editingId ? "Edit record" : "Create new record"}</h2>
+        <div className="admin-toolbar"><p>{active === "contactMessages" ? "Review and manage customer enquiries." : "Create, update and publish your website content."}</p>{active !== "contactMessages" && active !== "demoRequests" && <button className="admin-primary" onClick={() => { setEditingId(null); setForm(emptyForm); setShowForm(v => !v); }}>＋ Add new</button>}</div>
+        <div className="admin-list-tools"><label className="admin-search"><span>⌕</span><input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={active === "contactMessages" ? "Search name, email or message..." : "Search title, category or description..."} /></label>{(active === "contactMessages" || active === "recruiters" || active === "demoRequests") && <select aria-label="Filter records by status" value={messageFilter} onChange={e => setMessageFilter(e.target.value)}><option value="all">All statuses</option>{active === "contactMessages" ? <><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></> : active === "demoRequests" ? <><option value="pending">Pending</option><option value="approved">Approved</option><option value="in_progress">In progress</option><option value="demo_sent">Demo sent</option><option value="converted">Converted</option><option value="not_interested">Not interested</option><option value="archived">Archived</option></> : <><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></>}</select>}<span className="admin-result-count">{visibleItems.length} of {items.length} records</span></div>
+        {showForm && active !== "contactMessages" && active !== "demoRequests" && <form className="admin-editor" onSubmit={saveItem}><h2>{editingId ? "Edit record" : "Create new record"}</h2>
           {active === "pricingPackages" ? <>
             <label>Package name<input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required placeholder="Business" /></label>
             <div className="admin-form-row"><label>Service<select value={form.service_type} onChange={e => setForm({ ...form, service_type: e.target.value })}><option value="website">Website Development</option><option value="ecommerce">E-Commerce Website Development</option></select></label><label>Package tier<select value={form.tier} onChange={e => setForm({ ...form, tier: e.target.value })}><option value="starter">Starter</option><option value="business">Business</option><option value="premium">Premium</option></select></label></div>
@@ -241,8 +267,8 @@ export default function Admin() {
           <label className="admin-check"><input type="checkbox" checked={form.published} onChange={e => setForm({ ...form, published: e.target.checked })} /> Publish on website</label><div className="admin-actions"><button className="admin-primary" type="submit">Save changes</button><button type="button" className="admin-cancel" onClick={() => setShowForm(false)}>Cancel</button></div>
         </form>}
         {loading ? <div className="admin-empty">Loading records…</div> : items.length === 0 ? <div className="admin-empty"><span>✦</span><h2>No {activeLabel.toLowerCase()} yet</h2><p>{active === "contactMessages" ? "New messages submitted through your website will appear here." : "Create your first record using the Add new button."}</p></div> : visibleItems.length === 0 ? <div className="admin-empty"><span>⌕</span><h2>No matching records</h2><p>Search term ya status filter change karke dobara try karein.</p></div> :
-          <div className="admin-records">{visibleItems.map(item => <article className="admin-record" key={item.id}><div className="admin-record-content"><div className="admin-record-meta">{item.category || activeLabel} · {active === "contactMessages" ? (item.status || "new") : item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.subject || "Message"}</h3><p>{active === "recruiters" ? [item.company_name, item.phone, item.email, item.purpose].filter(Boolean).join(" · ") : active === "pricingPackages" ? `${item.service_type === "ecommerce" ? "E-Commerce" : "Website"} · PKR ${Number(item.price_pkr).toLocaleString("en-PK")} · ${item.price_usd} USD · ${item.delivery_days}` : item.description || item.message || item.email || "—"}</p>{active === "pricingPackages" && <small className="admin-record-date">{(Array.isArray(item.features) ? item.features : []).join(" · ")}</small>}{(active === "contactMessages" || active === "recruiters") && <small className="admin-record-date">{item.email || ""} · {dateLabel(item.created_at)}</small>}{active === "recruiters" && item.admin_notes && <small className="admin-record-date">Admin notes: {item.admin_notes}</small>}</div>
-            {active === "contactMessages" ? <div className="admin-record-actions"><select aria-label="Message status" value={item.status || "new"} onChange={e => updateMessageStatus(item.id, e.target.value)}><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></select></div> : active === "recruiters" ? <div className="admin-record-actions"><select aria-label="Recruiter interest status" value={item.interest_status || "Pending"} onChange={e => updateRecruiterStatus(item.id, e.target.value)}><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></select><button onClick={() => updateRecruiterNotes(item)}>Notes</button></div> : <div className="admin-record-actions"><button onClick={() => editItem(item)}>Edit</button><button onClick={() => removeItem(item.id)}>Delete</button></div>}</article>)}</div>}
+          <div className="admin-records">{visibleItems.map(item => <article className="admin-record" key={item.id}><div className="admin-record-content"><div className="admin-record-meta">{item.category || activeLabel} · {active === "contactMessages" ? (item.status || "new") : item.published === false ? "Draft" : "Published"}</div><h3>{item.title || item.name || item.client_name || item.business_name || item.subject || "Message"}</h3><p>{active === "demoRequests" ? [item.business_name, item.business_category, item.client_phone, item.client_email, item.project_details].filter(Boolean).join(" · ") : active === "recruiters" ? [item.company_name, item.phone, item.email, item.purpose].filter(Boolean).join(" · ") : active === "pricingPackages" ? `${item.service_type === "ecommerce" ? "E-Commerce" : "Website"} · PKR ${Number(item.price_pkr).toLocaleString("en-PK")} · ${item.price_usd} USD · ${item.delivery_days}` : item.description || item.message || item.email || "—"}</p>{active === "pricingPackages" && <small className="admin-record-date">{(Array.isArray(item.features) ? item.features : []).join(" · ")}</small>}{(active === "contactMessages" || active === "recruiters") && <small className="admin-record-date">{item.email || ""} · {dateLabel(item.created_at)}</small>}{active === "demoRequests" && <small className="admin-record-date">{item.status} · {dateLabel(item.created_at)}{item.demo_url ? " · " + item.demo_url : ""}</small>}{active === "recruiters" && item.admin_notes && <small className="admin-record-date">Admin notes: {item.admin_notes}</small>}</div>
+            {active === "demoRequests" ? <div className="admin-record-actions"><select aria-label="Demo request status" value={item.status} onChange={e => updateDemoStatus(item.id, e.target.value)}><option value="pending">Pending</option><option value="approved">Approved</option><option value="in_progress">In progress</option><option value="demo_sent">Demo sent</option><option value="converted">Converted</option><option value="not_interested">Not interested</option><option value="archived">Archived</option></select><button onClick={() => updateDemoLink(item)}>Demo link</button><button onClick={() => updateDemoNotes(item)}>Notes</button></div> : active === "contactMessages" ? <div className="admin-record-actions"><select aria-label="Message status" value={item.status || "new"} onChange={e => updateMessageStatus(item.id, e.target.value)}><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></select></div> : active === "recruiters" ? <div className="admin-record-actions"><select aria-label="Recruiter interest status" value={item.interest_status || "Pending"} onChange={e => updateRecruiterStatus(item.id, e.target.value)}><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></select><button onClick={() => updateRecruiterNotes(item)}>Notes</button></div> : <div className="admin-record-actions"><button onClick={() => editItem(item)}>Edit</button><button onClick={() => removeItem(item.id)}>Delete</button></div>}</article>)}</div>}
       </>}
     </section>
   </main>;
