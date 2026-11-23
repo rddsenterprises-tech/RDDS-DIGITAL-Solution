@@ -12,6 +12,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./admin.css";
 
+const clientPortalEnabled = import.meta.env.VITE_CLIENT_PORTAL_ENABLED === "true";
+
 const sections = [
   { id: "overview", label: "Overview", icon: "▦" },
   { id: "services", table: "services", label: "Services", icon: "◇" },
@@ -19,7 +21,7 @@ const sections = [
   { id: "projects", table: "projects", label: "Projects", icon: "▧" },
   { id: "blogPosts", table: "blog_posts", label: "Blog posts", icon: "▤" },
   { id: "contactMessages", table: "contact_messages", label: "Messages", icon: "✉" },
-  { id: "demoRequests", table: "rdds_demo_requests", label: "Free Demo Requests", icon: "✧" },
+  ...(clientPortalEnabled ? [{ id: "demoRequests", table: "rdds_demo_requests", label: "Free Demo Requests", icon: "✧" }] : []),
   { id: "recruiters", table: "recruiter_profiles", label: "Recruiters", icon: "♙" }
 ];
 const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", thumbnail_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
@@ -71,6 +73,7 @@ export default function Admin() {
   }, [user]);
 
   const loadOverview = async () => {
+    const demoCountQuery = clientPortalEnabled ? supabase.from("rdds_demo_requests").select("id", { count: "exact", head: true }) : Promise.resolve({ count: 0, error: null });
     const [s, p, b, m, mc, uc, rc, dc] = await Promise.all([
       supabase.from("services").select("id,published"),
       supabase.from("projects").select("id,published"),
@@ -79,7 +82,7 @@ export default function Admin() {
       supabase.from("contact_messages").select("id", { count: "exact", head: true }),
       supabase.from("contact_messages").select("id", { count: "exact", head: true }).eq("status", "new"),
       supabase.from("recruiter_profiles").select("id", { count: "exact", head: true }),
-      supabase.from("rdds_demo_requests").select("id", { count: "exact", head: true })
+      demoCountQuery
     ]);
     if (s.error || p.error || b.error || m.error || mc.error || uc.error || rc.error || dc.error) { setError("Dashboard data load nahi hua. Supabase permissions check karein."); return; }
     const content = [...(s.data || []), ...(p.data || []), ...(b.data || [])];
