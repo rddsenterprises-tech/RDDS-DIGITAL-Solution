@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./client-portal.css";
 
+const clientPortalEnabled = import.meta.env.VITE_CLIENT_PORTAL_ENABLED === "true";
+
 const blank = { full_name: "", email: "", phone: "", business_name: "", business_category: "", password: "" };
 
 export default function ClientPortal() {
@@ -122,7 +124,7 @@ export default function ClientPortal() {
     <div className="client-portal-shell">
       <Link className="client-portal-brand" to="/"><span>R</span> RDDS <b>ENTERPRISES</b></Link>
       <div className="client-portal-kicker">RDDS CLIENT SPACE</div>
-      {!supabaseConfigured ? <section className="client-panel"><h1>Client portal is being prepared.</h1><p>Account registration will be available after the RDDS database connection is configured.</p><Link className="client-back" to="/pricing">Back to pricing</Link></section> :
+      {!clientPortalEnabled || !supabaseConfigured ? <section className="client-panel"><h1>Client portal is being prepared.</h1><p>RDDS is setting up its dedicated secure client database. Account registration will open once the Free Demo system is ready.</p><Link className="client-back" to="/pricing">Back to pricing</Link></section> :
       !user ? <section className="client-panel">
         <div className="client-panel-heading"><span>ONE BUSINESS. ONE FREE DEMO.</span><h1>{mode === "signup" ? "Create your client account." : "Welcome back."}</h1><p>{mode === "signup" ? "Register once to request and track your RDDS website demo." : "Sign in to view your Free Demo request and its progress."}</p></div>
         <form onSubmit={submitAuth} className="client-form">
