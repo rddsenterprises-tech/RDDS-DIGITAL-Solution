@@ -411,6 +411,10 @@ function Pricing() {
         <div className="pricing-group"><div className="pricing-group-heading"><span>02</span><div><h3>E-Commerce Website Development</h3><p>Practical online stores to showcase products and receive orders.</p></div></div>{renderPackages(storePackages)}</div>
         {packages.length === 0 && <p>No published packages are available right now. Please contact us for a quotation.</p>}
       </>}
+      <section className="free-demo-offer">
+        <div className="free-demo-copy"><span>START WITH CONFIDENCE</span><h2>Try RDDS with a <em>Free Demo.</em></h2><p>Get a complimentary homepage preview for your business before choosing a paid website package. Contact our team to discuss your requirements and request your demo.</p><ul><li>One homepage design preview</li><li>Your business name and visual direction</li><li>Reviewed by the RDDS team</li><li>No payment or purchase obligation</li></ul><small>One free demo per client. Domain, hosting and full website development are not included.</small></div>
+        <div className="free-demo-price"><span>COMPLIMENTARY</span><strong>Rs. 0</strong><p>One-time business offer</p><Link className="btn primary" to="/contact?package=Free%20Demo">Request a Free Demo ↗</Link><small>Contact RDDS to get started</small></div>
+      </section>
       <div className="pricing-terms"><strong>Project terms</strong><p>50% advance to start and 50% before final handover. Domain, hosting, paid third-party services and payment gateway charges are separate. Extra pages, products and custom integrations are quoted separately. Revisions are limited to each package.</p></div>
     </section>
     <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
