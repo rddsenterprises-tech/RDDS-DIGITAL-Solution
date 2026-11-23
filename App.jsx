@@ -306,6 +306,26 @@ function Home() {
       <div className="center-link"><Link className="btn secondary" to="/services">Explore all services ↗</Link></div>
     </section>
     <section className="founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>MEET THE FOUNDER</label><h2>Work directly with the person who builds your website.</h2><p>I'm Danish Khan, Founder & Web Developer at RDDS Enterprises. I personally manage projects from early planning and design through development and final delivery.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer</span></div><Link className="text-link" to="/about">More about me ↗</Link></div></div></section>
+    <section className="company-profile section" id="rdds-company-profile">
+      <div className="company-profile-inner">
+        <div className="company-profile-copy">
+          <label>GET TO KNOW RDDS</label>
+          <h2>Our company.<br /><em>Our vision. Our work.</em></h2>
+          <p>Explore the RDDS Enterprises company profile — a concise introduction to our approach, services, process and the work we do for businesses in Pakistan and internationally.</p>
+          <div className="company-profile-actions">
+            <a className="btn primary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">Open full company profile ↗</a>
+            <a className="btn secondary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">View on Canva</a>
+          </div>
+          <small className="company-profile-note">12-page presentation · Opens in Canva</small>
+        </div>
+        <div className="company-profile-preview">
+          <div className="company-profile-frame">
+            <iframe title="RDDS Enterprises company profile presentation" src="https://www.canva.com/design/DAHanI_MwwI/view?embed" loading="lazy" allowFullScreen />
+          </div>
+          <span>RDDS DIGITAL PROFILE · 12 PANELS</span>
+        </div>
+      </div>
+    </section>
     <section className="home-blog section"><div className="section-head"><label>FROM THE BLOG</label><h2>Ideas, insights & <em>updates.</em></h2><p>Helpful thoughts about websites, design and growing your business online.</p></div>{managedPosts.length ? <div className="blog-grid">{managedPosts.map(post => <article className="blog-card" key={post.id}><div className="blog-card-body"><small>{post.category}</small><h3>{post.title}</h3><p>{post.description}</p><Link className="text-link" to={"/blog/" + post.slug}>Read article ↗</Link></div></article>)}</div> : <div className="blog-empty compact"><span className="blog-icon">✦</span><h3>Articles are coming soon</h3><p>We're preparing useful articles for business owners and creators.</p><Link className="text-link" to="/blog">Visit the blog ↗</Link></div>}</section>
     <section className="home-cta"><label>READY TO GET STARTED?</label><h2>Let's build something<br /><em>meaningful.</em></h2><Link className="btn primary" to="/contact">Start a conversation ↗</Link></section>
   </>;
