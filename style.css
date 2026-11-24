@@ -430,3 +430,104 @@ body{top:0!important}
 @media(prefers-reduced-motion:reduce){
   .hero::before,.hero::after,.hero-orbit span,.hero .eyebrow i{animation:none!important}
 }
+
+
+/* Mobile-first hero layout correction: keep content in normal flow */
+@media(max-width:540px){
+  .hero{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    padding:0 0 22px;
+  }
+  .hero-copy{
+    width:100%;
+    max-width:600px;
+    margin:76px auto 0;
+    padding:0 22px;
+  }
+  .hero .eyebrow{
+    max-width:100%;
+    flex-wrap:wrap;
+    font-size:9px;
+    line-height:1.6;
+    letter-spacing:.075em;
+  }
+  .hero h1{
+    font-size:clamp(34px,9.2vw,42px);
+    line-height:1.16;
+    margin:20px 0 14px;
+    overflow-wrap:normal;
+  }
+  .hero-copy>p{
+    max-width:440px;
+    font-size:14px;
+    line-height:1.75;
+  }
+  .hero-actions{
+    width:100%;
+    max-width:340px;
+    margin:25px auto 0;
+    gap:11px;
+  }
+  .hero-actions .btn{
+    width:100%;
+    min-height:48px;
+    padding:11px 16px;
+    white-space:normal;
+    text-align:center;
+    font-size:13px;
+  }
+  .hero-foot{
+    position:relative;
+    inset:auto;
+    width:100%;
+    margin:42px auto 0;
+    padding:0 16px;
+  }
+  .ticker{
+    height:40px;
+    justify-content:flex-start;
+    gap:15px;
+    padding:0 13px;
+    overflow:hidden;
+    font-size:8px;
+    letter-spacing:.07em;
+  }
+  .benefits{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px 8px;
+    margin-top:19px;
+  }
+  .benefits>div{
+    min-width:0;
+    padding:0 5px;
+    gap:4px;
+  }
+  .benefits strong{
+    font-size:10px;
+    line-height:1.4;
+  }
+  .benefits small{
+    font-size:9px;
+    line-height:1.45;
+  }
+  .hero-orbit{
+    width:520px;
+    height:520px;
+    right:-355px;
+    top:35px;
+    opacity:.5;
+  }
+}
+@media(max-width:360px){
+  .hero-copy{padding:0 17px;margin-top:62px}
+  .hero h1{font-size:33px}
+  .hero-foot{padding:0 12px;margin-top:34px}
+  .benefits strong{font-size:9px}
+  .benefits small{font-size:8px}
+}
