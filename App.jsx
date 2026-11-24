@@ -273,44 +273,29 @@ function PageIntro({ eyebrow, title, children }) {
 }
 
 function Home() {
-  const displayServices = services;
-  const [managedPosts, setManagedPosts] = useState([]);
-  useEffect(() => {
-    if (!supabaseConfigured) return;
-    let cancelled = false;
-    supabase.from("blog_posts").select("*").eq("published", true).order("created_at", { ascending: false }).limit(2)
-      .then(({ data }) => { if (!cancelled) setManagedPosts(data || []); });
-    return () => { cancelled = true; };
-  }, []);
   return <>
     <section className="hero" id="home">
       <div className="stars" /><div className="hero-orbit" aria-hidden="true"><span /><span /><span /></div>
       <div className="hero-copy">
-        <div className="eyebrow"><i /> RDDS ENTERPRISES · WEB DESIGN & DEVELOPMENT</div>
-        <h1>Premium websites.<br /><em>Elevate your brand.</em></h1>
-        <p>Thoughtful digital experiences, designed and built personally by <strong>Danish Khan.</strong></p>
-        <div className="hero-actions"><Link className="btn primary" to="/contact">Get a consultation <span>↗</span></Link><Link className="btn secondary" to="/projects">View projects</Link></div>
+        <div className="eyebrow"><i /> RDDS ENTERPRISES · DIGITAL COMPANY PROFILE</div>
+        <h1>Thoughtful digital work.<br /><em>Built with purpose.</em></h1>
+        <p>We bring ideas, business goals and technology together through considered digital experiences for a connected world.</p>
+        <div className="hero-actions"><Link className="btn primary" to="/contact">Start a conversation <span>↗</span></Link><a className="btn secondary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">Explore our profile</a></div>
       </div>
       <div className="hero-foot">
-        <div className="ticker"><span>Custom-built websites</span><b>✦</b><span>SEO-ready design</span><b>✦</b><span>Responsive by design</span><b>✦</b><span>Direct founder collaboration</span></div>
-        <div className="benefits"><div><strong>◫ Modern design</strong><small>Designed for experience</small></div><div><strong>↗ Blazing fast</strong><small>Optimised for the web</small></div><div><strong>◇ SEO ready</strong><small>Built with best practices</small></div><div><strong>✧ Personal support</strong><small>Direct communication</small></div></div>
+        <div className="ticker"><span>Purpose-led thinking</span><b>✦</b><span>Thoughtful execution</span><b>✦</b><span>Long-term perspective</span><b>✦</b><span>Personal accountability</span></div>
+        <div className="benefits"><div><strong>◫ Clear thinking</strong><small>Good decisions start with clarity</small></div><div><strong>↗ Built with care</strong><small>Attention through every detail</small></div><div><strong>◇ Practical outcomes</strong><small>Technology with a purpose</small></div><div><strong>✧ Human approach</strong><small>People before process</small></div></div>
       </div>
     </section>
-    <section className="section">
-      <div className="section-head"><label>WHAT WE DO</label><h2>Digital made to work <em>for you.</em></h2><p>From the first conversation to launch, get a practical, personal approach to creating your next website.</p></div>
-      <div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
-      <div className="center-link"><Link className="btn secondary" to="/services">Explore all services ↗</Link></div>
-    </section>
-    <section className="founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>MEET THE FOUNDER</label><h2>Work directly with the person who builds your website.</h2><p>I'm Danish Khan, Founder & Web Developer at RDDS Enterprises. I personally manage projects from early planning and design through development and final delivery.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer</span></div><Link className="text-link" to="/about">More about me ↗</Link></div></div></section>
     <section className="company-profile section" id="rdds-company-profile">
       <div className="company-profile-inner">
         <div className="company-profile-copy">
-          <label>GET TO KNOW RDDS</label>
-          <h2>Our company.<br /><em>Our vision. Our work.</em></h2>
-          <p>Explore the RDDS Enterprises company profile — a concise introduction to our approach, services, process and the work we do for businesses in Pakistan and internationally.</p>
+          <label>THE RDDS COMPANY PROFILE</label>
+          <h2>One introduction.<br /><em>A wider perspective.</em></h2>
+          <p>Discover the thinking behind RDDS Enterprises in our company presentation. It brings together our identity, perspective and the principles that shape how we approach digital work. Open the presentation to explore the complete profile.</p>
           <div className="company-profile-actions">
-            <a className="btn primary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">Open full company profile ↗</a>
-            <a className="btn secondary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">View on Canva</a>
+            <a className="btn primary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">Open company profile ↗</a>
+            <a className="btn secondary" href="https://www.canva.com/design/DAHanI_MwwI/view" target="_blank" rel="noreferrer">View presentation</a>
           </div>
           <small className="company-profile-note">12-page presentation · Opens in Canva</small>
         </div>
@@ -318,49 +303,75 @@ function Home() {
           <div className="company-profile-frame">
             <iframe title="RDDS Enterprises company profile presentation" src="https://www.canva.com/design/DAHanI_MwwI/view?embed" loading="lazy" allowFullScreen />
           </div>
-          <span>RDDS DIGITAL PROFILE · 12 PANELS</span>
+          <span>RDDS ENTERPRISES · COMPANY PROFILE</span>
         </div>
       </div>
     </section>
-    <section className="home-blog section"><div className="section-head"><label>FROM THE BLOG</label><h2>Ideas, insights & <em>updates.</em></h2><p>Helpful thoughts about websites, design and growing your business online.</p></div>{managedPosts.length ? <div className="blog-grid">{managedPosts.map(post => <article className="blog-card" key={post.id}><div className="blog-card-body"><small>{post.category}</small><h3>{post.title}</h3><p>{post.description}</p><Link className="text-link" to={"/blog/" + post.slug}>Read article ↗</Link></div></article>)}</div> : <div className="blog-empty compact"><span className="blog-icon">✦</span><h3>Articles are coming soon</h3><p>We're preparing useful articles for business owners and creators.</p><Link className="text-link" to="/blog">Visit the blog ↗</Link></div>}</section>
-    <section className="home-cta"><label>READY TO GET STARTED?</label><h2>Let's build something<br /><em>meaningful.</em></h2><Link className="btn primary" to="/contact">Start a conversation ↗</Link></section>
+    <section className="section home-principles">
+      <div className="section-head"><label>THE WAY WE THINK</label><h2>Good digital work begins <em>before the build.</em></h2><p>We believe the strongest outcomes come from understanding the bigger picture, making deliberate choices and caring about how the finished work performs in the real world.</p></div>
+      <div className="principle-grid">
+        <article><b>01</b><h3>Start with the why</h3><p>Every project should have a clear reason to exist and a meaningful outcome to work towards.</p></article>
+        <article><b>02</b><h3>Keep it considered</h3><p>Good digital experiences balance visual quality, usability and the practical needs behind them.</p></article>
+        <article><b>03</b><h3>Think beyond launch</h3><p>Digital work should be created with its future use, care and growth in mind.</p></article>
+      </div>
+    </section>
+    <section className="home-cta"><label>YOUR NEXT CHAPTER STARTS HERE</label><h2>Bring your idea.<br /><em>Let's give it direction.</em></h2><Link className="btn primary" to="/contact">Connect with RDDS ↗</Link></section>
   </>;
 }
 
 function About() {
-  return <main className="inner-page"><PageIntro eyebrow="ABOUT THE FOUNDER" title={<>A personal approach.<br /><em>From first idea to launch.</em></>}>RDDS Enterprises is founded and personally managed by Danish Khan, with a focus on thoughtful design, practical development and clear communication.</PageIntro><section className="founder about-founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>FOUNDER & WEB DEVELOPER</label><h2>Hi, I'm Danish Khan.</h2><p>I work directly with businesses to plan, design and build modern websites and digital experiences. I believe a good website should look professional, work smoothly on every device and make it easier for customers to connect with a business.</p><p>At RDDS Enterprises, every project receives direct attention throughout the process—from understanding the idea to development, launch and support.</p><div className="signature"><strong>Danish Khan</strong><span>Founder & Web Developer · RDDS Enterprises</span></div></div></div></section><section className="section"><div className="principle-grid"><article><b>01</b><h3>Direct collaboration</h3><p>Work one-to-one with the founder throughout your project.</p></article><article><b>02</b><h3>Responsive by design</h3><p>Useful, beautiful experiences on every screen size.</p></article><article><b>03</b><h3>Clear communication</h3><p>Stay informed and involved from kickoff to launch.</p></article></div></section></main>;
+  return <main className="inner-page">
+    <PageIntro eyebrow="ABOUT RDDS ENTERPRISES" title={<>People, purpose<br /><em>and a personal commitment.</em></>}>A closer look at the person behind RDDS Enterprises and the beliefs that guide the company.</PageIntro>
+    <section className="founder about-founder"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Enterprises" /></div><div><label>FOUNDER & WEB DEVELOPER</label><h2>Meet Danish Khan.</h2><p>I'm Danish Khan, the founder of RDDS Enterprises. I started RDDS with a simple belief: businesses deserve digital work that is thoughtfully planned, carefully made and connected to a real purpose.</p><p>My role is hands-on. I stay close to the ideas, decisions and details that shape each engagement, bringing a personal sense of ownership from the first discussion through delivery.</p><div className="signature"><strong>Danish Khan</strong><span>Founder · RDDS Enterprises</span></div></div></div></section>
+    <section className="section">
+      <div className="section-head"><label>OUR STORY</label><h2>Built on ownership. <em>Guided by purpose.</em></h2><p>RDDS Enterprises is an independent digital company based in Pakistan. Our focus is to help businesses make confident decisions about their digital presence through direct communication, considered execution and a commitment to doing the work properly.</p></div>
+      <div className="principle-grid">
+        <article><b>OUR MISSION</b><h3>Make technology meaningful</h3><p>To turn business ideas and needs into useful digital outcomes through thoughtful planning, responsible execution and lasting value.</p></article>
+        <article><b>OUR VISION</b><h3>Earn trust through our work</h3><p>To build a respected digital company known for integrity, personal accountability and work that makes a genuine difference to the people using it.</p></article>
+        <article><b>OUR PROMISE</b><h3>Take ownership</h3><p>To communicate honestly, respect the agreed scope and give every engagement the attention it deserves.</p></article>
+      </div>
+    </section>
+    <section className="section">
+      <div className="section-head"><label>WHAT MATTERS TO US</label><h2>Principles that shape <em>every decision.</em></h2></div>
+      <div className="principle-grid">
+        <article><b>01</b><h3>Integrity</h3><p>Be clear about what is possible, what is included and what a project needs to succeed.</p></article>
+        <article><b>02</b><h3>Craft</h3><p>Care about the details, not just the finished screenshot. Quality is found in the whole experience.</p></article>
+        <article><b>03</b><h3>Accountability</h3><p>Stay involved, communicate progress and take responsibility for the agreed work.</p></article>
+      </div>
+    </section>
+  </main>;
 }
 
 function Services() {
+  const details = [
+    { n: "01", title: "Website Development", heading: "A professional home for your business", intro: "Create a credible online presence that explains what your business does and gives visitors a clear next step.", includes: ["Business and corporate website structure", "Responsive page layouts for desktop and mobile", "Contact forms and enquiry pathways", "Core technical setup and launch preparation"], outcome: "A clear, responsive website shaped around your business and its customers." },
+    { n: "02", title: "E-Commerce Website Development", heading: "An online store built for buying", intro: "Present your products clearly and make it easier for customers to browse, select and place orders.", includes: ["Shopify or custom e-commerce development", "Product categories and product detail pages", "Cart, checkout and order workflows", "Payment and delivery integration support"], outcome: "A structured shopping experience with the essential tools to manage online orders." },
+    { n: "03", title: "Custom Web Applications", heading: "Digital tools shaped around your workflow", intro: "Turn a specific business process into a practical browser-based application, rather than forcing your team into a generic tool.", includes: ["Custom dashboards and management portals", "Role-based screens and workflows", "Database design and integration", "API and third-party service connections"], outcome: "A purpose-built application aligned with the way your organisation operates." },
+    { n: "04", title: "UI/UX Design", heading: "Interfaces that feel clear and natural", intro: "Plan how people move through a website or application, then shape the interface around their needs and expectations.", includes: ["Information architecture and page planning", "User flows and wireframes", "Visual interface design", "Responsive layout guidance and usability refinement"], outcome: "A considered interface that makes important actions easier to understand and complete." },
+    { n: "05", title: "SEO Services", heading: "A stronger technical and on-page foundation", intro: "Help search engines understand your website and make its important pages easier to discover through sound optimisation practices.", includes: ["Page titles, descriptions and heading structure", "Keyword-informed on-page improvements", "Technical checks, sitemap and indexing setup", "Google Search Console review and monitoring"], outcome: "A more search-friendly website foundation. Search positions and traffic are not guaranteed." },
+    { n: "06", title: "Website Maintenance", heading: "Ongoing care after launch", intro: "Keep your website current and dependable with agreed updates, routine checks and practical support.", includes: ["Content and image updates", "Routine functionality and issue checks", "Performance and compatibility review", "Backup coordination where hosting supports it"], outcome: "A website that receives ongoing attention instead of being left untouched after launch." }
+  ];
   return <main className="inner-page">
-    <PageIntro eyebrow="OUR SERVICES" title={<>Digital solutions. <em>Built around your goals.</em></>}>RDDS Enterprises provides focused website and web application services in Pakistan and works remotely with businesses internationally. Discuss your requirements directly with founder Danish Khan.</PageIntro>
+    <PageIntro eyebrow="RDDS SERVICES" title={<>Focused expertise.<br /><em>Practical digital outcomes.</em></>}>Explore the six services offered by RDDS Enterprises. Each engagement is scoped around your requirements, priorities and intended outcome.</PageIntro>
     <section className="section services-page">
-      <div className="section-head"><label>HOW WE CAN HELP</label><h2>Six focused services. <em>One practical approach.</em></h2><p>From a professional business website to a custom application, online store or ongoing website care, choose the support that fits your project.</p></div>
-      <div className="service-grid">{services.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
-    </section>
-    <section className="section services-detail">
-      <div className="section-head"><label>WHAT EACH SERVICE INCLUDES</label><h2>Practical solutions for <em>growing businesses.</em></h2></div>
+      <div className="section-head"><label>OUR SERVICE CAPABILITIES</label><h2>What we can <em>help you build.</em></h2><p>Choose a service to match your current need. Related services can be combined when a project calls for a broader solution.</p></div>
       <div className="principle-grid">
-        <article><b>01 · WEBSITE DEVELOPMENT</b><h3>Business websites</h3><p>Plan and build a responsive website that presents your business, explains your services and makes it easy for customers to contact you. Scope can include page planning, responsive layouts, contact forms and essential technical foundations.</p></article>
-        <article><b>02 · E-COMMERCE WEBSITE DEVELOPMENT</b><h3>Online store development</h3><p>Launch or improve an online store with Shopify or a custom build. Depending on the agreed scope, work can include product organisation, store pages, payment integration support and order-management features.</p></article>
-        <article><b>03 · CUSTOM WEB APPLICATIONS</b><h3>Purpose-built web apps</h3><p>Develop custom dashboards, portals and browser-based tools around your workflows, with suitable database structures and third-party API integrations where required.</p></article>
-        <article><b>04 · UI/UX DESIGN</b><h3>Intuitive user experiences</h3><p>Plan clear user journeys, page structures, wireframes and interface layouts for websites and web applications, keeping usability and customer needs at the centre.</p></article>
-        <article><b>05 · SEO SERVICES</b><h3>Search-friendly foundations</h3><p>Improve how search engines understand your website through keyword-informed page structure, on-page improvements, technical checks, sitemap and indexing setup, and Google Search Console monitoring. Search rankings are not guaranteed.</p></article>
-        <article><b>06 · WEBSITE MAINTENANCE</b><h3>Ongoing website care</h3><p>Keep your website dependable with agreed content updates, routine checks, issue fixes, backups where supported and performance maintenance.</p></article>
+        {details.map(item => <article className="service-detail-card" key={item.n}>
+          <b>{item.n} · RDDS SERVICE</b><h3>{item.title}</h3><h4>{item.heading}</h4><p>{item.intro}</p>
+          <ul>{item.includes.map(point => <li key={point}>✓ <span>{point}</span></li>)}</ul>
+          <p className="service-outcome"><strong>Typical outcome:</strong> {item.outcome}</p>
+        </article>)}
       </div>
     </section>
     <section className="section services-detail">
-      <div className="section-head"><label>OUR APPROACH</label><h2>A clear process, <em>from brief to launch.</em></h2></div>
+      <div className="section-head"><label>HOW AN ENGAGEMENT WORKS</label><h2>From first brief <em>to handover.</em></h2><p>The exact timeline and deliverables are confirmed before work begins.</p></div>
       <div className="principle-grid">
-        <article><b>01</b><h3>Understand</h3><p>We discuss your business, audience, required features, timeline and budget before defining the project scope.</p></article>
-        <article><b>02</b><h3>Design & build</h3><p>The agreed pages and features are designed and developed for desktop and mobile, with progress shared along the way.</p></article>
-        <article><b>03</b><h3>Review & launch</h3><p>We review the agreed work, address included revisions and prepare the website for handover and launch.</p></article>
+        <article><b>01 · DISCOVERY</b><h3>Understand the requirement</h3><p>We discuss the objective, audience, required functionality, available content, timeline and budget to establish a realistic scope.</p></article>
+        <article><b>02 · EXECUTION</b><h3>Plan, design and develop</h3><p>Work follows the agreed scope, with progress shared at key points so feedback can be considered at the right time.</p></article>
+        <article><b>03 · HANDOVER</b><h3>Review and prepare for launch</h3><p>We review the agreed deliverables, complete included revision rounds and provide the handover details defined for the project.</p></article>
       </div>
     </section>
-    <section className="section services-detail">
-      <div className="section-head"><label>WORKING WITH RDDS</label><h2>Based in Pakistan. <em>Available to work worldwide.</em></h2><p>RDDS Enterprises is based in Pakistan and can collaborate remotely with clients in markets such as the UAE, Canada, the United Kingdom and the United States. Meetings, communication and delivery arrangements are agreed around each project. We do not claim local offices in these markets.</p><p>For project scope and package information, explore our <Link className="text-link" to="/pricing">website and e-commerce pricing</Link>, or <Link className="text-link" to="/projects">view the project portfolio</Link>.</p></div>
-    </section>
-    <section className="home-cta"><label>HAVE A PROJECT IN MIND?</label><h2>Let's discuss your<br /><em>next step.</em></h2><Link className="btn primary" to="/contact">Get a consultation ↗</Link></section>
+    <section className="home-cta"><label>READY TO DISCUSS THE REQUIREMENT?</label><h2>Let's define the<br /><em>right solution.</em></h2><Link className="btn primary" to="/contact">Discuss your project ↗</Link></section>
   </main>;
 }
 
