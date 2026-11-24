@@ -6,9 +6,12 @@ import RecruiterPortal from "./Recruiter.jsx";
 const Admin = lazy(() => import("./Admin.jsx"));
 
 const services = [
-  { n: "01", icon: "⌘", title: "Custom Web Development", desc: "Fast, responsive websites and custom web applications designed around your business.", points: ["Business websites", "Custom web applications"] },
-  { n: "02", icon: "▣", title: "E-Commerce Solutions", desc: "Online stores with clear product journeys, practical management and secure integrations.", points: ["Shopify and custom stores", "Store setup and integrations"] },
-  { n: "03", icon: "✳", title: "UI/UX & Graphic Design", desc: "Clean visual identities and intuitive interfaces that make your brand stand out.", points: ["Brand identity and graphics", "Web and mobile UI/UX"] }
+  { n: "01", icon: "⌘", title: "Website Development", desc: "Professional, responsive websites tailored to your business goals and customers.", points: ["Business and corporate websites", "Responsive layouts and contact forms"] },
+  { n: "02", icon: "▣", title: "E-Commerce Website Development", desc: "Online stores designed to present products clearly and make ordering straightforward.", points: ["Shopify and custom e-commerce", "Product, cart and order workflows"] },
+  { n: "03", icon: "⚙", title: "Custom Web Applications", desc: "Purpose-built web applications that streamline processes and support the way your business works.", points: ["Custom dashboards and portals", "Database and API integrations"] },
+  { n: "04", icon: "✳", title: "UI/UX Design", desc: "Clear user journeys and intuitive interfaces for websites and web applications.", points: ["Wireframes and page layouts", "User-focused interface design"] },
+  { n: "05", icon: "⌕", title: "SEO Services", desc: "Practical search optimisation to help search engines understand and discover your website.", points: ["On-page and technical SEO", "Search Console, sitemap and indexing setup"] },
+  { n: "06", icon: "↻", title: "Website Maintenance", desc: "Ongoing website care to keep your site updated, secure and working smoothly.", points: ["Content and routine updates", "Issue checks and performance maintenance"] }
 ];
 
 const blogPosts = [];
@@ -34,7 +37,7 @@ function SeoManager() {
       },
       "/services": {
         title: "Website Development & E-Commerce Services | RDDS Enterprises",
-        description: "Explore custom website development, e-commerce solutions, UI/UX design and graphic design services from RDDS Enterprises."
+        description: "Explore website development, e-commerce website development, custom web applications, UI/UX design, SEO and website maintenance from RDDS Enterprises."
       },
       "/pricing": {
         title: "Website & E-Commerce Packages | RDDS Enterprises",
@@ -109,17 +112,18 @@ function SeoManager() {
           "@id": SITE_URL + "/#business",
           name: "RDDS Enterprises",
           url: SITE_URL,
-          description: "Website design, custom web development, e-commerce solutions and UI/UX design.",
+          description: "Website development, e-commerce website development, custom web applications, UI/UX design, SEO services and website maintenance.",
           founder: { "@id": SITE_URL + "/#founder" },
           email: "rdds.enterprises@gmail.com",
           telephone: "+923042178799",
           areaServed: { "@type": "Country", name: "Pakistan" },
           serviceType: [
-            "Custom Web Development",
-            "Business Website Design",
+            "Website Development",
             "E-Commerce Website Development",
+            "Custom Web Applications",
             "UI/UX Design",
-            "Graphic Design"
+            "SEO Services",
+            "Website Maintenance"
           ],
           sameAs: [
             "https://www.facebook.com/RDds1995/",
@@ -269,15 +273,7 @@ function PageIntro({ eyebrow, title, children }) {
 }
 
 function Home() {
-  const [managedServices, setManagedServices] = useState([]);
-  useEffect(() => {
-    if (!supabaseConfigured) return;
-    let cancelled = false;
-    supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true })
-      .then(({ data }) => { if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] }))); });
-    return () => { cancelled = true; };
-  }, []);
-  const displayServices = managedServices.length ? managedServices : services;
+  const displayServices = services;
   const [managedPosts, setManagedPosts] = useState([]);
   useEffect(() => {
     if (!supabaseConfigured) return;
@@ -336,29 +332,21 @@ function About() {
 }
 
 function Services() {
-  const [managedServices, setManagedServices] = useState([]);
-  useEffect(() => {
-    if (!supabaseConfigured) return;
-    let cancelled = false;
-    supabase.from("services").select("*").eq("published", true).order("created_at", { ascending: true })
-      .then(({ data }) => {
-        if (!cancelled && data?.length) setManagedServices(data.map((item, index) => ({ n: String(index + 1).padStart(2, "0"), icon: "✦", title: item.title, desc: item.description, points: item.category ? [item.category] : [] })));
-      });
-    return () => { cancelled = true; };
-  }, []);
-  const displayServices = managedServices.length ? managedServices : services;
   return <main className="inner-page">
-    <PageIntro eyebrow="OUR SERVICES" title={<>Website Development & <em>Digital Solutions.</em></>}>RDDS Enterprises provides website development services in Pakistan and works remotely with businesses internationally. Discuss your goals directly with founder Danish Khan, from planning and design through development and launch.</PageIntro>
+    <PageIntro eyebrow="OUR SERVICES" title={<>Digital solutions. <em>Built around your goals.</em></>}>RDDS Enterprises provides focused website and web application services in Pakistan and works remotely with businesses internationally. Discuss your requirements directly with founder Danish Khan.</PageIntro>
     <section className="section services-page">
-      <div className="section-head"><label>HOW WE CAN HELP</label><h2>Website and e-commerce services <em>built around your goals.</em></h2><p>Choose focused support for a new business website, an online store or a more polished digital identity. Every project starts with understanding your requirements, audience and budget.</p></div>
-      <div className="service-grid">{displayServices.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
+      <div className="section-head"><label>HOW WE CAN HELP</label><h2>Six focused services. <em>One practical approach.</em></h2><p>From a professional business website to a custom application, online store or ongoing website care, choose the support that fits your project.</p></div>
+      <div className="service-grid">{services.map(s => <article className="service-card" key={s.n}><div className="card-meta"><span>{s.n}</span><b>{s.icon}</b></div><h3>{s.title}</h3><p>{s.desc}</p><ul>{s.points.map(p => <li key={p}>✓ <span>{p}</span></li>)}</ul></article>)}</div>
     </section>
     <section className="section services-detail">
       <div className="section-head"><label>WHAT EACH SERVICE INCLUDES</label><h2>Practical solutions for <em>growing businesses.</em></h2></div>
       <div className="principle-grid">
-        <article><b>01 · WEBSITE DEVELOPMENT</b><h3>Custom business websites</h3><p>Plan and build a responsive business website that explains your services, introduces your brand and makes it easy for customers to contact you. Project scope can include page planning, responsive layouts, contact forms and essential on-page SEO foundations.</p></article>
-        <article><b>02 · E-COMMERCE</b><h3>Online store development</h3><p>Launch or improve an online store with Shopify or a custom build. Depending on the agreed scope, work can include product organisation, store pages, payment integration support and practical order-management features.</p></article>
-        <article><b>03 · UI/UX & GRAPHIC DESIGN</b><h3>Clear, consistent visual design</h3><p>Improve how your business looks and feels online with brand graphics, visual assets and user-friendly web or mobile interface designs. Design decisions are shaped around your customers and the purpose of each page.</p></article>
+        <article><b>01 · WEBSITE DEVELOPMENT</b><h3>Business websites</h3><p>Plan and build a responsive website that presents your business, explains your services and makes it easy for customers to contact you. Scope can include page planning, responsive layouts, contact forms and essential technical foundations.</p></article>
+        <article><b>02 · E-COMMERCE WEBSITE DEVELOPMENT</b><h3>Online store development</h3><p>Launch or improve an online store with Shopify or a custom build. Depending on the agreed scope, work can include product organisation, store pages, payment integration support and order-management features.</p></article>
+        <article><b>03 · CUSTOM WEB APPLICATIONS</b><h3>Purpose-built web apps</h3><p>Develop custom dashboards, portals and browser-based tools around your workflows, with suitable database structures and third-party API integrations where required.</p></article>
+        <article><b>04 · UI/UX DESIGN</b><h3>Intuitive user experiences</h3><p>Plan clear user journeys, page structures, wireframes and interface layouts for websites and web applications, keeping usability and customer needs at the centre.</p></article>
+        <article><b>05 · SEO SERVICES</b><h3>Search-friendly foundations</h3><p>Improve how search engines understand your website through keyword-informed page structure, on-page improvements, technical checks, sitemap and indexing setup, and Google Search Console monitoring. Search rankings are not guaranteed.</p></article>
+        <article><b>06 · WEBSITE MAINTENANCE</b><h3>Ongoing website care</h3><p>Keep your website dependable with agreed content updates, routine checks, issue fixes, backups where supported and performance maintenance.</p></article>
       </div>
     </section>
     <section className="section services-detail">
@@ -570,7 +558,7 @@ function Contact() {
     if (error) setSubmitState("Message send nahi hua. Please dobara try karein ya WhatsApp karein.");
     else { setSubmitState("Shukriya! Aapka message successfully receive ho gaya."); formElement.reset(); }
   };
-  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch for a website, online store or design project.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service" defaultValue={selectedPackage || "Website Development"}>{selectedPackage && <option value={selectedPackage}>{selectedPackage}</option>}<option>Website Development</option><option>E-Commerce Website Development</option></select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
+  return <main className="inner-page"><PageIntro eyebrow="LET'S TALK" title={<>Have a project<br /><em>in mind?</em></>}>Tell us what you're looking to build. Reach out directly and let's make a plan together.</PageIntro><section className="contact"><div className="contact-inner"><div><label>GET IN TOUCH</label><h2>Let's make it<br />happen.</h2><p>Get in touch about website development, an online store, a custom web application, UI/UX, SEO or website maintenance.</p><a className="contact-line" href="mailto:rdds.enterprises@gmail.com">✉ rdds.enterprises@gmail.com</a><a className="contact-line" href="https://wa.me/923042178799" target="_blank" rel="noreferrer">☏ 03042178799</a></div><form onSubmit={submitContact}><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>Email address<input name="email" type="email" placeholder="name@example.com" required /></label></div><label>Service required<select name="service" defaultValue={selectedPackage || "Website Development"}>{selectedPackage && <option value={selectedPackage}>{selectedPackage}</option>}{services.map(service => <option key={service.n}>{service.title}</option>)}</select></label><label>Project details<textarea name="message" rows="4" placeholder="Tell us about your project..." required /></label><button className="btn primary" type="submit">Send your enquiry ↗</button>{submitState && <p role="status">{submitState}</p>}</form></div></section></main>;
 }
 
 
