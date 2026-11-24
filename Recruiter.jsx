@@ -101,7 +101,7 @@ export default function RecruiterPortal() {
             <label>Full name<input name="full_name" autoComplete="name" placeholder="Your full name" required /></label>
             <label>Company / organisation<input name="company_name" autoComplete="organization" placeholder="Company name" required /></label>
             <label>Contact number<input name="phone" type="tel" autoComplete="tel" placeholder="+92..." required /></label>
-            <label>Service of interest<select name="purpose" defaultValue="" required><option value="" disabled>Select your interest</option><option>Website Development</option><option>E-Commerce Development</option><option>Custom Web Applications</option><option>UI/UX Design</option><option>Graphic Design</option><option>SEO &amp; Digital Marketing</option></select></label>
+            <label>Service of interest<select name="purpose" defaultValue="" required><option value="" disabled>Select your interest</option><option>Website Development</option><option>E-Commerce Website Development</option><option>Custom Web Applications</option><option>UI/UX Design</option><option>SEO Services</option><option>Website Maintenance</option></select></label>
           </>}
           <label>Email address<input name="email" type="email" autoComplete="email" placeholder="you@company.com" required /></label>
           <label>Password<input name="password" type="password" autoComplete={mode === "signup" ? "new-password" : "current-password"} minLength="8" placeholder="At least 8 characters" required /></label>
