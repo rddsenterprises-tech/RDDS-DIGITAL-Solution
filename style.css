@@ -347,3 +347,18 @@ body{top:0!important}
 
 /* RDDS one-time Free Demo pricing offer */
 .free-demo-offer{max-width:1040px;margin:58px auto 38px;padding:clamp(24px,4vw,42px);display:grid;grid-template-columns:1.4fr .8fr;gap:35px;align-items:center;border:1px solid #58a6ff66;border-radius:18px;background:radial-gradient(ellipse at 85% 15%,#1457a844,transparent 45%),linear-gradient(140deg,#102b55,#081b3a);box-shadow:0 18px 55px #00102d55}.free-demo-copy>span,.free-demo-price>span{font-size:10px;font-weight:800;letter-spacing:.18em;color:#83baff}.free-demo-copy h2{font:800 clamp(28px,3.5vw,40px)/1.2 'Roboto Slab';margin:12px 0;color:#d9eaff}.free-demo-copy h2 em{font-style:normal;color:#80b9ff}.free-demo-copy p,.free-demo-copy small,.free-demo-price p,.free-demo-price small{color:#9eafca;font-size:12px;line-height:1.8}.free-demo-copy ul{padding-left:18px;color:#c8dbf3;font-size:13px;line-height:2}.free-demo-price{padding:25px;border:1px solid #9ec2f233;border-radius:14px;background:#061630aa;text-align:center}.free-demo-price strong{display:block;margin:12px 0 2px;font:800 42px 'Roboto Slab';color:#7de0bb}.free-demo-price .btn{width:100%;margin:14px 0 8px}.free-demo-price small{display:block}@media(max-width:680px){.free-demo-offer{grid-template-columns:1fr;gap:18px;margin:38px auto 25px}.free-demo-price{padding:20px}}
+
+
+/* Refined standalone service detail cards */
+.service-detail-card{padding:25px 23px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(155deg,#0d2850,#091b38);box-shadow:0 12px 34px #0002}
+.service-detail-card>b{display:block;color:#8bbcff;font-size:10px;font-weight:800;letter-spacing:.15em}
+.service-detail-card h3{margin:12px 0 8px;color:#eef5ff;font:700 20px 'Roboto Slab'}
+.service-detail-card h4{margin:0 0 12px;color:#9bcaff;font-size:13px;font-weight:700}
+.service-detail-card>p{color:var(--muted);font-size:13px;line-height:1.8}
+.service-detail-card ul{display:grid;gap:9px;margin:17px 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);list-style:none}
+.service-detail-card li{display:flex;gap:9px;color:#c1d0e5;font-size:12px;line-height:1.55}
+.service-detail-card li:first-letter{color:#8bc4ff}
+.service-detail-card .service-outcome{margin-bottom:0;color:#b9cce6;font-size:12px}
+.service-detail-card .service-outcome strong{color:#e5c991}
+.home-principles{padding-top:80px;padding-bottom:85px}
+@media(max-width:620px){.service-detail-card{padding:22px 19px}}
