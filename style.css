@@ -362,3 +362,71 @@ body{top:0!important}
 .service-detail-card .service-outcome strong{color:#e5c991}
 .home-principles{padding-top:80px;padding-bottom:85px}
 @media(max-width:620px){.service-detail-card{padding:22px 19px}}
+
+
+/* Futuristic hero atmosphere — holographic grid, energy sweep and orbit pulses */
+.hero{
+  background:
+    radial-gradient(ellipse at 50% 48%,#1264c52b,transparent 34%),
+    radial-gradient(ellipse at 75% 40%,#18438470,transparent 42%),
+    linear-gradient(115deg,#0b285c,#071a3a);
+}
+.hero::before,
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.hero::before{
+  z-index:0;
+  opacity:.22;
+  background-image:
+    linear-gradient(#8fc4ff18 1px,transparent 1px),
+    linear-gradient(90deg,#8fc4ff18 1px,transparent 1px);
+  background-size:54px 54px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 42%,#000 0%,transparent 72%);
+  mask-image:radial-gradient(ellipse at 50% 42%,#000 0%,transparent 72%);
+  animation:heroGridFloat 24s linear infinite;
+}
+.hero::after{
+  z-index:0;
+  opacity:0;
+  background:linear-gradient(180deg,transparent 0%,#4ba5ff0a 42%,#8ed0ff32 50%,#4ba5ff0a 58%,transparent 100%);
+  transform:translateY(-100%);
+  animation:heroEnergyScan 9s ease-in-out infinite;
+}
+.hero-copy,.hero-foot{position:relative;z-index:1}
+.hero-orbit{filter:drop-shadow(0 0 22px #1684ff18)}
+.hero-orbit span{
+  box-shadow:inset 0 0 24px #1684ff0b,0 0 18px #1684ff0c;
+  animation:orbitPulse 6s ease-in-out infinite alternate;
+}
+.hero-orbit span:nth-child(2){animation-delay:-2s}
+.hero-orbit span:nth-child(3){animation-delay:-4s}
+.hero .eyebrow i{animation:heroStatusPulse 2s ease-in-out infinite}
+@keyframes heroGridFloat{
+  from{background-position:0 0,0 0;transform:translate3d(0,0,0)}
+  to{background-position:54px 54px,-54px 54px;transform:translate3d(0,12px,0)}
+}
+@keyframes heroEnergyScan{
+  0%,12%{opacity:0;transform:translateY(-100%)}
+  25%{opacity:.75}
+  48%{opacity:0;transform:translateY(100%)}
+  100%{opacity:0;transform:translateY(100%)}
+}
+@keyframes orbitPulse{
+  from{border-color:#9ec2f51b;box-shadow:inset 0 0 14px #1684ff08,0 0 8px #1684ff08}
+  to{border-color:#9ec2f55c;box-shadow:inset 0 0 28px #1684ff12,0 0 22px #1684ff20}
+}
+@keyframes heroStatusPulse{
+  0%,100%{box-shadow:0 0 5px #48d9b0;opacity:.7}
+  50%{box-shadow:0 0 16px #48d9b0;opacity:1}
+}
+@media(max-width:620px){
+  .hero::before{background-size:42px 42px;opacity:.16}
+  .hero-orbit{opacity:.75}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero::before,.hero::after,.hero-orbit span,.hero .eyebrow i{animation:none!important}
+}
