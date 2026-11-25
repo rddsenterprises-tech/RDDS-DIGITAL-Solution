@@ -630,3 +630,15 @@ body{top:0!important}
   animation: none !important;
   background-image: none !important;
 }
+
+
+/* Keep the external Tawk.to chat widget visible above the site UI */
+.site-shell {
+  overflow: visible;
+}
+.tawk-min-container,
+.tawk-max-container,
+iframe[title*="chat"],
+iframe[title*="Chat"] {
+  z-index: 2147483000 !important;
+}
