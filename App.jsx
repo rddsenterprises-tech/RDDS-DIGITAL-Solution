@@ -292,7 +292,7 @@ function Home() {
           <p>Thoughtful digital experiences, designed and built personally by <strong>Danish Khan.</strong></p>
           <div className="hero-actions"><Link className="btn primary" to="/services">Explore Our Services →</Link><Link className="btn secondary" to="/projects">View Our Work ↗</Link></div>
         </div>
-        <div className="hero-visual" aria-label="RDDS digital workspace illustration"><div className="visual-globe"><span>RDDS</span><i>✦</i></div><div className="visual-desk"><div className="visual-laptop"><div className="laptop-screen"><b>RDDS</b><small>DIGITAL SOLUTION</small><span>✦</span></div><div className="laptop-base" /></div><div className="visual-cup">RDDS</div></div><div className="visual-caption">Build Something<br /><em>Amazing.</em></div></div>
+        <div className="hero-visual brain-hero-visual" aria-label="Animated holographic artificial intelligence brain"><div className="brain-orbit orbit-one" /><div className="brain-orbit orbit-two" /><div className="brain-halo" /><img className="brain-art" src="/rdds-ai-brain.svg" alt="Glowing blue holographic neural brain" /><div className="brain-caption"><span>INTELLIGENCE</span><strong>POWERED BY IDEAS</strong></div></div>
       </div>
       <div className="hero-v2-services"><div className="mini-section-title"><span />Our Services<span /></div><div className="service-grid hero-service-grid">{services.map(item => <Link className="service-card hero-service-card" to="/services" key={item.n}><div className="card-meta"><b>{item.icon}</b><small>{item.n}</small></div><h3>{item.title}</h3><span className="service-card-arrow">↗</span></Link>)}</div></div>
     </section>
