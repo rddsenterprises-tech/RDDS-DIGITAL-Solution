@@ -273,49 +273,32 @@ function PageIntro({ eyebrow, title, children }) {
 }
 
 function Home() {
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let cancelled = false;
+    supabase.from("projects").select("*").eq("published", true).order("created_at", { ascending: false }).limit(3)
+      .then(({ data }) => { if (!cancelled) setProjects(data || []); });
+    return () => { cancelled = true; };
+  }, []);
   return <>
-    <section className="hero" id="home">
+    <section className="hero hero-v2" id="home">
       <div className="stars" /><div className="hero-orbit" aria-hidden="true"><span /><span /><span /></div>
-      <div className="hero-copy">
-        <div className="eyebrow"><i /> RDDS ENTERPRISES · DIGITAL COMPANY PROFILE</div>
-        <h1>Thoughtful digital work.<br /><em>Built with purpose.</em></h1>
-        <p>We bring ideas, business goals and technology together through considered digital experiences for a connected world.</p>
-        <div className="hero-actions"><Link className="btn primary" to="/contact">Start a conversation <span>↗</span></Link><a className="btn secondary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">Explore our profile</a></div>
-      </div>
-      <div className="hero-foot">
-        <div className="ticker"><span>Purpose-led thinking</span><b>✦</b><span>Thoughtful execution</span><b>✦</b><span>Long-term perspective</span><b>✦</b><span>Personal accountability</span></div>
-        <div className="benefits"><div><strong>◫ Clear thinking</strong><small>Good decisions start with clarity</small></div><div><strong>↗ Built with care</strong><small>Attention through every detail</small></div><div><strong>◇ Practical outcomes</strong><small>Technology with a purpose</small></div><div><strong>✧ Human approach</strong><small>People before process</small></div></div>
-      </div>
-    </section>
-    <section className="company-profile section" id="rdds-company-profile">
-      <div className="company-profile-inner">
-        <div className="company-profile-copy">
-          <label>THE RDDS COMPANY PROFILE</label>
-          <h2>One introduction.<br /><em>A wider perspective.</em></h2>
-          <p>Discover the thinking behind RDDS Enterprises in our company presentation. It brings together our identity, perspective and the principles that shape how we approach digital work. Open the presentation to explore the complete profile.</p>
-          <div className="company-profile-actions">
-            <a className="btn primary" href="https://www.canva.com/d/rqyQFfChBtqRWnA" target="_blank" rel="noreferrer">Open company profile ↗</a>
-            <a className="btn secondary" href="https://www.canva.com/design/DAHanI_MwwI/view" target="_blank" rel="noreferrer">View presentation</a>
-          </div>
-          <small className="company-profile-note">12-page presentation · Opens in Canva</small>
+      <div className="hero-v2-grid">
+        <div className="hero-copy hero-v2-copy">
+          <div className="eyebrow"><i /> INNOVATE <b>·</b> DESIGN <b>·</b> GROW</div>
+          <h1>RDDS <em>DIGITAL SOLUTION</em></h1>
+          <h2>Premium Websites.<br /><span>Elevate Your Brand.</span></h2>
+          <p>Thoughtful digital experiences, designed and built personally by <strong>Danish Khan.</strong></p>
+          <div className="hero-actions"><Link className="btn primary" to="/services">Explore Our Services →</Link><Link className="btn secondary" to="/projects">View Our Work ↗</Link></div>
         </div>
-        <div className="company-profile-preview">
-          <div className="company-profile-frame">
-            <iframe title="RDDS Enterprises company profile presentation" src="https://www.canva.com/design/DAHanI_MwwI/view?embed" loading="lazy" allowFullScreen />
-          </div>
-          <span>RDDS ENTERPRISES · COMPANY PROFILE</span>
-        </div>
+        <div className="hero-visual" aria-label="RDDS digital workspace illustration"><div className="visual-globe"><span>RDDS</span><i>✦</i></div><div className="visual-desk"><div className="visual-laptop"><div className="laptop-screen"><b>RDDS</b><small>DIGITAL SOLUTION</small><span>✦</span></div><div className="laptop-base" /></div><div className="visual-cup">RDDS</div></div><div className="visual-caption">Build Something<br /><em>Amazing.</em></div></div>
       </div>
+      <div className="hero-v2-services"><div className="mini-section-title"><span />Our Services<span /></div><div className="service-grid hero-service-grid">{services.map(item => <Link className="service-card hero-service-card" to="/services" key={item.n}><div className="card-meta"><b>{item.icon}</b><small>{item.n}</small></div><h3>{item.title}</h3><span className="service-card-arrow">↗</span></Link>)}</div></div>
     </section>
-    <section className="section home-principles">
-      <div className="section-head"><label>THE WAY WE THINK</label><h2>Good digital work begins <em>before the build.</em></h2><p>We believe the strongest outcomes come from understanding the bigger picture, making deliberate choices and caring about how the finished work performs in the real world.</p></div>
-      <div className="principle-grid">
-        <article><b>01</b><h3>Start with the why</h3><p>Every project should have a clear reason to exist and a meaningful outcome to work towards.</p></article>
-        <article><b>02</b><h3>Keep it considered</h3><p>Good digital experiences balance visual quality, usability and the practical needs behind them.</p></article>
-        <article><b>03</b><h3>Think beyond launch</h3><p>Digital work should be created with its future use, care and growth in mind.</p></article>
-      </div>
-    </section>
-    <section className="home-cta"><label>YOUR NEXT CHAPTER STARTS HERE</label><h2>Bring your idea.<br /><em>Let's give it direction.</em></h2><Link className="btn primary" to="/contact">Connect with RDDS ↗</Link></section>
+    <section className="founder founder-v2"><div className="founder-inner"><div className="portrait"><img src={founderPhoto} alt="Danish Khan, founder of RDDS Digital Solution" /></div><div className="founder-copy"><label>ABOUT RDDS</label><h2>Your Trusted <em>Digital Partner</em></h2><p>At RDDS Digital Solution, we turn ideas into powerful digital experiences. From professional websites to advanced web applications, every project receives thoughtful planning and personal attention.</p><div className="signature"><strong>Danish Khan</strong><span>Founder · RDDS Digital Solution</span></div><Link className="text-link" to="/about">Discover our story ↗</Link></div></div></section>
+    <section className="section work work-v2"><div className="section-head"><label>SELECTED WORK</label><h2>Our <em>Portfolio</em></h2><p>See our latest work and digital experiences.</p></div><div className="work-grid">{projects.map(item => item.website_url ? <a key={item.id} href={item.website_url} target="_blank" rel="noreferrer">{item.thumbnail_url ? <div className="work-thumbnail"><img src={item.thumbnail_url} alt={item.title + " project preview"} loading="lazy" /></div> : <div className="work-art art-one">✦</div>}<small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></a> : <article key={item.id}><div className="work-art art-one">✦</div><small>{item.category || "WEB PROJECT"}</small><h3>{item.title}</h3><p>{item.description}</p></article>)}{!projects.length && <article><div className="work-art art-one">✦</div><small>RDDS CAPABILITIES</small><h3>Business Websites</h3><p>Purpose-built digital experiences for growing businesses.</p></article>}</div><div className="center-link"><Link className="btn secondary" to="/projects">View More Projects →</Link></div></section>
+    <section className="home-cta"><label>LET'S BUILD SOMETHING GREAT</label><h2>Your next idea.<br /><em>Our digital expertise.</em></h2><Link className="btn primary" to="/contact">Get In Touch ↗</Link></section>
   </>;
 }
 
