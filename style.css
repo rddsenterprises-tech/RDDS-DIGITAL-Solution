@@ -619,3 +619,14 @@ body{top:0!important}
 @keyframes brain-orbit-b{to{transform:rotate(418deg)}}
 @media(max-width:700px){.brain-hero-visual{min-height:310px;margin:6px 0 22px}.brain-art{width:min(100%,390px)}.brain-orbit{width:78%}.brain-caption{bottom:-2px}.brain-caption strong{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.brain-art,.brain-halo,.brain-orbit{animation:none!important}}
+
+
+/* Clean hero backdrop: keep the animated brain, remove background motion */
+.hero-v2::before,
+.hero-v2::after,
+.hero-v2 .stars,
+.hero-v2 .hero-orbit {
+  display: none !important;
+  animation: none !important;
+  background-image: none !important;
+}
