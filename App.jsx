@@ -558,22 +558,23 @@ function Contact() {
 
 function TawkToWidget() {
   useEffect(() => {
-    if (document.querySelector('script[src^="https://embed.tawk.to/"]')) return;
-
     window.Tawk_API = window.Tawk_API || {};
-    window.Tawk_LoadStart = new Date();
+    window.Tawk_LoadStart = window.Tawk_LoadStart || new Date();
+
+    const existing = document.querySelector('script[src*="embed.tawk.to/6afbeff03aac2a3cbe12ec18/1k7k22hgg"]');
+    if (existing) return;
 
     const script = document.createElement("script");
     script.async = true;
     script.src = "https://embed.tawk.to/6afbeff03aac2a3cbe12ec18/1k7k22hgg";
     script.charset = "UTF-8";
     script.setAttribute("crossorigin", "*");
-    document.body.appendChild(script);
+    script.onerror = () => console.error("RDDS Tawk.to widget failed to load. Check the Tawk.to property and domain settings.");
+    document.head.appendChild(script);
   }, []);
 
   return null;
 }
-
 function PublicSite() {
   return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><TawkToWidget /></div>;
 }
