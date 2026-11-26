@@ -272,13 +272,42 @@ function PageIntro({ eyebrow, title, children }) {
   return <div className="page-intro"><label>{eyebrow}</label><h1>{title}</h1>{children && <p>{children}</p>}</div>;
 }
 
+const featuredCustomizedProject = {
+  id: "rdds-customized-featured",
+  title: "RDDS Customized",
+  description: "Explore personalized gifts, custom neon signs, LED lighting and wall décor — made around your ideas.",
+  slug: "rdds-customized",
+  category: "CUSTOMIZED E-COMMERCE STORE",
+  website_url: "https://rddscustomize.vercel.app/",
+  thumbnail_url: null
+};
+
+function ensureCustomizedProject(items) {
+  const projects = Array.isArray(items) ? items : [];
+  const exists = projects.some(item =>
+    String(item.website_url || "").replace(/\/$/, "").toLowerCase() ===
+    featuredCustomizedProject.website_url.replace(/\/$/, "").toLowerCase()
+  );
+  return exists ? projects : [featuredCustomizedProject, ...projects];
+}
+
 function Home() {
   const [projects, setProjects] = useState([]);
   useEffect(() => {
     if (!supabaseConfigured) return;
     let cancelled = false;
     supabase.from("projects").select("*").eq("published", true).order("created_at", { ascending: false }).limit(3)
-      .then(({ data }) => { if (!cancelled) setProjects(data || []); });
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) console.error("RDDS portfolio load failed:", error.message);
+        setProjects(ensureCustomizedProject(data || []).slice(0, 3));
+      })
+      .catch(error => {
+        if (!cancelled) {
+          console.error("RDDS portfolio request failed:", error);
+          setProjects([featuredCustomizedProject]);
+        }
+      });
     return () => { cancelled = true; };
   }, []);
   return <>
@@ -419,7 +448,7 @@ function Projects() {
           seen.add(key);
           return true;
         });
-        setItems(uniqueItems);
+        setItems(ensureCustomizedProject(uniqueItems));
       });
     return () => { cancelled = true; };
   }, []);
