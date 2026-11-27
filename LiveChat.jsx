@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { supabase, supabaseConfigured } from "./supabase.js";
+import { supabaseConfigured } from "./supabase.js";
 import "./LiveChat.css";
 
 // A separate auth storage prevents the public chat from reusing the RDDS admin session.
@@ -81,6 +81,13 @@ export default function LiveChat() {
     const channel = chatClient.channel("rdds-digital-customer-" + conversation.id)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages", filter: "conversation_id=eq." + conversation.id }, payload => {
         setMessages(old => old.some(item => item.id === payload.new.id) ? old : [...old, payload.new]);
+      })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "chat_conversations", filter: "id=eq." + conversation.id }, payload => {
+        if (payload.new.status === "closed") {
+          setConversation(null);
+          setMessages([]);
+          setStatus("This conversation was closed. Send a new message to start another chat.");
+        }
       }).subscribe();
     return () => { alive = false; chatClient.removeChannel(channel); };
   }, [conversation?.id, session?.user?.id]);
@@ -106,9 +113,21 @@ export default function LiveChat() {
         current = data;
         setConversation(data);
       } else {
-        const { error } = await chatClient.from("chat_conversations")
-          .update({ last_message: message, last_message_at: new Date().toISOString() }).eq("id", current.id);
+        const { data: stillOpen, error } = await chatClient.from("chat_conversations")
+          .update({ last_message: message, last_message_at: new Date().toISOString() })
+          .eq("id", current.id).eq("status", "open").select("id").maybeSingle();
         if (error) throw error;
+        if (!stillOpen) {
+          const { data, error: createError } = await chatClient.from("chat_conversations").insert({
+            customer_id: active.user.id,
+            customer_name: "Website visitor",
+            last_message: message,
+            last_message_at: new Date().toISOString()
+          }).select("*").single();
+          if (createError) throw createError;
+          current = data;
+          setConversation(data);
+        }
       }
       const { error } = await chatClient.from("chat_messages").insert({
         conversation_id: current.id, sender_id: active.user.id, sender_role: "customer", message
