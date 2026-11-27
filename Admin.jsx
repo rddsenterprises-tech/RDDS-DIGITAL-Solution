@@ -12,6 +12,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./admin.css";
 import AdminLiveChats from "./AdminLiveChats.jsx";
+import AdminVisitors from "./AdminVisitors.jsx";
 
 const sections = [
   { id: "overview", label: "Overview", icon: "▦" },
@@ -21,6 +22,7 @@ const sections = [
   { id: "blogPosts", table: "blog_posts", label: "Blog posts", icon: "▤" },
   { id: "contactMessages", table: "contact_messages", label: "Messages", icon: "✉" },
   { id: "liveChats", label: "Live Chats", icon: "◉" },
+  { id: "visitors", label: "Live Visitors", icon: "◎" },
   { id: "recruiters", table: "recruiter_profiles", label: "Recruiters", icon: "♙" }
 ];
 const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", thumbnail_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
