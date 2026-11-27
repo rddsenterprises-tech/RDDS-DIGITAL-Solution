@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { MessageCircle, X, Send, Headset, LoaderCircle } from "lucide-react";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./LiveChat.css";
 
@@ -125,24 +124,24 @@ export default function LiveChat() {
   return <div className="rdds-live-chat-root">
     {open && <section className="rdds-live-chat-panel" aria-label="RDDS customer support chat">
       <header className="rdds-live-chat-head">
-        <span className="rdds-live-chat-avatar"><Headset size={19} /></span>
+        <span className="rdds-live-chat-avatar"><span aria-hidden="true">◉</span></span>
         <div><b>RDDS Customer Care</b><small><i /> Live support</small></div>
-        <button type="button" onClick={() => setOpen(false)} aria-label="Close chat"><X size={19} /></button>
+        <button type="button" onClick={() => setOpen(false)} aria-label="Close chat"><span aria-hidden="true">×</span></button>
       </header>
       <div className="rdds-live-chat-status">{loading ? "Connecting securely…" : status}</div>
       <div className="rdds-live-chat-messages">
-        {messages.length === 0 && <div className="rdds-live-chat-welcome"><Headset size={26} /><b>How can we help?</b><span>Ask about websites, services, pricing or your project.</span></div>}
+        {messages.length === 0 && <div className="rdds-live-chat-welcome"><span aria-hidden="true">◉</span><b>How can we help?</b><span>Ask about websites, services, pricing or your project.</span></div>}
         {messages.map(item => <div key={item.id} className={"rdds-live-chat-bubble " + (item.sender_role === "customer" ? "mine" : "theirs")}><span>{item.message}</span><small>{new Date(item.created_at).toLocaleTimeString("en-PK", { hour: "2-digit", minute: "2-digit" })}</small></div>)}
         <div ref={endRef} />
       </div>
       <form className="rdds-live-chat-compose" onSubmit={send}>
         <input value={draft} onChange={event => setDraft(event.target.value)} placeholder="Type your message…" maxLength={2000} aria-label="Your message" />
-        <button type="submit" disabled={!draft.trim() || busy || loading} aria-label="Send message">{busy ? <LoaderCircle size={18} className="rdds-chat-spin" /> : <Send size={18} />}</button>
+        <button type="submit" disabled={!draft.trim() || busy || loading} aria-label="Send message">{busy ? <span className="rdds-chat-spin" aria-hidden="true">◌</span> : <span aria-hidden="true">➤</span>}</button>
       </form>
       <div className="rdds-live-chat-foot">Private conversation · RDDS Enterprises</div>
     </section>}
     <button type="button" className={"rdds-live-chat-launch " + (open ? "is-open" : "")} onClick={() => setOpen(value => !value)} aria-label={open ? "Close support chat" : "Chat with us"}>
-      {open ? <X size={23} /> : <><MessageCircle size={22} /><span>Chat with us</span></>}
+      {open ? <span aria-hidden="true">×</span> : <><span aria-hidden="true">◉</span><span>Chat with us</span></>}
     </button>
   </div>;
 }
