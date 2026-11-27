@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link, NavLink, useParams, useLocation, us
 import founderPhoto from "./danish-khan.jpg";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import LiveChat from "./LiveChat.jsx";
+import VisitorTracker from "./VisitorTracker.jsx";
 import RecruiterPortal from "./Recruiter.jsx";
 const Admin = lazy(() => import("./Admin.jsx"));
 
@@ -587,7 +588,7 @@ function Contact() {
 
 
 function PublicSite() {
-  return <div className="site-shell"><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><LiveChat /></div>;
+  return <div className="site-shell"><VisitorTracker /><SeoManager /><IntroScreen /><Header /><Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /><Route path="/recruiter" element={<RecruiterPortal />} /><Route path="/services" element={<Services />} /><Route path="/pricing" element={<Pricing />} /><Route path="/projects" element={<Projects />} /><Route path="/blog" element={<Blog />} /><Route path="/blog/:slug" element={<BlogPost />} /><Route path="/contact" element={<Contact />} /><Route path="*" element={<Home />} /></Routes><Footer /><LiveChat /></div>;
 }
 
 function App() {
