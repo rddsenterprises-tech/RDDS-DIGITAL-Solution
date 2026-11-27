@@ -11,6 +11,7 @@ const uniqueProjects = rows => {
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "./supabase.js";
 import "./admin.css";
+import AdminLiveChats from "./AdminLiveChats.jsx";
 
 const sections = [
   { id: "overview", label: "Overview", icon: "▦" },
@@ -19,6 +20,7 @@ const sections = [
   { id: "projects", table: "projects", label: "Projects", icon: "▧" },
   { id: "blogPosts", table: "blog_posts", label: "Blog posts", icon: "▤" },
   { id: "contactMessages", table: "contact_messages", label: "Messages", icon: "✉" },
+  { id: "liveChats", label: "Live Chats", icon: "◉" },
   { id: "recruiters", table: "recruiter_profiles", label: "Recruiters", icon: "♙" }
 ];
 const emptyForm = { title: "", description: "", slug: "", category: "", website_url: "", thumbnail_url: "", content: "", service_type: "website", tier: "starter", price_pkr: "", price_usd: "", delivery_days: "", features_text: "", sort_order: 1, published: true };
@@ -222,7 +224,7 @@ export default function Admin() {
         <section className="admin-panel admin-recent"><div className="admin-panel-head"><div><span>INBOX</span><h3>Recent enquiries</h3></div><button className="admin-text-button" onClick={() => setActive("contactMessages")}>View all messages ↗</button></div>
           {recentMessages.length ? <div className="admin-message-list">{recentMessages.slice(0,5).map(message => <div className="admin-message-row" key={message.id}><span className="admin-message-avatar">{(message.name || "M").slice(0,1).toUpperCase()}</span><div className="admin-message-info"><strong>{message.name || "Website visitor"}</strong><small>{message.subject || message.email || "New enquiry"} · {dateLabel(message.created_at)}</small></div><span className={"admin-message-status " + (message.status || "new")}>{message.status || "new"}</span></div>)}</div> : <div className="admin-no-data">No enquiries received yet. New website contact messages will appear here.</div>}
         </section>
-      </div> : <>
+      </div> : active === "liveChats" ? <AdminLiveChats user={user} /> : <>
         <div className="admin-toolbar"><p>{active === "contactMessages" ? "Review and manage customer enquiries." : "Create, update and publish your website content."}</p>{active !== "contactMessages" && <button className="admin-primary" onClick={() => { setEditingId(null); setForm(emptyForm); setShowForm(v => !v); }}>＋ Add new</button>}</div>
         <div className="admin-list-tools"><label className="admin-search"><span>⌕</span><input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={active === "contactMessages" ? "Search name, email or message..." : "Search title, category or description..."} /></label>{(active === "contactMessages" || active === "recruiters") && <select aria-label="Filter records by status" value={messageFilter} onChange={e => setMessageFilter(e.target.value)}><option value="all">All statuses</option>{active === "contactMessages" ? <><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option><option value="archived">Archived</option></> : <><option value="Pending">Pending</option><option value="Interested">Interested</option><option value="Not Interested">Not Interested</option></>}</select>}<span className="admin-result-count">{visibleItems.length} of {items.length} records</span></div>
         {showForm && active !== "contactMessages" && <form className="admin-editor" onSubmit={saveItem}><h2>{editingId ? "Edit record" : "Create new record"}</h2>
