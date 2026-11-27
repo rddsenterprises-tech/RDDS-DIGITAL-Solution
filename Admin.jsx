@@ -49,15 +49,27 @@ export default function Admin() {
 
   useEffect(() => {
     if (!supabaseConfigured) { setAuthChecked(true); return; }
-    supabase.auth.getSession().then(({ data, error: sessionError }) => {
-      if (sessionError) setError("Session load nahi hua. Dobara sign in karein.");
-      setUser(data?.session?.user ?? null);
+
+    // Require an explicit sign-in whenever the admin workspace is opened.
+    // Do not silently reuse a previously persisted browser session.
+    let cancelled = false;
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsAdmin(false);
+      setMembershipChecked(false);
+    });
+
+    supabase.auth.signOut().then(({ error: signOutError }) => {
+      if (cancelled) return;
+      if (signOutError) setError("Purana session clear nahi hua. Dobara page open karein.");
+      setUser(null);
       setAuthChecked(true);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null); setIsAdmin(false); setMembershipChecked(false);
-    });
-    return () => listener.subscription.unsubscribe();
+
+    return () => {
+      cancelled = true;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
